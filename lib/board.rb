@@ -3,18 +3,19 @@ class Board
 
   def initialize(size)
     @size = size
+    @empty_char = '-'
     @moves = create_new_board
   end
 
   def create_new_board
-    return Array.new(@size){ Array.new(@size){'-'} }
+    return Array.new(@size){ Array.new(@size){@empty_char} }
   end
 
   def display_board
     output = ''
     @moves.each_with_index do |row, row_index|
       row.each_with_index do |spot, spot_index|
-        output += spot == '-' ? ' ' : spot
+        output += spot == @empty_char ? ' ' : spot
         if (spot_index != @size - 1)
           output += ' | '
         end
@@ -44,7 +45,7 @@ class Board
   def all_spots_are_taken
     for row in 0...@moves.length
       for spot in 0...@moves[row].length
-        if (@moves[row][spot] == '-')
+        if (@moves[row][spot] == @empty_char)
           return false
         end
       end
