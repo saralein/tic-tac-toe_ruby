@@ -6,6 +6,12 @@ class Game
   end
 
   def play
+    until(@board.is_game_over)
+      take_turn
+    end
+  end
+
+  def take_turn
     player_move = get_player_move
     @board.add_move_to_board(player_move, 'X')
     @board.display_board
@@ -13,6 +19,6 @@ class Game
 
   def get_player_move
     puts 'Please enter a number between 1 - 9: '
-    return Integer(gets.chomp)
+    return Integer(gets.chomp) - 1
   end
 end
