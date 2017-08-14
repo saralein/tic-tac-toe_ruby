@@ -49,7 +49,7 @@ class Board
   end
 
   def there_is_full_row
-    for row in 0...@moves.length
+    for row in 0...@size
       unique_chars = @moves[row].uniq
       if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
         return true
@@ -59,9 +59,9 @@ class Board
   end
 
   def there_is_full_column
-    for i in 0...@moves.length
+    for i in 0...@size
       column = []
-      for j in 0...@moves.length
+      for j in 0...@size
         column.push(@moves[j][i])
       end
       unique_chars = column.uniq
