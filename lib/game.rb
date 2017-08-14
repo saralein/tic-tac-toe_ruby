@@ -29,6 +29,7 @@ class Game
   def get_computer_move
     @board.moves.flatten.each_with_index do |spot, index|
       if (spot == @board.empty_char)
+        puts "The computer picks spot #{index + 1}."
         return index
       end
     end

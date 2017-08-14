@@ -25,7 +25,7 @@ describe 'Game' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
         allow(game).to receive(:gets).and_return('9')
-        expect(STDOUT).to receive(:puts).with(ask_for_move)
+        allow(STDOUT).to receive(:puts).twice
         game.get_player_move
         expect(game.get_computer_move).not_to eql(8)
       end
