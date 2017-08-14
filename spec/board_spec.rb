@@ -30,6 +30,13 @@ describe Board do
       ['O', 'X', 'O']
     ]
   }
+  let(:row_complete_size_three_moves) {
+    [
+      ['X', 'O', 'X'],
+      ['-', '-', '-'],
+      ['-', '-', '-']
+    ]
+  }
   let(:display_output) {
     "  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  "
   }
@@ -95,11 +102,7 @@ describe Board do
     end
 
     it 'returns false is not all spots are taken' do
-      size_three_board.moves = [
-        ['X', 'O', 'X'],
-        ['-', '-', '-'],
-        ['-', '-', '-']
-      ]
+      size_three_board.moves = row_complete_size_three_moves
       expect(size_three_board.all_spots_are_taken).to eql(false)
     end
   end
