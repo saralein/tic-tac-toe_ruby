@@ -93,5 +93,14 @@ describe Board do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.all_spots_are_taken).to eql(true)
     end
+
+    it 'returns false is not all spots are taken' do
+      size_three_board.moves = [
+        ['X', 'O', 'X'],
+        ['-', '-', '-'],
+        ['-', '-', '-']
+      ]
+      expect(size_three_board.all_spots_are_taken).to eql(false)
+    end
   end
 end

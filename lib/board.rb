@@ -43,11 +43,12 @@ class Board
 
   def all_spots_are_taken
     for row in 0...@moves.length
-      empty_spots = @moves[row].select { |spot| spot == '-' }
-      if (empty_spots.length != 0)
-        return false
+      for spot in 0...@moves[row].length
+        if (@moves[row][spot] == '-')
+          return false
+        end
       end
-      return true
     end
+    return true
   end
 end
