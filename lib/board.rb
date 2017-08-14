@@ -39,10 +39,36 @@ class Board
   end
 
   def is_game_over
-    return all_spots_are_taken
+    return  there_is_full_row ||
+            there_is_full_column ||
+            all_spots_are_taken
   end
 
   def all_spots_are_taken
     return @moves.flatten.select{ |spot| spot == @empty_char}.length == 0
+  end
+
+  def there_is_full_row
+    for row in 0...@moves.length
+      unique_chars = @moves[row].uniq
+      if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
+        return true
+      end
+    end
+    return false
+  end
+
+  def there_is_full_column
+    for i in 0...@moves.length
+      column = []
+      for j in 0...@moves.length
+        column.push(@moves[j][i])
+      end
+      unique_chars = column.uniq
+      if (column.uniq.length == 1 and unique_chars[0] != @empty_char)
+        return true
+      end
+    end
+    return false
   end
 end

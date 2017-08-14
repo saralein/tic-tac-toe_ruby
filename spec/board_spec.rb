@@ -32,9 +32,16 @@ describe Board do
   }
   let(:row_complete_size_three_moves) {
     [
-      ['X', 'O', 'X'],
+      ['X', 'X', 'X'],
       ['-', '-', '-'],
       ['-', '-', '-']
+    ]
+  }
+  let(:column_complete_size_three_moves) {
+    [
+      ['O', 'X', 'X'],
+      ['-', 'O', 'X'],
+      ['O', '-', 'X']
     ]
   }
   let(:display_output) {
@@ -93,6 +100,16 @@ describe Board do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.is_game_over).to eql(true)
     end
+
+    it 'returns true when a row is full' do
+      size_three_board.moves = row_complete_size_three_moves
+      expect(size_three_board.is_game_over).to eql(true)
+    end
+
+    it 'returns true when a column is full' do
+      size_three_board.moves = column_complete_size_three_moves
+      expect(size_three_board.is_game_over).to eql(true)
+    end
   end
 
   describe 'all_spots_are_taken' do
@@ -104,6 +121,32 @@ describe Board do
     it 'returns false is not all spots are taken' do
       size_three_board.moves = row_complete_size_three_moves
       expect(size_three_board.all_spots_are_taken).to eql(false)
+    end
+  end
+
+  describe 'there_is_full_row' do
+    it 'returns true when a row is full' do
+      size_three_board.moves = row_complete_size_three_moves
+      expect(size_three_board.there_is_full_row).to eql(true)
+    end
+
+    it 'returns false when no rows are full' do
+      size_three_board.moves = full_size_three_moves
+      expect(size_three_board.there_is_full_row).to eql(false)
+      size_three_board.moves = size_three_moves
+      expect(size_three_board.there_is_full_row).to eql(false)
+    end
+  end
+
+  describe 'there_is_full_column' do
+    it 'returns true when a column is full' do
+      size_three_board.moves = column_complete_size_three_moves
+      expect(size_three_board.there_is_full_column).to eql(true)
+    end
+
+    it 'returns false when no columns are full' do
+      size_three_board.moves = full_size_three_moves
+      expect(size_three_board.there_is_full_column).to eql(false)
     end
   end
 end
