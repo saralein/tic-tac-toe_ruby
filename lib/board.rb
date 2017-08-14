@@ -6,11 +6,11 @@ class Board
     @size = size
   end
 
-  def createNewBoard
+  def create_new_board
     @moves = Array.new(@size){ Array.new(@size){'-'} }
   end
 
-  def displayBoard
+  def display_board
     output = ''
     @moves.each_with_index do |row, row_index|
       row.each_with_index do |spot, spot_index|

@@ -34,9 +34,9 @@ describe Board do
 
   describe 'createNewBoard' do
     it 'creates a nested array based on board size' do
-      size_three_board.createNewBoard
+      size_three_board.create_new_board
       expect(size_three_board.moves).to eql(size_three_moves)
-      size_four_board.createNewBoard
+      size_four_board.create_new_board
       expect(size_four_board.moves).to eql(size_four_moves)
     end
   end
@@ -45,13 +45,13 @@ describe Board do
     it 'displays the current sized board in the terminal' do
       size_three_board.moves = size_three_moves
       expect(STDOUT).to receive(:puts).with(display_output)
-      size_three_board.displayBoard
+      size_three_board.display_board
     end
   end
 
   it 'displays the current size board in the terminal with moves' do
     size_three_board.moves = size_three_moves_taken
     expect(STDOUT).to receive(:puts).with(display_output_with_moves)
-    size_three_board.displayBoard
+    size_three_board.display_board
   end
 end
