@@ -55,6 +55,17 @@ describe Board do
     end
   end
 
+  describe 'add_move_to_board' do
+    it 'takes row/column and adds token to moves' do
+      size_three_board.moves = size_three_moves
+      size_three_board.add_move_to_board(0, 'O')
+      size_three_board.add_move_to_board(1, 'X')
+      size_three_board.add_move_to_board(4, 'O')
+      size_three_board.add_move_to_board(8, 'X')
+      expect(size_three_board.moves).to eql(size_three_moves_taken)
+    end
+  end
+
   describe 'convert_move_to_row_column' do
     it 'converts integer to row and column location' do
       expect(size_three_board.convert_move_to_row_column(2)).to eql([0, 2])

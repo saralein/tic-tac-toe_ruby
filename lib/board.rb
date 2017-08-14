@@ -26,6 +26,11 @@ class Board
     puts output
   end
 
+  def add_move_to_board(move_integer, player_token)
+    (row, column) = convert_move_to_row_column(move_integer)
+    @moves[row][column] = player_token
+  end
+
   def convert_move_to_row_column(move_integer)
     row = move_integer / @size
     column = move_integer % @size
