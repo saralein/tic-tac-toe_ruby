@@ -16,11 +16,11 @@ class Board
       row.each_with_index do |spot, spot_index|
         output += spot == '-' ? ' ' : spot
         if (spot_index != @size - 1)
-          output += '|'
+          output += ' | '
         end
       end
       if (row_index != @size - 1)
-        output += "\n - + - + - \n"
+        output += "\n- + - + -\n"
       end
     end
     puts output

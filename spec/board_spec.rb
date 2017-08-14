@@ -24,10 +24,10 @@ describe Board do
     ]
   }
   let(:display_output) {
-    " | | \n - + - + - \n | | \n - + - + - \n | | "
+    "  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  "
   }
   let(:display_output_with_moves) {
-    "O|X| \n - + - + - \n |O| \n - + - + - \n | |X"
+    "O | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X"
   }
   let(:size_three_board) { Board.new(3)}
   let(:size_four_board) { Board.new(4) }
