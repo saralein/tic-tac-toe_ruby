@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :moves
+  attr_accessor :moves, :empty_char
 
   def initialize(size)
     @size = size
