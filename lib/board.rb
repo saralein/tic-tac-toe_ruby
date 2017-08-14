@@ -2,12 +2,12 @@ class Board
   attr_accessor :moves
 
   def initialize(size)
-    @moves
     @size = size
+    @moves = create_new_board
   end
 
   def create_new_board
-    @moves = Array.new(@size){ Array.new(@size){'-'} }
+    return Array.new(@size){ Array.new(@size){'-'} }
   end
 
   def display_board

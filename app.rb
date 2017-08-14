@@ -1,5 +1,4 @@
-require_relative './lib/board.rb'
+require_relative './lib/game.rb'
 
-board = Board.new(3)
-board.create_new_board
-board.display_board
+game = Game.new(3)
+game.play
