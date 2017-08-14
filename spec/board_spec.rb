@@ -55,4 +55,11 @@ describe Board do
     end
   end
 
+  describe 'convert_move_to_row_column' do
+    it 'converts integer to row and column location' do
+      expect(size_three_board.convert_move_to_row_column(2)).to eql([0, 2])
+      expect(size_three_board.convert_move_to_row_column(4)).to eql([1, 1])
+      expect(size_three_board.convert_move_to_row_column(6)).to eql([2, 0])
+    end
+  end
 end

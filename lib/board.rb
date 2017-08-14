@@ -25,4 +25,10 @@ class Board
     end
     puts output
   end
+
+  def convert_move_to_row_column(move_integer)
+    row = move_integer / @size
+    column = move_integer % @size
+    return [row, column]
+  end
 end
