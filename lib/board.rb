@@ -43,13 +43,6 @@ class Board
   end
 
   def all_spots_are_taken
-    for row in 0...@moves.length
-      for spot in 0...@moves[row].length
-        if (@moves[row][spot] == @empty_char)
-          return false
-        end
-      end
-    end
-    return true
+    return @moves.flatten.select{ |spot| spot == @empty_char}.length == 0
   end
 end
