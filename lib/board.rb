@@ -36,4 +36,18 @@ class Board
     column = move_integer % @size
     return [row, column]
   end
+
+  def is_game_over
+    return all_spots_are_taken
+  end
+
+  def all_spots_are_taken
+    for row in 0...@moves.length
+      empty_spots = @moves[row].select { |spot| spot == '-' }
+      if (empty_spots.length != 0)
+        return false
+      end
+      return true
+    end
+  end
 end

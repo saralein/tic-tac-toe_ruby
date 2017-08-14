@@ -23,6 +23,13 @@ describe Board do
       ['-', '-', 'X']
     ]
   }
+  let(:full_size_three_moves) {
+    [
+      ['X', 'O', 'X'],
+      ['O', 'X', 'O'],
+      ['O', 'X', 'O']
+    ]
+  }
   let(:display_output) {
     "  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  "
   }
@@ -71,6 +78,20 @@ describe Board do
       expect(size_three_board.convert_move_to_row_column(2)).to eql([0, 2])
       expect(size_three_board.convert_move_to_row_column(4)).to eql([1, 1])
       expect(size_three_board.convert_move_to_row_column(6)).to eql([2, 0])
+    end
+  end
+
+  describe 'is_game_over' do
+    it 'returns true when all spots on board are taken' do
+      size_three_board.moves = full_size_three_moves
+      expect(size_three_board.is_game_over).to eql(true)
+    end
+  end
+
+  describe 'all_spots_are_taken' do
+    it 'returns true is all spots are taken' do
+      size_three_board.moves = full_size_three_moves
+      expect(size_three_board.all_spots_are_taken).to eql(true)
     end
   end
 end
