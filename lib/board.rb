@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :moves, :empty_char
+  attr_accessor :moves, :empty_char, :size
 
   def initialize(size)
     @size = size
@@ -38,20 +38,20 @@ class Board
     return [row, column]
   end
 
-  def is_game_over
-    return  there_is_full_row ||
-            there_is_full_diagonal ||
-            there_is_full_column ||
-            all_spots_are_taken
+  def is_game_over(moves = @moves)
+    return  there_is_full_row(moves) ||
+            there_is_full_diagonal(moves) ||
+            there_is_full_column(moves) ||
+            all_spots_are_taken(moves)
   end
 
-  def all_spots_are_taken
-    return @moves.flatten.select{ |spot| spot == @empty_char}.length == 0
+  def all_spots_are_taken(moves = @moves)
+    return moves.flatten.select{ |spot| spot == @empty_char}.length == 0
   end
 
-  def there_is_full_row
+  def there_is_full_row(moves = @moves)
     for row in 0...@size
-      unique_chars = @moves[row].uniq
+      unique_chars = moves[row].uniq
       if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
         return true
       end
@@ -59,11 +59,11 @@ class Board
     return false
   end
 
-  def there_is_full_column
+  def there_is_full_column(moves = @moves)
     for i in 0...@size
       column = []
       for j in 0...@size
-        column.push(@moves[j][i])
+        column.push(moves[j][i])
       end
       unique_chars = column.uniq
       if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
@@ -73,16 +73,16 @@ class Board
     return false
   end
 
-  def there_is_full_diagonal
-    if (@moves[@size/2][@size/2] == @empty_char)
+  def there_is_full_diagonal(moves = @moves)
+    if (moves[@size/2][@size/2] == @empty_char)
       return false
     end
 
     left_diagonal = []
     right_diagonal = []
     for i in 0...@size
-      left_diagonal.push(@moves[i][i])
-      right_diagonal.push(@moves[i][@size-1 - i])
+      left_diagonal.push(moves[i][i])
+      right_diagonal.push(moves[i][@size-1 - i])
     end
     unique_left = left_diagonal.uniq
     unique_right = right_diagonal.uniq
