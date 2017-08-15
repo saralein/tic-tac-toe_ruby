@@ -74,6 +74,10 @@ class Board
   end
 
   def there_is_full_diagonal
+    if (@moves[@size/2][@size/2] == @empty_char)
+      return false
+    end
+
     left_diagonal = []
     right_diagonal = []
     for i in 0...@size
