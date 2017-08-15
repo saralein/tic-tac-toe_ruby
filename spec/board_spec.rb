@@ -124,6 +124,16 @@ describe Board do
       size_three_board.moves = column_complete_size_three_moves
       expect(size_three_board.is_game_over).to eql(true)
     end
+
+    it 'returns true when a diagonal is full' do
+      size_three_board.moves = left_diagonal_complete
+      expect(size_three_board.is_game_over).to eql(true)
+    end
+
+    it 'returns false otherwise' do
+      size_three_board.moves = size_three_moves
+      expect(size_three_board.is_game_over).to eql(false)
+    end
   end
 
   describe 'all_spots_are_taken' do

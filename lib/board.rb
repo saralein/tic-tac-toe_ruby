@@ -40,6 +40,7 @@ class Board
 
   def is_game_over
     return  there_is_full_row ||
+            there_is_full_diagonal ||
             there_is_full_column ||
             all_spots_are_taken
   end
