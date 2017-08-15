@@ -36,6 +36,12 @@ describe 'Game' do
         expect(STDOUT).to receive(:puts).with(ask_for_move)
         expect(game.get_player_move).to eql(8)
       end
+
+      it 'asks for an integer again if integer not given' do
+        allow(game).to receive(:gets).and_return('a', 'b', '9')
+        expect(STDOUT).to receive(:puts).exactly(5).times
+        game.get_player_move
+      end
     end
   end
 

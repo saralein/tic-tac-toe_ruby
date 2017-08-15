@@ -32,8 +32,13 @@ class Game
   end
 
   def get_player_move
-    puts'Please enter a number between 1 - 9: '
-    return Integer(gets.chomp) - 1
+    begin
+      puts'Please enter a number between 1 - 9: '
+      return Integer(gets.chomp) - 1
+    rescue => error
+      puts 'Your selection is not an integer.'
+      retry
+    end
   end
 
   def get_computer_move
