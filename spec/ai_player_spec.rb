@@ -3,6 +3,20 @@ require_relative '../lib/board.rb'
 
 describe AIPlayer do
   let(:board) { Board.new(3) }
+  let(:depth_5_win) {
+    [
+      ['X', '-', 'O'],
+      ['-', 'X', 'O'],
+      ['-', '-', 'X']
+    ]
+  }
+  let(:depth_1_win) {
+    [
+      ['X', 'O', 'X'],
+      ['X', 'O', 'X'],
+      ['O', '-', 'X']
+    ]
+  }
   let(:ai_player) { AIPlayer.new(board) }
 
   def set_depth(number)
@@ -12,7 +26,14 @@ describe AIPlayer do
   describe 'minimax' do
     it 'returns zero when depth is zero' do
       set_depth(0)
-      ai_player.minimax
+      expect(ai_player.minimax).to eql(0)
+    end
+
+    it 'returns the correct score when game is over' do
+      set_depth(5)
+      expect(ai_player.minimax('max', depth_5_win)).to eql(15)
+      set_depth(1)
+      expect(ai_player.minimax('min', depth_1_win)).to eql(-11)
     end
   end
 
