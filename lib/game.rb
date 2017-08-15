@@ -47,6 +47,7 @@ class Game
 
   def end_game
     winning_player = @current_player == 'human' ? 'You' : 'The computer'
-    puts "Game over. #{winning_player} wins!"
+    trailing_char = @current_player == 'human' ? '' : 's'
+    puts "Game over. #{winning_player} win#{trailing_char}!"
   end
 end
