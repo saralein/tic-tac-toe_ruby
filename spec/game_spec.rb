@@ -11,6 +11,24 @@ describe 'Game' do
     ]
   }
 
+  describe 'prep_next_move' do
+    context 'before the next turn' do
+      it 'does not update current player if first turn' do
+        game.prep_next_move
+        expect(game.instance_variable_get(:@current_player)).to eql('human')
+      end
+
+      it 'updates the current player if not the first turn' do
+        game.instance_variable_set(:@turns_remaining, 8)
+        game.prep_next_move
+        expect(game.instance_variable_get(:@current_player)).to eql('computer')
+        game.instance_variable_set(:@turns_remaining, 7)
+        game.prep_next_move
+        expect(game.instance_variable_get(:@current_player)).to eql('human')
+      end
+    end
+  end
+
   describe 'get_player_move' do
     context "when it is the player's turn" do
       it 'asks for players move and returns as integer' do
