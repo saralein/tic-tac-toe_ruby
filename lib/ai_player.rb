@@ -5,12 +5,19 @@ class AIPlayer
     @depth = board.size * board.size
   end
 
-  def score
-    if(@projected_winner == 'max')
+  def minimax
+    if (@depth == 0)
+      return score('draw')
+    end
+
+  end
+
+  def score(winner)
+    if(winner == 'max')
      return 10 + @depth
-    elsif(@projected_winner == 'min')
+    elsif(winner == 'min')
       return -10 - @depth
-    elsif(@projected_winner == 'draw')
+    elsif(winner == 'draw')
       return 0
     end
   end
