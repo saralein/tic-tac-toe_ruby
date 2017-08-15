@@ -44,6 +44,20 @@ describe Board do
       ['O', '-', 'X']
     ]
   }
+  let(:left_diagonal_complete) {
+    [
+      ['X', 'O', '-'],
+      ['O', 'X', '-'],
+      ['-', 'O', 'X']
+    ]
+  }
+  let(:right_diagonal_complete) {
+    [
+      ['X', 'O', '-'],
+      ['O', 'X', '-'],
+      ['-', 'O', 'X']
+    ]
+  }
   let(:display_output) {
     "  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  "
   }
@@ -147,6 +161,20 @@ describe Board do
     it 'returns false when no columns are full' do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.there_is_full_column).to eql(false)
+    end
+  end
+
+  describe 'there_is_full_diagonal' do
+    it 'returns true when a diagonal is full' do
+      size_three_board.moves = left_diagonal_complete
+      expect(size_three_board.there_is_full_diagonal).to eql(true)
+      size_three_board.moves = right_diagonal_complete
+      expect(size_three_board.there_is_full_diagonal).to eql(true)
+    end
+
+    it 'returns false when no diagonals are full' do
+      size_three_board.moves = full_size_three_moves
+      expect(size_three_board.there_is_full_diagonal).to eql(false)
     end
   end
 end

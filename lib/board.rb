@@ -65,10 +65,23 @@ class Board
         column.push(@moves[j][i])
       end
       unique_chars = column.uniq
-      if (column.uniq.length == 1 and unique_chars[0] != @empty_char)
+      if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
         return true
       end
     end
     return false
+  end
+
+  def there_is_full_diagonal
+    left_diagonal = []
+    right_diagonal = []
+    for i in 0...@size
+      left_diagonal.push(@moves[i][i])
+      right_diagonal.push(@moves[i][@size-1 - i])
+    end
+    unique_left = left_diagonal.uniq
+    unique_right = right_diagonal.uniq
+    return (unique_left.length == 1 and unique_left[0] != @empty_char) ||
+           (unique_right.length == 1 and unique_right[0] != @empty_char)
   end
 end
