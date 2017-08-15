@@ -31,4 +31,17 @@ describe 'Game' do
       end
     end
   end
+
+  describe 'end_game' do
+    it 'announces the end of the game' do
+      expect(STDOUT).to receive(:puts)
+      game.end_game
+    end
+
+    it 'includes the correct winner' do
+      expect(STDOUT).to receive(:puts).with('Game over. The computer wins!')
+      game.instance_variable_set(:@current_player, 'computer')
+      game.end_game
+    end
+  end
 end

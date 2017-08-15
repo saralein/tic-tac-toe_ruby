@@ -10,6 +10,7 @@ class Game
     until(@board.is_game_over)
       take_turn
     end
+    end_game
   end
 
   def take_turn
@@ -22,7 +23,7 @@ class Game
   end
 
   def get_player_move
-    puts 'Please enter a number between 1 - 9: '
+    puts'Please enter a number between 1 - 9: '
     return Integer(gets.chomp) - 1
   end
 
@@ -33,5 +34,10 @@ class Game
         return index
       end
     end
+  end
+
+  def end_game
+    winning_player = @current_player == 'human' ? 'You' : 'The computer'
+    puts "Game over. #{winning_player} wins!"
   end
 end
