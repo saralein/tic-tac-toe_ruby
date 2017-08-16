@@ -136,22 +136,25 @@ describe Board do
     end
   end
 
-  describe 'all_spots_are_taken' do
-    it 'returns true is all spots are taken' do
+  describe 'there_is_a_draw' do
+    it 'returns true is all spots are taken and sets winner' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.all_spots_are_taken).to eql(true)
+      expect(size_three_board.there_is_a_draw).to eql(true)
+      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql('-')
     end
 
     it 'returns false is not all spots are taken' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.all_spots_are_taken).to eql(false)
+      expect(size_three_board.there_is_a_draw).to eql(false)
+      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql(nil)
     end
   end
 
   describe 'there_is_full_row' do
-    it 'returns true when a row is full' do
+    it 'returns true when a row is full and sets projected winner' do
       size_three_board.moves = row_complete_size_three_moves
       expect(size_three_board.there_is_full_row).to eql(true)
+
     end
 
     it 'returns false when no rows are full' do
@@ -159,18 +162,21 @@ describe Board do
       expect(size_three_board.there_is_full_row).to eql(false)
       size_three_board.moves = size_three_moves
       expect(size_three_board.there_is_full_row).to eql(false)
+      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql(nil)
     end
   end
 
   describe 'there_is_full_column' do
-    it 'returns true when a column is full' do
+    it 'returns true when a column is full and sets projected winner' do
       size_three_board.moves = column_complete_size_three_moves
       expect(size_three_board.there_is_full_column).to eql(true)
+      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql('X')
     end
 
     it 'returns false when no columns are full' do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.there_is_full_column).to eql(false)
+      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql(nil)
     end
   end
 
@@ -185,6 +191,18 @@ describe Board do
     it 'returns false when no diagonals are full' do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.there_is_full_diagonal).to eql(false)
+    end
+  end
+
+  describe 'there_is_unique_nonempty_char' do
+    it 'returns true when row contains only X' do
+      X_row = ['X', 'X', 'X']
+      expect(size_three_board.there_is_unique_nonempty_char(X_row)).to eql(true)
+    end
+
+    it 'returns false when row is not full of same token' do
+      row = ['-', 'O', 'X']
+      expect(size_three_board.there_is_unique_nonempty_char(row)).to eql(false)
     end
   end
 end

@@ -1,10 +1,11 @@
 class Board
-  attr_accessor :moves, :empty_char, :size
+  attr_accessor :moves, :empty_char, :size, :projected_winner
 
   def initialize(size)
     @size = size
     @empty_char = '-'
     @moves = create_new_board
+    @projected_winner = nil
   end
 
   def create_new_board
@@ -39,20 +40,32 @@ class Board
   end
 
   def is_game_over(moves = @moves)
-    return  there_is_full_row(moves) ||
-            there_is_full_diagonal(moves) ||
-            there_is_full_column(moves) ||
-            all_spots_are_taken(moves)
+    is_winner = there_is_a_winner(moves)
+    is_draw = there_is_a_draw(moves)
+
+    return  is_winner || is_draw
   end
 
-  def all_spots_are_taken(moves = @moves)
-    return moves.flatten.select{ |spot| spot == @empty_char}.length == 0
+  def there_is_a_winner(moves)
+    return  there_is_full_row(moves) ||
+            there_is_full_diagonal(moves) ||
+            there_is_full_column(moves)
+  end
+
+  def there_is_a_draw(moves = @moves)
+    no_spots_left = moves.flatten.select{ |spot| spot == @empty_char}.length == 0
+
+    if (no_spots_left)
+      @projected_winner = '-'
+    end
+
+    return no_spots_left
   end
 
   def there_is_full_row(moves = @moves)
     for row in 0...@size
-      unique_chars = moves[row].uniq
-      if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
+      if (there_is_unique_nonempty_char(moves[row]))
+        @projected_winner = moves[row][0]
         return true
       end
     end
@@ -65,8 +78,8 @@ class Board
       for j in 0...@size
         column.push(moves[j][i])
       end
-      unique_chars = column.uniq
-      if (unique_chars.length == 1 and unique_chars[0] != @empty_char)
+      if (there_is_unique_nonempty_char(column))
+        @projected_winner = column[0]
         return true
       end
     end
@@ -80,13 +93,22 @@ class Board
 
     left_diagonal = []
     right_diagonal = []
+
     for i in 0...@size
       left_diagonal.push(moves[i][i])
       right_diagonal.push(moves[i][@size-1 - i])
     end
-    unique_left = left_diagonal.uniq
-    unique_right = right_diagonal.uniq
-    return (unique_left.length == 1 and unique_left[0] != @empty_char) ||
-           (unique_right.length == 1 and unique_right[0] != @empty_char)
+
+    if (there_is_unique_nonempty_char(left_diagonal) ||
+        there_is_unique_nonempty_char(right_diagonal))
+      @projected_winner = moves[@size/2][@size/2]
+      return true
+    end
+
+    return false
+  end
+
+  def there_is_unique_nonempty_char(row_array)
+    return row_array.uniq.length == 1 && row_array[0] != @empty_char
   end
 end
