@@ -3,13 +3,6 @@ require_relative '../lib/game.rb'
 describe 'Game' do
   let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
   let(:game) { Game.new(3) }
-  let(:flattened_moves) {
-    [
-      '-', '-', '-',
-      '-', '-', '-',
-      '-', '-', '-'
-    ]
-  }
 
   describe 'prep_next_move' do
     context 'before the next turn' do
@@ -32,12 +25,14 @@ describe 'Game' do
   describe 'get_player_move' do
     context "when it is the player's turn" do
       it 'asks for players move and returns as integer' do
+        allow(game).to receive(:spot_is_taken).with(false)
         allow(game).to receive(:gets).and_return('9')
         expect(STDOUT).to receive(:puts).with(ask_for_move)
         expect(game.get_player_move).to eql(8)
       end
 
       it 'asks for an integer again if integer not given' do
+        allow(game).to receive(:spot_is_taken).with(false)
         allow(game).to receive(:gets).and_return('a', 'b', '9')
         expect(STDOUT).to receive(:puts).exactly(5).times
         game.get_player_move
@@ -48,6 +43,7 @@ describe 'Game' do
   describe 'get_computer_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
+        allow(game).to receive(:spot_is_taken).with(false)
         allow(game).to receive(:gets).and_return('9')
         allow(STDOUT).to receive(:puts).twice
         game.get_player_move
@@ -62,9 +58,21 @@ describe 'Game' do
       game.end_game
     end
 
-    it 'includes the correct winner' do
+    it 'includes the human winner' do
+      expect(STDOUT).to receive(:puts).with('Game over. You win!')
+      game.instance_variable_get(:@board).projected_winner = 'X'
+      game.end_game
+    end
+
+    it 'includes the computer winner' do
       expect(STDOUT).to receive(:puts).with('Game over. The computer wins!')
-      game.instance_variable_set(:@current_player, 'computer')
+      game.instance_variable_get(:@board).projected_winner = 'O'
+      game.end_game
+    end
+
+    it 'notifies of a draw' do
+      expect(STDOUT).to receive(:puts).with("Game over. It's a draw.")
+      game.instance_variable_get(:@board).projected_winner = '-'
       game.end_game
     end
   end

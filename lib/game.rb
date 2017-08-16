@@ -1,9 +1,12 @@
 require_relative './board.rb'
+require_relative './ai_player.rb'
 
 class Game
   def initialize(size)
     @board = Board.new(size)
     @current_player = 'human'
+    @player1 = 'human'
+    @player2 = AIPlayer.new(@board)
     @total_turns = size * size
     @turns_remaining = @total_turns
   end
@@ -34,11 +37,12 @@ class Game
   def get_player_move
     begin
       puts'Please enter a number between 1 - 9: '
-      return Integer(gets.chomp) - 1
+      move = Integer(gets.chomp) - 1
     rescue => error
       puts 'Your selection is not an integer.'
       retry
     end
+    return move
   end
 
   def get_computer_move
@@ -51,8 +55,16 @@ class Game
   end
 
   def end_game
-    winning_player = @current_player == 'human' ? 'You' : 'The computer'
-    trailing_char = @current_player == 'human' ? '' : 's'
-    puts "Game over. #{winning_player} win#{trailing_char}!"
+    output = "Game over. "
+
+    winning_player = @board.projected_winner
+
+    if (winning_player == @board.empty_char)
+      output += "It's a draw."
+    else
+      output += winning_player == 'X' ? 'You win!' : 'The computer wins!'
+    end
+
+    puts output
   end
 end
