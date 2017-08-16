@@ -40,50 +40,75 @@ class Board
   end
 
   def is_game_over(moves = @moves)
-    is_winner = there_is_a_winner(moves)
-    is_draw = there_is_a_draw(moves)
+    is_winner, winner = there_is_a_winner(moves)
+    is_draw, draw = there_is_a_draw(moves)
 
-    return  is_winner || is_draw
+    if (is_winner)
+      return [is_winner, winner]
+    elsif(is_draw)
+      return [is_draw, draw]
+    else
+      return [false, nil]
+    end
   end
 
   def there_is_a_winner(moves)
-    return  there_is_full_row(moves) ||
-            there_is_full_diagonal(moves) ||
-            there_is_full_column(moves)
+    is_winner, winner = there_is_full_row(moves)
+
+    if (is_winner)
+      return [is_winner, winner]
+    end
+
+    is_winner, winner = there_is_full_diagonal(moves)
+
+    if(is_winner)
+      return [is_winner, winner]
+    end
+
+    is_winner, winner = there_is_full_column(moves)
+
+    if(is_winner)
+      return [is_winner, winner]
+    end
+
+    return [false, nil]
   end
 
   def there_is_a_draw(moves = @moves)
     no_spots_left = moves.flatten.select{ |spot| spot == @empty_char}.length == 0
+    winner = nil
 
     if (no_spots_left)
-      @projected_winner = '-'
+      winner = '-'
     end
 
-    return no_spots_left
+    return [no_spots_left, winner]
   end
 
   def there_is_full_row(moves = @moves)
+    winner = nil
     for row in 0...@size
       if (there_is_unique_nonempty_char(moves[row]))
-        @projected_winner = moves[row][0]
-        return true
+        winner = moves[row][0]
+        return [true, winner]
       end
     end
-    return false
+    return [false, winner]
   end
 
   def there_is_full_column(moves = @moves)
+    winner = nil
     for i in 0...@size
       column = []
       for j in 0...@size
         column.push(moves[j][i])
       end
       if (there_is_unique_nonempty_char(column))
-        @projected_winner = column[0]
-        return true
+        winner = column[0]
+        return [true, winner]
       end
     end
-    return false
+    return [false, winner]
   end
 
   def there_is_full_diagonal(moves = @moves)
@@ -91,6 +116,7 @@ class Board
       return false
     end
 
+    winner = nil
     left_diagonal = []
     right_diagonal = []
 
@@ -101,11 +127,11 @@ class Board
 
     if (there_is_unique_nonempty_char(left_diagonal) ||
         there_is_unique_nonempty_char(right_diagonal))
-      @projected_winner = moves[@size/2][@size/2]
-      return true
+      winner = moves[@size/2][@size/2]
+      return [true, winner]
     end
 
-    return false
+    return [false, winner]
   end
 
   def there_is_unique_nonempty_char(row_array)

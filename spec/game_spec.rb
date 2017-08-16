@@ -55,25 +55,22 @@ describe 'Game' do
   describe 'end_game' do
     it 'announces the end of the game' do
       expect(STDOUT).to receive(:puts)
-      game.end_game
+      game.end_game('-')
     end
 
     it 'includes the human winner' do
       expect(STDOUT).to receive(:puts).with('Game over. You win!')
-      game.instance_variable_get(:@board).projected_winner = 'X'
-      game.end_game
+      game.end_game('X')
     end
 
     it 'includes the computer winner' do
       expect(STDOUT).to receive(:puts).with('Game over. The computer wins!')
-      game.instance_variable_get(:@board).projected_winner = 'O'
-      game.end_game
+      game.end_game('O')
     end
 
     it 'notifies of a draw' do
       expect(STDOUT).to receive(:puts).with("Game over. It's a draw.")
-      game.instance_variable_get(:@board).projected_winner = '-'
-      game.end_game
+      game.end_game('-')
     end
   end
 end

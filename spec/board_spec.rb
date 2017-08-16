@@ -112,85 +112,80 @@ describe Board do
   describe 'is_game_over' do
     it 'returns true when all spots on board are taken' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.is_game_over).to eql(true)
+      expect(size_three_board.is_game_over).to eql([true, '-'])
     end
 
     it 'returns true when a row is full' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.is_game_over).to eql(true)
+      expect(size_three_board.is_game_over).to eql([true, 'X'])
     end
 
     it 'returns true when a column is full' do
       size_three_board.moves = column_complete_size_three_moves
-      expect(size_three_board.is_game_over).to eql(true)
+      expect(size_three_board.is_game_over).to eql([true, 'X'])
     end
 
     it 'returns true when a diagonal is full' do
       size_three_board.moves = left_diagonal_complete
-      expect(size_three_board.is_game_over).to eql(true)
+      expect(size_three_board.is_game_over).to eql([true, 'X'])
     end
 
     it 'returns false otherwise' do
       size_three_board.moves = size_three_moves
-      expect(size_three_board.is_game_over).to eql(false)
+      expect(size_three_board.is_game_over).to eql([false, nil])
     end
   end
 
   describe 'there_is_a_draw' do
     it 'returns true is all spots are taken and sets winner' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_a_draw).to eql(true)
-      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql('-')
+      expect(size_three_board.there_is_a_draw).to eql([true, '-'])
     end
 
     it 'returns false is not all spots are taken' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.there_is_a_draw).to eql(false)
-      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql(nil)
+      expect(size_three_board.there_is_a_draw).to eql([false, nil])
     end
   end
 
   describe 'there_is_full_row' do
     it 'returns true when a row is full and sets projected winner' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.there_is_full_row).to eql(true)
+      expect(size_three_board.there_is_full_row).to eql([true, 'X'])
 
     end
 
     it 'returns false when no rows are full' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_full_row).to eql(false)
+      expect(size_three_board.there_is_full_row).to eql([false, nil])
       size_three_board.moves = size_three_moves
-      expect(size_three_board.there_is_full_row).to eql(false)
-      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql(nil)
+      expect(size_three_board.there_is_full_row).to eql([false, nil])
     end
   end
 
   describe 'there_is_full_column' do
     it 'returns true when a column is full and sets projected winner' do
       size_three_board.moves = column_complete_size_three_moves
-      expect(size_three_board.there_is_full_column).to eql(true)
-      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql('X')
+      expect(size_three_board.there_is_full_column).to eql([true, 'X'])
     end
 
     it 'returns false when no columns are full' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_full_column).to eql(false)
-      expect(size_three_board.instance_variable_get(:@projected_winner)).to eql(nil)
+      expect(size_three_board.there_is_full_column).to eql([false, nil])
     end
   end
 
   describe 'there_is_full_diagonal' do
     it 'returns true when a diagonal is full' do
       size_three_board.moves = left_diagonal_complete
-      expect(size_three_board.there_is_full_diagonal).to eql(true)
+      expect(size_three_board.there_is_full_diagonal).to eql([true, 'X'])
       size_three_board.moves = right_diagonal_complete
-      expect(size_three_board.there_is_full_diagonal).to eql(true)
+      expect(size_three_board.there_is_full_diagonal).to eql([true, 'X'])
     end
 
     it 'returns false when no diagonals are full' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_full_diagonal).to eql(false)
+      expect(size_three_board.there_is_full_diagonal).to eql([false, nil])
     end
   end
 

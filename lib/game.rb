@@ -12,10 +12,14 @@ class Game
   end
 
   def play
-    until(@board.is_game_over)
+    is_over, winner = @board.is_game_over
+
+    until(is_over)
       take_turn
+      is_over, winner = @board.is_game_over
     end
-    end_game
+
+    end_game(winner)
   end
 
   def prep_next_move
@@ -54,15 +58,13 @@ class Game
     end
   end
 
-  def end_game
+  def end_game(winner)
     output = "Game over. "
 
-    winning_player = @board.projected_winner
-
-    if (winning_player == @board.empty_char)
+    if (winner == @board.empty_char)
       output += "It's a draw."
     else
-      output += winning_player == 'X' ? 'You win!' : 'The computer wins!'
+      output += winner == 'X' ? 'You win!' : 'The computer wins!'
     end
 
     puts output
