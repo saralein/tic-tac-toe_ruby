@@ -1,6 +1,13 @@
 require_relative '../lib/board.rb'
 
 describe Board do
+  let (:empty_board) {
+    [
+      ['-', '-', '-'],
+      ['-', '-', '-'],
+      ['-', '-', '-']
+    ]
+  }
   let(:size_three_moves) {
     [
       ['-', '-', '-'],
@@ -130,6 +137,11 @@ describe Board do
       expect(size_three_board.is_game_over).to eql([true, 'X'])
     end
 
+    it 'returns false when board is empty' do
+      size_three_board.moves = empty_board
+      expect(size_three_board.is_game_over).to eql([false, nil])
+    end
+
     it 'returns false otherwise' do
       size_three_board.moves = size_three_moves
       expect(size_three_board.is_game_over).to eql([false, nil])
@@ -140,6 +152,11 @@ describe Board do
     it 'returns true is all spots are taken and sets winner' do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.there_is_a_draw).to eql([true, '-'])
+    end
+
+    it 'returns false if board is empty' do
+      size_three_board.moves = empty_board
+      expect(size_three_board.there_is_a_draw).to eql([false, nil])
     end
 
     it 'returns false is not all spots are taken' do
@@ -153,6 +170,11 @@ describe Board do
       size_three_board.moves = row_complete_size_three_moves
       expect(size_three_board.there_is_full_row).to eql([true, 'X'])
 
+    end
+
+    it 'returns false if board is empty' do
+      size_three_board.moves = empty_board
+      expect(size_three_board.there_is_full_row).to eql([false, nil])
     end
 
     it 'returns false when no rows are full' do
@@ -169,6 +191,11 @@ describe Board do
       expect(size_three_board.there_is_full_column).to eql([true, 'X'])
     end
 
+    it 'returns false if board is empty' do
+      size_three_board.moves = empty_board
+      expect(size_three_board.there_is_full_column).to eql([false, nil])
+    end
+
     it 'returns false when no columns are full' do
       size_three_board.moves = full_size_three_moves
       expect(size_three_board.there_is_full_column).to eql([false, nil])
@@ -181,6 +208,11 @@ describe Board do
       expect(size_three_board.there_is_full_diagonal).to eql([true, 'X'])
       size_three_board.moves = right_diagonal_complete
       expect(size_three_board.there_is_full_diagonal).to eql([true, 'X'])
+    end
+
+    it 'returns false if board is empty' do
+      size_three_board.moves = empty_board
+      expect(size_three_board.there_is_full_diagonal).to eql([false, nil])
     end
 
     it 'returns false when no diagonals are full' do
@@ -197,6 +229,11 @@ describe Board do
 
     it 'returns false when row is not full of same token' do
       row = ['-', 'O', 'X']
+      expect(size_three_board.there_is_unique_nonempty_char(row)).to eql(false)
+    end
+
+    it 'returns false when row is empty' do
+      row = ['-', '-', '-']
       expect(size_three_board.there_is_unique_nonempty_char(row)).to eql(false)
     end
   end

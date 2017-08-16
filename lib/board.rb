@@ -112,11 +112,12 @@ class Board
   end
 
   def there_is_full_diagonal(moves = @moves)
+    winner = nil
+
     if (moves[@size/2][@size/2] == @empty_char)
-      return false
+      return [false, winner]
     end
 
-    winner = nil
     left_diagonal = []
     right_diagonal = []
 
