@@ -50,12 +50,10 @@ class Game
   end
 
   def get_computer_move
-    @board.moves.flatten.each_with_index do |spot, index|
-      if (spot == @board.empty_char)
-        puts "The computer picks spot #{index + 1}."
-        return index
-      end
-    end
+    score, row_column = @player2.minimax(@board.moves, @turns_remaining, -Float::INFINITY, Float::INFINITY, true)
+    move = @player2.convert_row_column_to_move(row_column)
+    puts "The computer picks spot #{move + 1}."
+    return move
   end
 
   def end_game(winner)
