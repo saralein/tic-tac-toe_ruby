@@ -3,66 +3,66 @@ require_relative '../lib/board.rb'
 describe Board do
   let (:empty_board) {
     [
-      ['-', '-', '-'],
-      ['-', '-', '-'],
-      ['-', '-', '-']
+      '-', '-', '-',
+      '-', '-', '-',
+      '-', '-', '-'
     ]
   }
   let(:size_three_moves) {
     [
-      ['-', '-', '-'],
-      ['-', '-', '-'],
-      ['-', '-', '-']
+      '-', '-', '-',
+      '-', '-', '-',
+      '-', '-', '-'
     ]
   }
   let(:size_four_moves) {
     [
-      ['-', '-', '-', '-'],
-      ['-', '-', '-', '-'],
-      ['-', '-', '-', '-'],
-      ['-', '-', '-', '-']
+      '-', '-', '-', '-',
+      '-', '-', '-', '-',
+      '-', '-', '-', '-',
+      '-', '-', '-', '-'
     ]
   }
   let(:size_three_moves_taken) {
     [
-      ['O', 'X', '-'],
-      ['-', 'O', '-'],
-      ['-', '-', 'X']
+      'O', 'X', '-',
+      '-', 'O', '-',
+      '-', '-', 'X'
     ]
   }
   let(:full_size_three_moves) {
     [
-      ['X', 'O', 'X'],
-      ['O', 'X', 'O'],
-      ['O', 'X', 'O']
+      'X', 'O', 'X',
+      'O', 'X', 'O',
+      'O', 'X', 'O'
     ]
   }
   let(:row_complete_size_three_moves) {
     [
-      ['X', 'X', 'X'],
-      ['-', '-', '-'],
-      ['-', '-', '-']
+      'X', 'X', 'X',
+      '-', '-', '-',
+      '-', '-', '-'
     ]
   }
   let(:column_complete_size_three_moves) {
     [
-      ['O', 'X', 'X'],
-      ['-', 'O', 'X'],
-      ['O', '-', 'X']
+      'O', 'X', 'X',
+      '-', 'O', 'X',
+      'O', '-', 'X'
     ]
   }
   let(:left_diagonal_complete) {
     [
-      ['X', 'O', '-'],
-      ['O', 'X', '-'],
-      ['-', 'O', 'X']
+      'X', 'O', '-',
+      'O', 'X', '-',
+      '-', 'O', 'X'
     ]
   }
   let(:right_diagonal_complete) {
     [
-      ['X', 'O', '-'],
-      ['O', 'X', '-'],
-      ['-', 'O', 'X']
+      'X', 'O', '-',
+      'O', 'X', '-',
+      '-', 'O', 'X'
     ]
   }
   let(:display_output) {
@@ -108,133 +108,143 @@ describe Board do
     end
   end
 
-  describe 'convert_move_to_row_column' do
-    it 'converts integer to row and column location' do
-      expect(size_three_board.convert_move_to_row_column(2)).to eql([0, 2])
-      expect(size_three_board.convert_move_to_row_column(4)).to eql([1, 1])
-      expect(size_three_board.convert_move_to_row_column(6)).to eql([2, 0])
-    end
-  end
-
   describe 'is_game_over' do
     it 'returns true when all spots on board are taken' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.is_game_over).to eql([true, '-'])
+      expect(size_three_board.is_game_over).to eql(true)
     end
 
     it 'returns true when a row is full' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.is_game_over).to eql([true, 'X'])
+      expect(size_three_board.is_game_over).to eql(true)
     end
 
     it 'returns true when a column is full' do
       size_three_board.moves = column_complete_size_three_moves
-      expect(size_three_board.is_game_over).to eql([true, 'X'])
+      expect(size_three_board.is_game_over).to eql(true)
     end
 
     it 'returns true when a diagonal is full' do
       size_three_board.moves = left_diagonal_complete
-      expect(size_three_board.is_game_over).to eql([true, 'X'])
+      expect(size_three_board.is_game_over).to eql(true)
     end
 
     it 'returns false when board is empty' do
       size_three_board.moves = empty_board
-      expect(size_three_board.is_game_over).to eql([false, nil])
+      expect(size_three_board.is_game_over).to eql(false)
     end
 
     it 'returns false otherwise' do
       size_three_board.moves = size_three_moves
-      expect(size_three_board.is_game_over).to eql([false, nil])
+      expect(size_three_board.is_game_over).to eql(false)
     end
   end
 
-  describe 'there_is_a_draw' do
+  describe 'is_draw' do
     it 'returns true is all spots are taken and sets winner' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_a_draw).to eql([true, '-'])
+      expect(size_three_board.is_draw).to eql(true)
+      state = size_three_board.instance_variable_get(:@actual_state)
+      expect(state.winner).to eql('-')
+      expect(state.is_won).to eql(true)
     end
 
     it 'returns false if board is empty' do
       size_three_board.moves = empty_board
-      expect(size_three_board.there_is_a_draw).to eql([false, nil])
+      expect(size_three_board.is_draw).to eql(false)
+      state = size_three_board.instance_variable_get(:@actual_state)
+      expect(state.winner).to eql(nil)
+      expect(state.is_won).to eql(false)
     end
 
     it 'returns false is not all spots are taken' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.there_is_a_draw).to eql([false, nil])
+      expect(size_three_board.is_draw).to eql(false)
+      state = size_three_board.instance_variable_get(:@actual_state)
+      expect(state.winner).to eql(nil)
+      expect(state.is_won).to eql(false)
     end
   end
 
   describe 'there_is_full_row' do
-    it 'returns true when a row is full and sets projected winner' do
+    it 'returns true when a row is full' do
       size_three_board.moves = row_complete_size_three_moves
-      expect(size_three_board.there_is_full_row).to eql([true, 'X'])
+      expect(size_three_board.there_is_full_row).to eql(true)
 
     end
 
     it 'returns false if board is empty' do
       size_three_board.moves = empty_board
-      expect(size_three_board.there_is_full_row).to eql([false, nil])
+      expect(size_three_board.there_is_full_row).to eql(false)
     end
 
     it 'returns false when no rows are full' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_full_row).to eql([false, nil])
+      expect(size_three_board.there_is_full_row).to eql(false)
       size_three_board.moves = size_three_moves
-      expect(size_three_board.there_is_full_row).to eql([false, nil])
+      expect(size_three_board.there_is_full_row).to eql(false)
     end
   end
 
   describe 'there_is_full_column' do
     it 'returns true when a column is full and sets projected winner' do
       size_three_board.moves = column_complete_size_three_moves
-      expect(size_three_board.there_is_full_column).to eql([true, 'X'])
+      expect(size_three_board.there_is_full_column).to eql(true)
     end
 
     it 'returns false if board is empty' do
       size_three_board.moves = empty_board
-      expect(size_three_board.there_is_full_column).to eql([false, nil])
+      expect(size_three_board.there_is_full_column).to eql(false)
     end
 
     it 'returns false when no columns are full' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_full_column).to eql([false, nil])
+      expect(size_three_board.there_is_full_column).to eql(false)
     end
   end
 
   describe 'there_is_full_diagonal' do
     it 'returns true when a diagonal is full' do
       size_three_board.moves = left_diagonal_complete
-      expect(size_three_board.there_is_full_diagonal).to eql([true, 'X'])
+      expect(size_three_board.there_is_full_diagonal).to eql(true)
       size_three_board.moves = right_diagonal_complete
-      expect(size_three_board.there_is_full_diagonal).to eql([true, 'X'])
+      expect(size_three_board.there_is_full_diagonal).to eql(true)
     end
 
     it 'returns false if board is empty' do
       size_three_board.moves = empty_board
-      expect(size_three_board.there_is_full_diagonal).to eql([false, nil])
+      expect(size_three_board.there_is_full_diagonal).to eql(false)
     end
 
     it 'returns false when no diagonals are full' do
       size_three_board.moves = full_size_three_moves
-      expect(size_three_board.there_is_full_diagonal).to eql([false, nil])
+      expect(size_three_board.there_is_full_diagonal).to eql(false)
     end
   end
 
-  describe 'there_is_unique_nonempty_char' do
+  describe 'is_winner' do
     it 'returns true when row contains only X' do
       X_row = ['X', 'X', 'X']
-      expect(size_three_board.there_is_unique_nonempty_char(X_row)).to eql(true)
+      expect(size_three_board.is_winner(X_row)).to eql(true)
+      state = size_three_board.instance_variable_get(:@actual_state)
+      expect(state.winner).to eql('X')
+      expect(state.is_won).to eql(true)
     end
 
     it 'returns false when row is not full of same token' do
       row = ['-', 'O', 'X']
-      expect(size_three_board.there_is_unique_nonempty_char(row)).to eql(false)
+      expect(size_three_board.is_winner(row)).to eql(false)
+      state = size_three_board.instance_variable_get(:@actual_state)
+      expect(state.winner).to eql(nil)
+      expect(state.is_won).to eql(false)
     end
 
     it 'returns false when row is empty' do
       row = ['-', '-', '-']
-      expect(size_three_board.there_is_unique_nonempty_char(row)).to eql(false)
+      expect(size_three_board.is_winner(row)).to eql(false)
+      state = size_three_board.instance_variable_get(:@actual_state)
+      expect(state.winner).to eql(nil)
+      expect(state.is_won).to eql(false)
     end
   end
 end

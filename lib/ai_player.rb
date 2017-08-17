@@ -1,3 +1,5 @@
+require_relative './winner_state.rb'
+
 class AIPlayer
   attr_accessor :board, :token
 
@@ -7,51 +9,49 @@ class AIPlayer
     @token = ai_token
     @max_player = @token
     @min_player = human_token
+    @projected_state = WinnerState.new
   end
 
   def get_move
-    score, row_column = minimax(@board.moves, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
-    move = convert_row_column_to_move(row_column)
+    score, move = minimax(@board.moves, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
     puts "The computer picks spot #{move + 1}."
     return move
   end
 
   def minimax(moves, depth, alpha, beta, maximizingPlayer)
-    game_is_over, winner = @board.is_game_over(moves)
+    game_is_over = @board.is_game_over(moves, @projected_state)
     token = maximizingPlayer ? @max_player : @min_player
     bestScore = 0
-    bestMove = [-1, -1]
+    bestMove = -1
 
     if(depth == 0 || game_is_over)
-      bestScore = score(winner, depth)
+      bestScore = score(@projected_state.winner, depth)
       return [bestScore, bestMove]
     end
 
-    for i in 0...@board.size
-      for j in 0...@board.size
-        if (moves[i][j] == @board.empty_char)
-          moves[i][j] = token
-          bestScore, move = minimax(moves, depth - 1, alpha, beta, !maximizingPlayer)
+    for i in 0...moves.length
+      if (moves[i] == @board.empty_char)
+        moves[i] = token
+        bestScore, move = minimax(moves, depth - 1, alpha, beta, !maximizingPlayer)
 
-          if(maximizingPlayer)
-            if(alpha < bestScore)
-              alpha = bestScore
-              bestMove = [i, j]
-            end
+        if(maximizingPlayer)
+          if(alpha < bestScore)
+            alpha = bestScore
+            bestMove = i
           end
+        end
 
-          if(!maximizingPlayer)
-            if(beta > bestScore)
-              beta = bestScore
-              bestMove = [i, j]
-            end
+        if(!maximizingPlayer)
+          if(beta > bestScore)
+            beta = bestScore
+            bestMove = i
           end
+        end
 
-          moves[i][j] = '-'
+        moves[i] = '-'
 
-          if (alpha >= beta)
-            break
-          end
+        if (alpha >= beta)
+          break
         end
       end
     end
@@ -69,10 +69,5 @@ class AIPlayer
     else
       return 0
     end
-  end
-
-  def convert_row_column_to_move(move_array)
-    i, j = move_array
-    return i * @board.size + j
   end
 end
