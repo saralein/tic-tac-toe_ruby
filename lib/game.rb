@@ -13,9 +13,10 @@ class Game
   end
 
   def play
-    is_over = @board.is_game_over
+    is_over = false
 
     until(is_over)
+      prep_turn
       take_turn
       is_over = @board.is_game_over
     end
@@ -24,7 +25,6 @@ class Game
   end
 
   def take_turn
-    prep_turn
     player_move = @current_player.get_move
     player_token = @current_player.token
     @board.add_move_to_board(player_move, player_token)
