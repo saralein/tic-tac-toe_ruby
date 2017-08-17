@@ -9,7 +9,7 @@ class Game
     @board = Board.new(size)
     @board_checker = BoardChecker.new(size, @board.empty_char)
     @turn_counter = TurnCounter.new(size)
-    @player1 = HumanPlayer.new('X')
+    @player1 = HumanPlayer.new(@board, 'X')
     @player2 = AIPlayer.new(@board, @turn_counter, 'O', 'X')
     @current_player = @player1
   end
