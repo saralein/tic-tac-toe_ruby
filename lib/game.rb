@@ -1,14 +1,15 @@
 require_relative './board.rb'
+require_relative './turn_counter.rb'
+require_relative './human_player.rb'
 require_relative './ai_player.rb'
 
 class Game
   def initialize(size)
     @board = Board.new(size)
-    @current_player = 'human'
-    @player1 = 'human'
-    @player2 = AIPlayer.new(@board)
-    @total_turns = size * size
-    @turns_remaining = @total_turns
+    @turn_counter = TurnCounter.new(size)
+    @player1 = HumanPlayer.new('X')
+    @player2 = AIPlayer.new(@board, @turn_counter, 'O', 'X')
+    @current_player = @player1
   end
 
   def play
@@ -22,20 +23,19 @@ class Game
     end_game(winner)
   end
 
-  def prep_next_move
-    if (@turns_remaining < @total_turns)
-      @current_player = @current_player === 'human' ? 'computer' : 'human'
+  def prep_turn
+    if (@turn_counter.remaining < @turn_counter.total)
+      @current_player = @current_player === @player1 ? @player2 : @player1
     end
   end
 
   def take_turn
-    prep_next_move
-    is_human = @current_player == 'human'
-    player_move = is_human ? get_player_move : get_computer_move
-    player_token = is_human ? 'X' : 'O'
+    prep_turn
+    player_move = @current_player.get_move
+    player_token = @current_player.token
     @board.add_move_to_board(player_move, player_token)
     @board.display_board
-    @turns_remaining -= 1
+    @turn_counter.remaining -= 1
   end
 
   def get_player_move
@@ -46,13 +46,6 @@ class Game
       puts 'Your selection is not an integer.'
       retry
     end
-    return move
-  end
-
-  def get_computer_move
-    score, row_column = @player2.minimax(@board.moves, @turns_remaining, -Float::INFINITY, Float::INFINITY, true)
-    move = @player2.convert_row_column_to_move(row_column)
-    puts "The computer picks spot #{move + 1}."
     return move
   end
 

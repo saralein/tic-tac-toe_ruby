@@ -4,20 +4,20 @@ describe 'Game' do
   let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
   let(:game) { Game.new(3) }
 
-  describe 'prep_next_move' do
-    context 'before the next turn' do
+  describe 'prep_turn' do
+    context 'before the turn' do
       it 'does not update current player if first turn' do
-        game.prep_next_move
-        expect(game.instance_variable_get(:@current_player)).to eql('human')
+        game.prep_turn
+        expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player1))
       end
 
       it 'updates the current player if not the first turn' do
-        game.instance_variable_set(:@turns_remaining, 8)
-        game.prep_next_move
-        expect(game.instance_variable_get(:@current_player)).to eql('computer')
-        game.instance_variable_set(:@turns_remaining, 7)
-        game.prep_next_move
-        expect(game.instance_variable_get(:@current_player)).to eql('human')
+        game.instance_variable_get(:@turn_counter).remaining = 8
+        game.prep_turn
+        expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player2))
+        game.instance_variable_get(:@turn_counter).remaining = 7
+        game.prep_turn
+        expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player1))
       end
     end
   end
@@ -36,18 +36,6 @@ describe 'Game' do
         allow(game).to receive(:gets).and_return('a', 'b', '9')
         expect(STDOUT).to receive(:puts).exactly(5).times
         game.get_player_move
-      end
-    end
-  end
-
-  describe 'get_computer_move' do
-    context "when it is the computer's turn" do
-      it 'returns an spot which has not been taken' do
-        allow(game).to receive(:spot_is_taken).with(false)
-        allow(game).to receive(:gets).and_return('9')
-        allow(STDOUT).to receive(:puts).twice
-        game.get_player_move
-        expect(game.get_computer_move).not_to eql(8)
       end
     end
   end
