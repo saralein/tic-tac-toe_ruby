@@ -13,20 +13,14 @@ class Game
   end
 
   def play
-    is_over, winner = @board.is_game_over
+    is_over = @board.is_game_over
 
     until(is_over)
       take_turn
-      is_over, winner = @board.is_game_over
+      is_over = @board.is_game_over
     end
 
-    end_game(winner)
-  end
-
-  def prep_turn
-    if (@turn_counter.remaining < @turn_counter.total)
-      @current_player = @current_player === @player1 ? @player2 : @player1
-    end
+    end_game
   end
 
   def take_turn
@@ -38,13 +32,20 @@ class Game
     @turn_counter.remaining -= 1
   end
 
-  def end_game(winner)
+  def prep_turn
+    if (@turn_counter.remaining < @turn_counter.total)
+      @current_player = @current_player === @player1 ? @player2 : @player1
+    end
+  end
+
+  def end_game
+    winner = @board.actual_state.winner
     output = "Game over. "
 
     if (winner == @board.empty_char)
       output += "It's a draw."
     else
-      output += winner == 'X' ? 'You win!' : 'The computer wins!'
+      output += winner == @player1.token ? 'You win!' : 'The computer wins!'
     end
 
     puts output
