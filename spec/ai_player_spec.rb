@@ -50,7 +50,6 @@ describe AIPlayer do
   let(:infinity) { Float::INFINITY}
   let(:neg_infinity) { -Float::INFINITY}
 
-
   describe 'get_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
