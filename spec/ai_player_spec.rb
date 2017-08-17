@@ -1,5 +1,6 @@
 require_relative '../lib/ai_player.rb'
 require_relative '../lib/board.rb'
+require_relative '../lib/turn_counter.rb'
 
 describe AIPlayer do
   let(:board) { Board.new(3) }
@@ -45,7 +46,7 @@ describe AIPlayer do
       ['-', '-', '-']
     ]
   }
-  let(:ai_player) { AIPlayer.new(board, 'O', 'X') }
+  let(:ai_player) { AIPlayer.new(board, TurnCounter.new(3), 'O', 'X') }
   let(:infinity) { Float::INFINITY}
   let(:neg_infinity) { -Float::INFINITY}
 
@@ -54,7 +55,7 @@ describe AIPlayer do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
         allow(STDOUT).to receive(:puts).with('The computer picks spot 1.')
-        expect(ai_player.get_move(9)).to eql(0)
+        expect(ai_player.get_move).to eql(0)
       end
     end
   end

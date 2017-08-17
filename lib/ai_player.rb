@@ -1,16 +1,16 @@
 class AIPlayer
   attr_accessor :board, :token
 
-  def initialize(board, ai_token, human_token)
+  def initialize(board, turn_counter, ai_token, human_token)
     @board = board
+    @turn_counter = turn_counter
     @token = ai_token
     @max_player = @token
     @min_player = human_token
-    @depth = board.size * board.size
   end
 
-  def get_move(turns_remaining)
-    score, row_column = minimax(@board.moves, turns_remaining, -Float::INFINITY, Float::INFINITY, true)
+  def get_move
+    score, row_column = minimax(@board.moves, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
     move = convert_row_column_to_move(row_column)
     puts "The computer picks spot #{move + 1}."
     return move
