@@ -38,17 +38,6 @@ class Game
     @turn_counter.remaining -= 1
   end
 
-  def get_player_move
-    begin
-      puts'Please enter a number between 1 - 9: '
-      move = Integer(gets.chomp) - 1
-    rescue => error
-      puts 'Your selection is not an integer.'
-      retry
-    end
-    return move
-  end
-
   def end_game(winner)
     output = "Game over. "
 

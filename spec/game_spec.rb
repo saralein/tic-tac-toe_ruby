@@ -1,7 +1,6 @@
 require_relative '../lib/game.rb'
 
 describe 'Game' do
-  let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
   let(:game) { Game.new(3) }
 
   describe 'prep_turn' do
@@ -18,24 +17,6 @@ describe 'Game' do
         game.instance_variable_get(:@turn_counter).remaining = 7
         game.prep_turn
         expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player1))
-      end
-    end
-  end
-
-  describe 'get_player_move' do
-    context "when it is the player's turn" do
-      it 'asks for players move and returns as integer' do
-        allow(game).to receive(:spot_is_taken).with(false)
-        allow(game).to receive(:gets).and_return('9')
-        expect(STDOUT).to receive(:puts).with(ask_for_move)
-        expect(game.get_player_move).to eql(8)
-      end
-
-      it 'asks for an integer again if integer not given' do
-        allow(game).to receive(:spot_is_taken).with(false)
-        allow(game).to receive(:gets).and_return('a', 'b', '9')
-        expect(STDOUT).to receive(:puts).exactly(5).times
-        game.get_player_move
       end
     end
   end
