@@ -1,4 +1,4 @@
-require_relative '../lib/board.rb'
+require_relative '../lib/board/board.rb'
 
 describe Board do
   let (:empty_board) {
@@ -66,10 +66,10 @@ describe Board do
     ]
   }
   let(:display_output) {
-    "  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  "
+    "\n  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  "
   }
   let(:display_output_with_moves) {
-    "O | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X"
+    "\nO | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X"
   }
   let(:size_three_board) { Board.new(3)}
   let(:size_four_board) { Board.new(4) }

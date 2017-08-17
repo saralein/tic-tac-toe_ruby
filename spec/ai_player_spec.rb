@@ -1,6 +1,6 @@
-require_relative '../lib/ai_player.rb'
-require_relative '../lib/board.rb'
-require_relative '../lib/turn_counter.rb'
+require_relative '../lib/players/ai_player.rb'
+require_relative '../lib/board/board.rb'
+require_relative '../lib/state/turn_counter.rb'
 
 describe AIPlayer do
   let(:board) { Board.new(3) }
@@ -53,7 +53,7 @@ describe AIPlayer do
   describe 'get_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
-        allow(STDOUT).to receive(:puts).with('The computer picks spot 1.')
+        allow(STDOUT).to receive(:puts).with("\nThe computer picks spot 1.")
         expect(ai_player.get_move).to eql(0)
       end
     end

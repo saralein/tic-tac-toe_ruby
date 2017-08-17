@@ -1,5 +1,5 @@
-require_relative '../lib/human_player.rb'
-require_relative '../lib/board.rb'
+require_relative '../lib/players/human_player.rb'
+require_relative '../lib/board/board.rb'
 
 describe HumanPlayer do
   let(:player) { HumanPlayer.new('X', Board.new(3))}

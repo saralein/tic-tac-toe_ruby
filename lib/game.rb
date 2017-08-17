@@ -1,8 +1,8 @@
-require_relative './board.rb'
-require_relative './turn_counter.rb'
-require_relative './human_player.rb'
-require_relative './ai_player.rb'
-require_relative './board_checker.rb'
+require_relative './board/board.rb'
+require_relative './state/turn_counter.rb'
+require_relative './players/human_player.rb'
+require_relative './players/ai_player.rb'
+require_relative './board/board_checker.rb'
 
 class Game
   def initialize(size)

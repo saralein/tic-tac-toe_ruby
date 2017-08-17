@@ -1,4 +1,4 @@
-require_relative './winner_state.rb'
+require_relative '../state/winner_state.rb'
 
 class Board
   attr_accessor :moves, :empty_char, :size, :actual_state

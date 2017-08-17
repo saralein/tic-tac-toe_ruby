@@ -1,5 +1,5 @@
-require_relative './winner_state.rb'
-require_relative './board_checker.rb'
+require_relative '../state/winner_state.rb'
+require_relative '../board/board_checker.rb'
 
 class AIPlayer
   attr_accessor :board, :token

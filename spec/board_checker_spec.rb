@@ -1,5 +1,5 @@
-require_relative '../lib/board_checker.rb'
-require_relative '../lib/winner_state.rb'
+require_relative '../lib/board/board_checker.rb'
+require_relative '../lib/state/winner_state.rb'
 
 describe BoardChecker do
   let (:empty_board) {
