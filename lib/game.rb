@@ -2,10 +2,12 @@ require_relative './board.rb'
 require_relative './turn_counter.rb'
 require_relative './human_player.rb'
 require_relative './ai_player.rb'
+require_relative './board_checker.rb'
 
 class Game
   def initialize(size)
     @board = Board.new(size)
+    @board_checker = BoardChecker.new(size, @board.empty_char)
     @turn_counter = TurnCounter.new(size)
     @player1 = HumanPlayer.new('X')
     @player2 = AIPlayer.new(@board, @turn_counter, 'O', 'X')
@@ -18,7 +20,7 @@ class Game
     until(is_over)
       prep_turn
       take_turn
-      is_over = @board.is_game_over
+      is_over = @board_checker.is_game_over(@board.moves, @board.actual_state)
     end
 
     end_game
