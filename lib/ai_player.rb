@@ -16,7 +16,7 @@ class AIPlayer
 
   def get_move
     score, move = minimax(@board.moves, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
-    puts "The computer picks spot #{move + 1}."
+    puts "\nThe computer picks spot #{move + 1}."
     return move
   end
 

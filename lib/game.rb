@@ -17,6 +17,8 @@ class Game
   def play
     is_over = false
 
+    puts "\nWelcome to Tic Tac Toe. :D"
+
     until(is_over)
       prep_turn
       take_turn
@@ -42,7 +44,7 @@ class Game
 
   def end_game
     winner = @board.actual_state.winner
-    output = "Game over. "
+    output = "\nGame over. "
 
     if (winner == @board.empty_char)
       output += "It's a draw."

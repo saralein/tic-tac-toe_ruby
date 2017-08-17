@@ -8,7 +8,7 @@ class HumanPlayer
 
   def get_move
     begin
-      puts'Please enter a number between 1 - 9: '
+      print "\nPlease enter a number between 1 - 9: "
       move_string = gets.chomp
       move = convert_move(move_string)
       check_range(move)

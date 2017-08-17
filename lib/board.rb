@@ -15,7 +15,7 @@ class Board
   end
 
   def display_board
-    output = ''
+    output = "\n"
     @moves.each_with_index do |cell, cell_index|
       output += cell == @empty_char ? ' ' : cell
 
