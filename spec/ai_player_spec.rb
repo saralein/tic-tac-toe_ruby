@@ -38,31 +38,49 @@ describe AIPlayer do
       ['O', 'X', 'O']
     ]
   }
-  let(:ai_player) { AIPlayer.new(board) }
+  let(:block_win) {
+    [
+      ['O', 'X', '-'],
+      ['-', 'X', '-'],
+      ['-', '-', '-']
+    ]
+  }
+  let(:ai_player) { AIPlayer.new(board, 'O', 'X') }
+  let(:infinity) { Float::INFINITY}
+  let(:neg_infinity) { -Float::INFINITY}
 
-  def set_depth(number)
-    ai_player.instance_variable_set(:@depth, number)
+
+  describe 'get_move' do
+    context "when it is the computer's turn" do
+      it 'returns an spot which has not been taken' do
+        allow(STDOUT).to receive(:puts).with('The computer picks spot 1.')
+        expect(ai_player.get_move(9)).to eql(0)
+      end
+    end
   end
 
   describe 'minimax' do
     it 'returns zero when depth is zero' do
-      set_depth(0)
-      expect(ai_player.minimax(full_board, 0, true)).to eql([0, [-1, -1]])
+      expect(ai_player.minimax(full_board, 0, neg_infinity, infinity, true)).to eql([0, [-1, -1]])
     end
 
     it 'returns the correct score when game is over' do
-      expect(ai_player.minimax(depth_5_win, 4, false)).to eql([-14, [-1, -1]])
-      expect(ai_player.minimax(one_spot_left, 1, true)).to eql([10, [2, 1]])
+      expect(ai_player.minimax(depth_5_win, 4, neg_infinity, infinity, false)).to eql([-14, [-1, -1]])
+      expect(ai_player.minimax(one_spot_left, 1, neg_infinity, infinity, true)).to eql([10, [2, 1]])
     end
 
     it 'picks the last remaining spot and returns best score and move' do
-      expect(ai_player.minimax(one_spot_left, 1, false)).to eql([0, [2, 1]])
+      expect(ai_player.minimax(one_spot_left, 1, neg_infinity, infinity, false)).to eql([0, [2, 1]])
     end
 
     it 'picks the corner for max player when open' do
-      expect(ai_player.minimax(empty_board, 9, true)).to eql([0, [0,0]])
+      expect(ai_player.minimax(empty_board, 9, neg_infinity, infinity, true)).to eql([0, [0,0]])
       empty_board[0][1] = 'X'
-      expect(ai_player.minimax(empty_board, 8, true)).to eql([0, [0,0]])
+      expect(ai_player.minimax(empty_board, 8, neg_infinity, infinity, true)).to eql([0, [0,0]])
+    end
+
+    it 'blocks a win from min player' do
+      expect(ai_player.minimax(block_win, 6, neg_infinity, infinity, true)).to eql([0, [2, 1]])
     end
   end
 

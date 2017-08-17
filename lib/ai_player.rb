@@ -1,19 +1,25 @@
-require 'pry'
-
 class AIPlayer
-  attr_accessor :board
+  attr_accessor :board, :token
 
-  def initialize(board)
+  def initialize(board, ai_token, human_token)
     @board = board
-    @max_player = 'O'
-    @min_player = 'X'
+    @token = ai_token
+    @max_player = @token
+    @min_player = human_token
     @depth = board.size * board.size
   end
-#board, depth, alpha, beta, player
-  def minimax(moves, depth, maximizingPlayer)
+
+  def get_move(turns_remaining)
+    score, row_column = minimax(@board.moves, turns_remaining, -Float::INFINITY, Float::INFINITY, true)
+    move = convert_row_column_to_move(row_column)
+    puts "The computer picks spot #{move + 1}."
+    return move
+  end
+
+  def minimax(moves, depth, alpha, beta, maximizingPlayer)
     game_is_over, winner = @board.is_game_over(moves)
     token = maximizingPlayer ? @max_player : @min_player
-    bestScore = maximizingPlayer ? -Float::INFINITY : Float::INFINITY
+    bestScore = 0
     bestMove = [-1, -1]
 
     if(depth == 0 || game_is_over)
@@ -25,23 +31,32 @@ class AIPlayer
       for j in 0...@board.size
         if (moves[i][j] == @board.empty_char)
           moves[i][j] = token
-          score, move = minimax(moves, depth - 1, !maximizingPlayer)
-          # binding.pry
-          if(maximizingPlayer && bestScore < score)
-            bestScore = score
-            bestMove = [i, j]
+          bestScore, move = minimax(moves, depth - 1, alpha, beta, !maximizingPlayer)
+
+          if(maximizingPlayer)
+            if(alpha < bestScore)
+              alpha = bestScore
+              bestMove = [i, j]
+            end
           end
 
-          if(!maximizingPlayer && bestScore > score)
-            bestScore = score
-            bestMove = [i, j]
+          if(!maximizingPlayer)
+            if(beta > bestScore)
+              beta = bestScore
+              bestMove = [i, j]
+            end
           end
 
           moves[i][j] = '-'
 
+          if (alpha >= beta)
+            break
+          end
         end
       end
     end
+
+    bestScore = maximizingPlayer ? alpha : beta
 
     return [bestScore, bestMove]
   end
