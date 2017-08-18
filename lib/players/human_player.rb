@@ -1,15 +1,15 @@
 class HumanPlayer
   attr_accessor :token
 
-  def initialize(board, token)
+  def initialize(board, user_interface, token)
     @board = board
+    @user_interface = user_interface
     @token = token
   end
 
   def get_move
     begin
-      print "\nPlease enter a number between 1 - 9: "
-      move_string = gets.chomp
+      move_string = @user_interface.player_move
       move = convert_move(move_string)
       check_range(move)
       check_spot(move)

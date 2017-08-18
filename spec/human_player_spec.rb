@@ -1,8 +1,11 @@
 require_relative '../lib/players/human_player.rb'
 require_relative '../lib/board/board.rb'
+require_relative '../lib/ui/user_interface.rb'
 
 describe HumanPlayer do
-  let(:player) { HumanPlayer.new('X', Board.new(3))}
+  let(:board) { Board.new(3) }
+  let(:user_interface) { UserInterface.new(board, 'X', 'O') }
+  let(:player) { HumanPlayer.new(board, user_interface, 'X')}
   let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
 
   describe 'convert_move' do

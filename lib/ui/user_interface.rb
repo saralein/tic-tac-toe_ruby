@@ -28,6 +28,15 @@ class UserInterface
     puts output
   end
 
+  def player_move
+    print "\nPlease enter a number between 1 - 9: "
+    return gets.chomp
+  end
+
+  def ai_move(move)
+    puts "\nThe computer picks spot #{move + 1}."
+  end
+
   def end_game(winner)
     output = "\nGame over. "
 

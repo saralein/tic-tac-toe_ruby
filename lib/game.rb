@@ -8,9 +8,9 @@ class Game
   def initialize(size)
     @board = Board.new(size)
     @turn_counter = TurnCounter.new(size)
-    @player1 = HumanPlayer.new(@board, 'X')
-    @player2 = AIPlayer.new(@board, @turn_counter, 'O', 'X')
-    @user_interface = UserInterface.new(@board, @player1.token, @player2.token)
+    @user_interface = UserInterface.new(@board, 'X', 'O')
+    @player1 = HumanPlayer.new(@board, @user_interface, 'X')
+    @player2 = AIPlayer.new(@board, @turn_counter, @user_interface, 'O', 'X')
     @current_player = @player1
   end
 
