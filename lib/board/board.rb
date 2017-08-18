@@ -8,7 +8,6 @@ class Board
     @empty_char = '-'
     @moves = create_new_board
     @winner = nil
-    @actual_state = WinnerState.new
   end
 
   def create_new_board
