@@ -1,8 +1,4 @@
 class BoardChecker
-  def initialize(board)
-    @board = board
-  end
-
   def is_game_over
     return there_is_full_diagonal ||
            there_is_full_row ||
@@ -11,10 +7,10 @@ class BoardChecker
   end
 
   def is_draw
-    no_spots_left = @board.moves.select{ |spot| spot === @board.empty_char }.length == 0
+    no_spots_left = @moves.select{ |spot| spot === @empty_char }.length == 0
 
     if (no_spots_left)
-      @board.winner = '-'
+      @winner = '-'
     end
 
     return no_spots_left
@@ -23,10 +19,10 @@ class BoardChecker
   def there_is_full_row
     is_won = false
 
-    for i in 0...@board.size
-      row_start = @board.size * i
-      row_end = @board.size*(i+1)
-      row = @board.moves[row_start...row_end]
+    for i in 0...@size
+      row_start = @size * i
+      row_end = @size*(i+1)
+      row = @moves[row_start...row_end]
       is_won = is_winner(row)
 
       if (is_won)
@@ -40,10 +36,10 @@ class BoardChecker
   def there_is_full_column
     is_won = false
 
-    for i in 0...@board.size
+    for i in 0...@size
       column = []
-      for j in 0...@board.size
-        column.push(@board.moves[i + @board.size*j])
+      for j in 0...@size
+        column.push(@moves[i + @size*j])
       end
       is_won = is_winner(column)
       if(is_won)
@@ -58,9 +54,9 @@ class BoardChecker
     left_diagonal = []
     right_diagonal = []
 
-    for i in 0...@board.size
-      left_diagonal.push(@board.moves[(@board.size+1) * i])
-      right_diagonal.push(@board.moves[(@board.size-1) * (1 + i)])
+    for i in 0...@size
+      left_diagonal.push(@moves[(@size+1) * i])
+      right_diagonal.push(@moves[(@size-1) * (1 + i)])
     end
 
     is_left_won = is_winner(left_diagonal)
@@ -71,10 +67,10 @@ class BoardChecker
 
   def is_winner(row_array)
     token = row_array[0]
-    is_winner = row_array.uniq.length == 1 && token != @board.empty_char
+    is_winner = row_array.uniq.length == 1 && token != @empty_char
 
     if (is_winner)
-      @board.winner = token
+      @winner = token
     end
 
     return is_winner

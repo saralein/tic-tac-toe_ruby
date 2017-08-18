@@ -3,9 +3,8 @@ require_relative '../board/board_checker.rb'
 class AIPlayer
   attr_accessor :board, :token
 
-  def initialize(board, board_checker, turn_counter, ai_token, human_token)
+  def initialize(board, turn_counter, ai_token, human_token)
     @board = board
-    @board_checker = board_checker
     @turn_counter = turn_counter
     @token = ai_token
     @max_player = @token
@@ -19,7 +18,7 @@ class AIPlayer
   end
 
   def minimax(board, depth, alpha, beta, maximizingPlayer)
-    game_is_over = @board_checker.is_game_over
+    game_is_over = @board.is_game_over
     token = maximizingPlayer ? @max_player : @min_player
     bestScore = 0
     bestMove = -1
