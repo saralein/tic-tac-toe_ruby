@@ -72,7 +72,7 @@ describe AIPlayer do
 
     it 'returns the correct score when game is over' do
       set_move_pattern(depth_5_win)
-      expect(ai_player.minimax(board, 4, neg_infinity, infinity, false)).to eql([-14, -1])
+      expect(ai_player.minimax(board, 4, neg_infinity, infinity, true)).to eql([-14, -1])
       set_move_pattern(one_spot_left)
       expect(ai_player.minimax(board, 1, neg_infinity, infinity, true)).to eql([10, 7])
     end

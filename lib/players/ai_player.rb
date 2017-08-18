@@ -18,7 +18,6 @@ class AIPlayer
 
   def minimax(board, depth, alpha, beta, maximizingPlayer)
     game_is_over = @board.is_game_over
-    token = maximizingPlayer ? @max_player : @min_player
     bestScore = 0
     bestMove = -1
 
@@ -29,7 +28,7 @@ class AIPlayer
 
     for i in 0...@board.moves.length
       if (@board.moves[i] == @board.empty_char)
-        @board.moves[i] = token
+        @board.moves[i] = maximizingPlayer ? @max_player : @min_player
         bestScore, move = minimax(board, depth - 1, alpha, beta, !maximizingPlayer)
 
         if(maximizingPlayer)

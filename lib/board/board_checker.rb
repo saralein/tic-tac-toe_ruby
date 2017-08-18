@@ -9,9 +9,7 @@ class BoardChecker
   def is_draw
     no_spots_left = @moves.select{ |spot| spot === @empty_char }.length == 0
 
-    if (no_spots_left)
-      @winner = '-'
-    end
+    @winner = no_spots_left ? '-' : nil
 
     return no_spots_left
   end
