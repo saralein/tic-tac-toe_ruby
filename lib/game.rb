@@ -2,7 +2,6 @@ require_relative './board/board.rb'
 require_relative './state/turn_counter.rb'
 require_relative './players/human_player.rb'
 require_relative './players/ai_player.rb'
-require_relative './board/board_checker.rb'
 require_relative './ui/user_interface.rb'
 
 class Game

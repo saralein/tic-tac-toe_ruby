@@ -1,6 +1,5 @@
 require_relative '../lib/players/ai_player.rb'
 require_relative '../lib/board/board.rb'
-require_relative '../lib/board/board_checker.rb'
 require_relative '../lib/state/turn_counter.rb'
 
 describe AIPlayer do

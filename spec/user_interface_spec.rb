@@ -1,6 +1,5 @@
 require_relative '../lib/ui/user_interface.rb'
 require_relative '../lib/board/board.rb'
-require_relative '../lib/board/board.rb'
 
 describe 'UserInterface' do
   let (:empty_board) {

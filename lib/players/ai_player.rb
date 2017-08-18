@@ -1,5 +1,3 @@
-require_relative '../board/board_checker.rb'
-
 class AIPlayer
   attr_accessor :board, :token
 
