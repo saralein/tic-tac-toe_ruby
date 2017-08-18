@@ -7,7 +7,7 @@ class UserInterface
 
   def welcome
     puts "\nWelcome to Tic Tac Toe. :D"
-    moves = (1...10).to_a.map{ |int| String(int) }
+    moves = ("1"..."#{@board.size**2 + 1}").to_a
     display_board(moves)
   end
 
@@ -20,7 +20,7 @@ class UserInterface
         output += ' | '
       end
 
-      if(cell_index != @board.size * @board.size - 1 && (cell_index + 1) % @board.size == 0)
+      if(cell_index != @board.size**2 - 1 && (cell_index + 1) % @board.size == 0)
         output +=  "\n- + - + -\n"
       end
     end
