@@ -11,7 +11,7 @@ class Board < BoardChecker
   end
 
   def create_new_board
-    return Array.new(@size * @size){ @empty_char }
+    return Array.new(@size**2){ @empty_char }
   end
 
   def add_move_to_board(move, player_token)
