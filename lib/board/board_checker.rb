@@ -1,35 +1,33 @@
 class BoardChecker
-  def initialize(size, empty_char)
-    @size = size
-    @empty_char = empty_char
+  def initialize(board)
+    @board = board
   end
 
-  def is_game_over(moves, winner_state)
-    return there_is_full_diagonal(moves, winner_state) ||
-           there_is_full_row(moves, winner_state) ||
-           there_is_full_column(moves, winner_state) ||
-           is_draw(moves, winner_state)
+  def is_game_over
+    return there_is_full_diagonal ||
+           there_is_full_row ||
+           there_is_full_column ||
+           is_draw
   end
 
-  def is_draw(moves, winner_state)
-    no_spots_left = moves.select{ |spot| spot === @empty_char }.length == 0
+  def is_draw
+    no_spots_left = @board.moves.select{ |spot| spot === @board.empty_char }.length == 0
 
     if (no_spots_left)
-      winner_state.winner = '-'
-      winner_state.is_won = true
+      @board.winner = '-'
     end
 
     return no_spots_left
   end
 
-  def there_is_full_row(moves, winner_state)
+  def there_is_full_row
     is_won = false
 
-    for i in 0...@size
-      row_start = @size * i
-      row_end = @size*(i+1)
-      row = moves[row_start...row_end]
-      is_won = is_winner(row, winner_state)
+    for i in 0...@board.size
+      row_start = @board.size * i
+      row_end = @board.size*(i+1)
+      row = @board.moves[row_start...row_end]
+      is_won = is_winner(row)
 
       if (is_won)
         return is_won
@@ -39,15 +37,15 @@ class BoardChecker
     return is_won
   end
 
-  def there_is_full_column(moves, winner_state)
+  def there_is_full_column
     is_won = false
 
-    for i in 0...@size
+    for i in 0...@board.size
       column = []
-      for j in 0...@size
-        column.push(moves[i + @size*j])
+      for j in 0...@board.size
+        column.push(@board.moves[i + @board.size*j])
       end
-      is_won = is_winner(column, winner_state)
+      is_won = is_winner(column)
       if(is_won)
         return is_won
       end
@@ -56,28 +54,27 @@ class BoardChecker
     return is_won
   end
 
-  def there_is_full_diagonal(moves, winner_state)
+  def there_is_full_diagonal
     left_diagonal = []
     right_diagonal = []
 
-    for i in 0...@size
-      left_diagonal.push(moves[(@size+1) * i])
-      right_diagonal.push(moves[(@size-1) * (1 + i)])
+    for i in 0...@board.size
+      left_diagonal.push(@board.moves[(@board.size+1) * i])
+      right_diagonal.push(@board.moves[(@board.size-1) * (1 + i)])
     end
 
-    is_left_won = is_winner(left_diagonal, winner_state)
-    is_right_won = is_winner(right_diagonal, winner_state)
+    is_left_won = is_winner(left_diagonal)
+    is_right_won = is_winner(right_diagonal)
 
     return is_left_won || is_right_won
   end
 
-  def is_winner(row_array, winner_state)
+  def is_winner(row_array)
     token = row_array[0]
-    is_winner = row_array.uniq.length == 1 && token != @empty_char
+    is_winner = row_array.uniq.length == 1 && token != @board.empty_char
 
     if (is_winner)
-      winner_state.winner = token
-      winner_state.is_won = true
+      @board.winner = token
     end
 
     return is_winner
