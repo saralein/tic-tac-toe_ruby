@@ -1,6 +1,5 @@
 require_relative '../lib/board/board_checker.rb'
 require_relative '../lib/board/board.rb'
-require_relative '../lib/state/winner_state.rb'
 
 describe BoardChecker do
   let (:empty_board) {
@@ -89,7 +88,6 @@ describe BoardChecker do
     ]
   }
   let(:board_checker) { BoardChecker.new(Board.new(3))}
-  let(:winner_state) { WinnerState.new }
 
   def set_move_pattern(pattern)
     board_checker.instance_variable_get(:@board).moves = pattern
