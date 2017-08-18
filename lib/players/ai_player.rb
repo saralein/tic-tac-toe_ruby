@@ -4,9 +4,9 @@ require_relative '../board/board_checker.rb'
 class AIPlayer
   attr_accessor :board, :token
 
-  def initialize(board, turn_counter, ai_token, human_token)
+  def initialize(board, board_checker, turn_counter, ai_token, human_token)
     @board = board
-    @board_checker = BoardChecker.new(@board.size, @board.empty_char)
+    @board_checker = board_checker
     @turn_counter = turn_counter
     @token = ai_token
     @max_player = @token
