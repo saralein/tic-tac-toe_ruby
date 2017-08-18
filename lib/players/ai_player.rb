@@ -1,4 +1,3 @@
-require_relative '../state/winner_state.rb'
 require_relative '../board/board_checker.rb'
 
 class AIPlayer
@@ -11,30 +10,29 @@ class AIPlayer
     @token = ai_token
     @max_player = @token
     @min_player = human_token
-    @projected_state = WinnerState.new
   end
 
   def get_move
-    score, move = minimax(@board.moves, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
+    score, move = minimax(@board, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
     puts "\nThe computer picks spot #{move + 1}."
     return move
   end
 
-  def minimax(moves, depth, alpha, beta, maximizingPlayer)
-    game_is_over = @board_checker.is_game_over(moves, @projected_state)
+  def minimax(board, depth, alpha, beta, maximizingPlayer)
+    game_is_over = @board_checker.is_game_over
     token = maximizingPlayer ? @max_player : @min_player
     bestScore = 0
     bestMove = -1
 
     if(depth == 0 || game_is_over)
-      bestScore = score(@projected_state.winner, depth)
+      bestScore = score(@board.winner, depth)
       return [bestScore, bestMove]
     end
 
-    for i in 0...moves.length
-      if (moves[i] == @board.empty_char)
-        moves[i] = token
-        bestScore, move = minimax(moves, depth - 1, alpha, beta, !maximizingPlayer)
+    for i in 0...@board.moves.length
+      if (@board.moves[i] == @board.empty_char)
+        @board.moves[i] = token
+        bestScore, move = minimax(board, depth - 1, alpha, beta, !maximizingPlayer)
 
         if(maximizingPlayer)
           if(alpha < bestScore)
@@ -50,7 +48,7 @@ class AIPlayer
           end
         end
 
-        moves[i] = '-'
+        @board.moves[i] = '-'
 
         if (alpha >= beta)
           break
