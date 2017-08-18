@@ -5,7 +5,6 @@ require_relative '../lib/state/turn_counter.rb'
 
 describe AIPlayer do
   let(:board) { Board.new(3) }
-  let(:board_checker) { BoardChecker.new(board) }
   let(:empty_board) {
     [
       '-', '-', '-',
@@ -48,7 +47,7 @@ describe AIPlayer do
       '-', '-', '-'
     ]
   }
-  let(:ai_player) { AIPlayer.new(board, board_checker, TurnCounter.new(3), 'O', 'X') }
+  let(:ai_player) { AIPlayer.new(board, TurnCounter.new(3), 'O', 'X') }
   let(:infinity) { Float::INFINITY}
   let(:neg_infinity) { -Float::INFINITY}
 

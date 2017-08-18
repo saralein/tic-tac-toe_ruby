@@ -8,10 +8,9 @@ require_relative './ui/user_interface.rb'
 class Game
   def initialize(size)
     @board = Board.new(size)
-    @board_checker = BoardChecker.new(@board)
     @turn_counter = TurnCounter.new(size)
     @player1 = HumanPlayer.new(@board, 'X')
-    @player2 = AIPlayer.new(@board, @board_checker, @turn_counter, 'O', 'X')
+    @player2 = AIPlayer.new(@board, @turn_counter, 'O', 'X')
     @user_interface = UserInterface.new(@board, @player1.token, @player2.token)
     @current_player = @player1
   end
@@ -24,7 +23,7 @@ class Game
     until(is_over)
       prep_turn
       take_turn
-      is_over = @board_checker.is_game_over
+      is_over = @board.is_game_over
     end
 
     end_game

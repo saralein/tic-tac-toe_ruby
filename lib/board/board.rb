@@ -1,4 +1,6 @@
-class Board
+require_relative './board_checker.rb'
+
+class Board < BoardChecker
   attr_accessor :moves, :empty_char, :size, :winner
 
   def initialize(size)
