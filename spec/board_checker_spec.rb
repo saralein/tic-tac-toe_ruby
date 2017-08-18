@@ -61,9 +61,9 @@ describe BoardChecker do
   }
   let(:complete_right_diagonal) {
     [
-      'X', 'O', '-',
+      '-', 'O', 'X',
       'O', 'X', '-',
-      '-', 'O', 'X'
+      'X', 'O', '-'
     ]
   }
   let(:partial_rows) {

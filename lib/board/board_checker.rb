@@ -62,7 +62,7 @@ class BoardChecker
 
     for i in 0...@size
       left_diagonal.push(moves[(@size+1) * i])
-      right_diagonal.push(moves[(@size+1) * i])
+      right_diagonal.push(moves[(@size-1) * (1 + i)])
     end
 
     is_left_won = is_winner(left_diagonal, winner_state)
