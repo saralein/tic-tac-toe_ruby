@@ -7,7 +7,7 @@ require_relative './board/board_checker.rb'
 class Game
   def initialize(size)
     @board = Board.new(size)
-    @board_checker = BoardChecker.new(size, @board.empty_char)
+    @board_checker = BoardChecker.new(@board)
     @turn_counter = TurnCounter.new(size)
     @player1 = HumanPlayer.new(@board, 'X')
     @player2 = AIPlayer.new(@board, @turn_counter, 'O', 'X')

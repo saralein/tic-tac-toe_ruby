@@ -1,12 +1,13 @@
 require_relative '../state/winner_state.rb'
 
 class Board
-  attr_accessor :moves, :empty_char, :size, :actual_state
+  attr_accessor :moves, :empty_char, :size, :winner
 
   def initialize(size)
     @size = size
     @empty_char = '-'
     @moves = create_new_board
+    @winner = nil
     @actual_state = WinnerState.new
   end
 

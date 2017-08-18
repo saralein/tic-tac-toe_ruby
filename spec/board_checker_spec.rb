@@ -1,4 +1,5 @@
 require_relative '../lib/board/board_checker.rb'
+require_relative '../lib/board/board.rb'
 require_relative '../lib/state/winner_state.rb'
 
 describe BoardChecker do
@@ -87,115 +88,114 @@ describe BoardChecker do
       'O', '-', 'X'
     ]
   }
-  let(:board_checker) { BoardChecker.new(3, '-')}
+  let(:board_checker) { BoardChecker.new(Board.new(3))}
   let(:winner_state) { WinnerState.new }
+
+  def set_move_pattern(pattern)
+    board_checker.instance_variable_get(:@board).moves = pattern
+  end
 
   describe 'is_game_over' do
     it 'returns true when all spots on board are taken' do
-      expect(board_checker.is_game_over(full_board, winner_state)).to eql(true)
+      set_move_pattern(full_board)
+      expect(board_checker.is_game_over).to eql(true)
     end
 
     it 'returns true when a row is full' do
-      expect(board_checker.is_game_over(complete_row, winner_state)).to eql(true)
+      set_move_pattern(complete_row)
+      expect(board_checker.is_game_over).to eql(true)
     end
 
     it 'returns true when a column is full' do
-      expect(board_checker.is_game_over(complete_column, winner_state)).to eql(true)
+      set_move_pattern(complete_column)
+      expect(board_checker.is_game_over).to eql(true)
     end
 
     it 'returns true when a diagonal is full' do
-      expect(board_checker.is_game_over(complete_left_diagonal, winner_state)).to eql(true)
+      set_move_pattern(complete_left_diagonal)
+      expect(board_checker.is_game_over).to eql(true)
     end
 
     it 'returns false when board is empty' do
-      expect(board_checker.is_game_over(empty_board, winner_state)).to eql(false)
-    end
-  end
-
-  describe 'is_draw' do
-    it 'returns true is all spots are taken and sets winner' do
-      expect(board_checker.is_draw(full_board, winner_state)).to eql(true)
-      expect(winner_state.winner).to eql('-')
-      expect(winner_state.is_won).to eql(true)
-    end
-
-    it 'returns false if board is empty' do
-      expect(board_checker.is_draw(empty_board, winner_state)).to eql(false)
-      expect(winner_state.winner).to eql(nil)
-      expect(winner_state.is_won).to eql(false)
-    end
-
-    it 'returns false if not all spots are taken' do
-      expect(board_checker.is_draw(complete_row, winner_state)).to eql(false)
-      expect(winner_state.winner).to eql(nil)
-      expect(winner_state.is_won).to eql(false)
+      set_move_pattern(empty_board)
+      expect(board_checker.is_game_over).to eql(false)
     end
   end
 
   describe 'there_is_full_row' do
     it 'returns true when a row is full' do
-      expect(board_checker.there_is_full_row(complete_row, winner_state)).to eql(true)
+      set_move_pattern(complete_row)
+      expect(board_checker.there_is_full_row).to eql(true)
 
     end
 
     it 'returns false if board is empty' do
-      expect(board_checker.there_is_full_row(empty_board, winner_state)).to eql(false)
+      set_move_pattern(empty_board)
+      expect(board_checker.there_is_full_row).to eql(false)
     end
 
     it 'returns false when no rows are full' do
-      expect(board_checker.there_is_full_row(partial_rows, winner_state)).to eql(false)
+      set_move_pattern(partial_rows)
+      expect(board_checker.there_is_full_row).to eql(false)
     end
   end
 
   describe 'there_is_full_column' do
     it 'returns true when a column is full and sets projected winner' do
-      expect(board_checker.there_is_full_column(complete_column, winner_state)).to eql(true)
+      set_move_pattern(complete_column)
+      expect(board_checker.there_is_full_column).to eql(true)
     end
 
     it 'returns false if board is empty' do
-      expect(board_checker.there_is_full_column(empty_board, winner_state)).to eql(false)
+      set_move_pattern(empty_board)
+      expect(board_checker.there_is_full_column).to eql(false)
     end
 
     it 'returns false when no columns are full' do
-      expect(board_checker.there_is_full_column(partial_columns, winner_state)).to eql(false)
+      set_move_pattern(partial_columns)
+      expect(board_checker.there_is_full_column).to eql(false)
     end
   end
 
   describe 'there_is_full_diagonal' do
     it 'returns true when a diagonal is full' do
-      expect(board_checker.there_is_full_diagonal(complete_left_diagonal, winner_state)).to eql(true)
-      expect(board_checker.there_is_full_diagonal(complete_right_diagonal, winner_state)).to eql(true)
+      set_move_pattern(complete_left_diagonal)
+      expect(board_checker.there_is_full_diagonal).to eql(true)
+      set_move_pattern(complete_right_diagonal)
+      expect(board_checker.there_is_full_diagonal).to eql(true)
     end
 
     it 'returns false if board is empty' do
-      expect(board_checker.there_is_full_diagonal(empty_board, winner_state)).to eql(false)
+      set_move_pattern(empty_board)
+      expect(board_checker.there_is_full_diagonal).to eql(false)
     end
 
     it 'returns false when no diagonals are full' do
-      expect(board_checker.there_is_full_diagonal(partial_diagonals, winner_state)).to eql(false)
+      set_move_pattern(partial_diagonals)
+      expect(board_checker.there_is_full_diagonal).to eql(false)
     end
   end
 
   describe 'is_winner' do
     it 'returns true when row contains only X' do
       row = ['X', 'X', 'X']
-      expect(board_checker.is_winner(row, winner_state)).to eql(true)
-      expect(winner_state.winner).to eql('X')
-      expect(winner_state.is_won).to eql(true)
+      board = board_checker.instance_variable_get(:@board)
+      expect(board_checker.is_winner(row)).to eql(true)
+      expect(board.winner).to eql('X')
     end
 
     it 'returns false when row is not full of same token' do
       row = ['-', 'O', 'X']
-      expect(board_checker.is_winner(row, winner_state)).to eql(false)
-      expect(winner_state.winner).to eql(nil)
-      expect(winner_state.is_won).to eql(false)
+      board = board_checker.instance_variable_get(:@board)
+      expect(board_checker.is_winner(row)).to eql(false)
+      expect(board.winner).to eql(nil)
     end
 
     it 'returns false when row is empty' do
       row = ['-', '-', '-']
-      expect(board_checker.is_winner(row, winner_state)).to eql(false)
-      expect(winner_state.winner).to eql(nil)
-      expect(winner_state.is_won).to eql(false)
+      board = board_checker.instance_variable_get(:@board)
+      expect(board_checker.is_winner(row)).to eql(false)
+      expect(board.winner).to eql(nil)
     end
   end
 end
