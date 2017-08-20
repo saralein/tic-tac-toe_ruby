@@ -1,10 +1,10 @@
 require_relative '../lib/players/ai_player.rb'
-require_relative '../lib/board/board.rb'
+require_relative '../lib/board/board_checker.rb'
 require_relative '../lib/state/turn_counter.rb'
+require_relative '../lib/ui/user_interface.rb'
 
 describe AIPlayer do
-  let(:board) { Board.new(3) }
-  let(:user_interface) { UserInterface.new(board, 'X', 'O') }
+  let(:checker) { BoardChecker.new(3, '-') }
   let(:empty_board) {
     [
       '-', '-', '-',
@@ -47,49 +47,37 @@ describe AIPlayer do
       '-', '-', '-'
     ]
   }
-  let(:ai_player) { AIPlayer.new(board, TurnCounter.new(3), user_interface, 'O', 'X') }
+  let(:ai_player) { AIPlayer.new(checker, 'O', 'X') }
   let(:infinity) { Float::INFINITY}
   let(:neg_infinity) { -Float::INFINITY}
-
-  def set_move_pattern(pattern)
-    ai_player.instance_variable_get(:@board).moves = pattern
-  end
 
   describe 'get_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
-        allow(STDOUT).to receive(:puts).with("\nThe computer picks spot 1.")
-        expect(ai_player.get_move).to eql(0)
+        expect(ai_player.get_move(empty_board, 9)).to eql(0)
       end
     end
   end
 
   describe 'minimax' do
     it 'returns zero when depth is zero' do
-      set_move_pattern(full_board)
-      expect(ai_player.minimax(board, 0, neg_infinity, infinity, true)).to eql([0, -1])
+      expect(ai_player.minimax(full_board, 0, neg_infinity, infinity, true)).to eql([0, -1])
     end
 
-    it 'returns the correct score when game is over' do
-      set_move_pattern(depth_5_win)
-      expect(ai_player.minimax(board, 4, neg_infinity, infinity, true)).to eql([-14, -1])
-      set_move_pattern(one_spot_left)
-      expect(ai_player.minimax(board, 1, neg_infinity, infinity, true)).to eql([10, 7])
+    it 'returns the correct score, move when game is over' do
+      expect(ai_player.minimax(depth_5_win, 4, neg_infinity, infinity, true)).to eql([-14, -1])
     end
 
     it 'picks the last remaining spot and returns best score and move' do
-      set_move_pattern(one_spot_left)
-      expect(ai_player.minimax(board, 1, neg_infinity, infinity, false)).to eql([0, 7])
+      expect(ai_player.minimax(one_spot_left, 1, neg_infinity, infinity, false)).to eql([0, 7])
     end
 
     it 'picks the corner for max player when open' do
-      set_move_pattern(empty_board)
-      expect(ai_player.minimax(board, 9, neg_infinity, infinity, true)).to eql([0, 0])
+      expect(ai_player.minimax(empty_board, 9, neg_infinity, infinity, true)).to eql([0, 0])
     end
 
     it 'blocks a win from min player' do
-      set_move_pattern(block_win)
-      expect(ai_player.minimax(board, 6, neg_infinity, infinity, true)).to eql([0, 7])
+      expect(ai_player.minimax(block_win, 6, neg_infinity, infinity, true)).to eql([0, 7])
     end
   end
 

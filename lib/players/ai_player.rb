@@ -1,35 +1,30 @@
 class AIPlayer
-  attr_accessor :board, :token
+  attr_accessor :grid, :token
 
-  def initialize(board, turn_counter, user_interface, ai_token, human_token)
-    @board = board
-    @turn_counter = turn_counter
-    @user_interface = user_interface
-    @token = ai_token
-    @max_player = @token
-    @min_player = human_token
+  def initialize(checker, token, min_token)
+    @checker = checker
+    @token = token
+    @min_token = min_token
   end
 
-  def get_move
-    score, move = minimax(@board, @turn_counter.remaining, -Float::INFINITY, Float::INFINITY, true)
-    @user_interface.ai_move(move)
+  def get_move(grid, turns_remaining)
+    move = minimax(grid, turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1]
     return move
   end
 
-  def minimax(board, depth, alpha, beta, maximizingPlayer)
-    game_is_over = @board.is_game_over
+  def minimax(grid, depth, alpha, beta, maximizingPlayer)
     bestScore = 0
     bestMove = -1
 
-    if(depth == 0 || game_is_over)
-      bestScore = score(@board.winner, depth)
+    if(depth == 0 || @checker.game_over?(grid,depth))
+      bestScore = score(@checker.winner, depth)
       return [bestScore, bestMove]
     end
 
-    for i in 0...@board.moves.length
-      if (@board.moves[i] == @board.empty_char)
-        @board.moves[i] = maximizingPlayer ? @max_player : @min_player
-        bestScore, move = minimax(board, depth - 1, alpha, beta, !maximizingPlayer)
+    for i in 0...grid.length
+      if (grid[i] == @checker.empty_char)
+        grid[i] = maximizingPlayer ? @token : @min_token
+        bestScore, move = minimax(grid, depth - 1, alpha, beta, !maximizingPlayer)
 
         if(maximizingPlayer)
           if(alpha < bestScore)
@@ -45,7 +40,7 @@ class AIPlayer
           end
         end
 
-        @board.moves[i] = '-'
+        grid[i] = '-'
 
         if (alpha >= beta)
           break
@@ -59,9 +54,9 @@ class AIPlayer
   end
 
   def score(winner, depth)
-    if(winner == @max_player)
+    if(winner == @token)
      return 10 + depth
-    elsif(winner == @min_player)
+    elsif(winner == @min_token)
       return -10 - depth
     else
       return 0
