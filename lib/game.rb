@@ -1,48 +1,28 @@
-require_relative './board/board.rb'
-require_relative './state/turn_counter.rb'
-require_relative './players/human_player.rb'
-require_relative './players/ai_player.rb'
-require_relative './ui/user_interface.rb'
-
 class Game
-  def initialize(size)
-    @board = Board.new(size)
-    @turn_counter = TurnCounter.new(size)
-    @user_interface = UserInterface.new(@board, 'X', 'O')
-    @player1 = HumanPlayer.new(@board, @user_interface, 'X')
-    @player2 = AIPlayer.new(@board, @turn_counter, @user_interface, 'O', 'X')
-    @current_player = @player1
+  def initialize(board, checker, player1, player2)
+    @board = board
+    @checker = checker
+    @current_player, @other_player = player1, player2
+    @turns_remaining = @board.size**2
+    @is_won = false
   end
 
   def play
-    is_over = false
-
-    @user_interface.welcome
-
-    until(is_over)
-      prep_turn
+    until(@is_won)
       take_turn
-      is_over = @board.is_game_over
+      @is_won = @checker.game_over?(@board.grid, @turns_remaining)
     end
 
     end_game
   end
 
   def take_turn
-    player_move = @current_player.get_move
-    player_token = @current_player.token
-    @board.add_move_to_board(player_move, player_token)
-    @user_interface.display_board
-    @turn_counter.remaining -= 1
-  end
-
-  def prep_turn
-    if (@turn_counter.remaining < @turn_counter.total)
-      @current_player = @current_player === @player1 ? @player2 : @player1
-    end
+    @current_player.take_turn(@board, @turns_remaining)
+    @turns_remaining -= 1
+    @current_player, @other_player = @other_player, @current_player
   end
 
   def end_game
-    @user_interface.end_game(@board.winner)
+    @current_player.end_game(@checker.winner)
   end
 end
