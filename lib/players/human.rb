@@ -9,7 +9,7 @@ class Human
 
   def get_move(grid, turns_remaining)
     begin
-      move_string = @user_interface.player_move
+      move_string = @user_interface.human_move
       move = convert_move(move_string)
       check_range(move)
       check_spot(grid, move)

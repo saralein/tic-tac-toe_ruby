@@ -7,13 +7,13 @@ class UserInterface
 
   def welcome
     puts "\nWelcome to Tic Tac Toe. :D"
-    moves = ("1"..."#{@board.size**2 + 1}").to_a
-    display_board(moves)
+    grid = ("1"..."#{@board.size**2 + 1}").to_a
+    display_board(grid)
   end
 
-  def display_board(moves = @board.moves)
+  def display_board(grid)
     output = "\n"
-    moves.each_with_index do |cell, cell_index|
+    grid.each_with_index do |cell, cell_index|
       output += cell == @board.empty_char ? ' ' : cell
 
       if (cell_index == 0 || (cell_index + 1) % @board.size != 0)
@@ -28,7 +28,7 @@ class UserInterface
     puts output
   end
 
-  def player_move
+  def human_move
     print "\nPlease enter a number between 1 - 9: "
     return gets.chomp
   end
@@ -40,7 +40,7 @@ class UserInterface
   def end_game(winner)
     output = "\nGame over. "
 
-    if (winner == @board.empty_char)
+    if (winner == '')
       output += "It's a draw."
     else
       output += winner == @token1 ? 'You win!' : 'The computer wins!'
