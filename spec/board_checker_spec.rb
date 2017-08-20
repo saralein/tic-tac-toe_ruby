@@ -1,195 +1,115 @@
-require_relative '../lib/board/board.rb'
+require_relative '../lib/board/board_checker.rb'
 
 describe BoardChecker do
-  let (:empty_board) {
-    [
-      '-', '-', '-',
-      '-', '-', '-',
-      '-', '-', '-'
-    ]
-  }
-  let(:size_three_moves) {
-    [
-      '-', '-', '-',
-      '-', '-', '-',
-      '-', '-', '-'
-    ]
-  }
-  let(:size_four_moves) {
-    [
-      '-', '-', '-', '-',
-      '-', '-', '-', '-',
-      '-', '-', '-', '-',
-      '-', '-', '-', '-'
-    ]
-  }
-  let(:size_three_moves_taken) {
-    [
-      'O', 'X', '-',
-      '-', 'O', '-',
-      '-', '-', 'X'
-    ]
-  }
-  let(:full_board) {
-    [
-      'X', 'O', 'X',
-      'O', 'X', 'O',
-      'O', 'X', 'O'
-    ]
-  }
-  let(:complete_row) {
-    [
-      '-', '-', 'X',
-      '-', 'O', '-',
-      'X', 'X', 'X'
-    ]
-  }
-  let(:complete_column) {
-    [
-      'O', 'X', 'X',
-      '-', 'O', 'X',
-      'O', '-', 'X'
-    ]
-  }
-  let(:complete_left_diagonal) {
-    [
-      'X', 'O', '-',
-      'O', 'X', '-',
-      '-', 'O', 'X'
-    ]
-  }
-  let(:complete_right_diagonal) {
-    [
-      '-', 'O', 'X',
-      'O', 'X', '-',
-      'X', 'O', '-'
-    ]
-  }
-  let(:partial_rows) {
-    [
-      'X', 'X', '-',
-      'O', 'O', '-',
-      'X', 'O', '-'
-    ]
-  }
-  let(:partial_columns) {
-    [
-      'X', 'O', 'X',
-      'X', 'O', 'X',
-      '-', '-', '-'
-    ]
-  }
-  let(:partial_diagonals) {
-    [
-      'X', '-', 'O',
-      '-', '-', '-',
-      'O', '-', 'X'
-    ]
-  }
-  let(:board) { Board.new(3)}
+  let(:grid) { [1, 2, 3, 4, 5, 6, 7, 8, 9] }
+  let(:rows) { [[1, 2, 3], [4, 5, 6], [7, 8, 9]] }
+  let(:columns) { [[1, 4, 7], [2, 5, 8], [3, 6, 9]] }
+  let(:diagonals) { [[1, 5, 9], [3, 5, 7]] }
+  let(:turns_taken) { ['-', 'O', '-', 'O', 'X', 'O', 'X', '-', 'X'] }
+  let(:full_row) { ['-', 'O', '-', 'O', 'X', 'O', 'X', 'X', 'X'] }
+  let(:full_column) { ['-', 'X', '-', 'O', 'X', 'O', 'X', 'X', '-'] }
+  let(:full_diagonal) { ['-', 'O', 'X', 'O', 'X', '-', 'X', '-', 'O'] }
+  let(:empty_patterns) { [['-', '-', '-'], ['-', '-', '-']] }
+  let(:winning_pattern) { [['-', '-', '-'], ['X', 'X', 'X']] }
 
-  def set_move_pattern(pattern)
-    board.instance_variable_set(:@moves, pattern)
+  before(:each) do
+    @checker = BoardChecker.new(3, '-')
   end
 
-  describe 'is_game_over' do
-    it 'returns true when all spots on board are taken' do
-      set_move_pattern(full_board)
-      expect(board.is_game_over).to eql(true)
-    end
+  describe 'game_over?' do
+    context 'when checking if the game is over' do
+      it 'returns true if there is a draw' do
+        expect(@checker.game_over?(grid, 0)).to eql(true)
+      end
 
-    it 'returns true when a row is full' do
-      set_move_pattern(complete_row)
-      expect(board.is_game_over).to eql(true)
-    end
+      it 'returns false if there is not a draw' do
+        expect(@checker.game_over?(grid, 5)).to eql(false)
+      end
 
-    it 'returns true when a column is full' do
-      set_move_pattern(complete_column)
-      expect(board.is_game_over).to eql(true)
-    end
+      it 'returns false when game is not won or a draw' do
+        expect(@checker.game_over?(turns_taken, 3)).to eql(false)
+      end
 
-    it 'returns true when a diagonal is full' do
-      set_move_pattern(complete_left_diagonal)
-      expect(board.is_game_over).to eql(true)
-    end
-
-    it 'returns false when board is empty' do
-      set_move_pattern(empty_board)
-      expect(board.is_game_over).to eql(false)
+      it 'returns true when game is won' do
+        expect(@checker.game_over?(full_row, 2)).to eql(true)
+      end
     end
   end
 
-  describe 'there_is_full_row' do
-    it 'returns true when a row is full' do
-      set_move_pattern(complete_row)
-      expect(board.there_is_full_row).to eql(true)
+  describe 'winner?' do
+    context 'when given a grid' do
+      it 'returns false if there is no winner' do
+        expect(@checker.winner?(grid)).to eql(false)
+      end
 
-    end
+      it 'returns true when a row is full' do
+        expect(@checker.winner?(full_row)).to eql(true)
+      end
 
-    it 'returns false if board is empty' do
-      set_move_pattern(empty_board)
-      expect(board.there_is_full_row).to eql(false)
-    end
+      it 'returns true when a column is full' do
+        expect(@checker.winner?(full_column)).to eql(true)
+      end
 
-    it 'returns false when no rows are full' do
-      set_move_pattern(partial_rows)
-      expect(board.there_is_full_row).to eql(false)
-    end
-  end
-
-  describe 'there_is_full_column' do
-    it 'returns true when a column is full and sets projected winner' do
-      set_move_pattern(complete_column)
-      expect(board.there_is_full_column).to eql(true)
-    end
-
-    it 'returns false if board is empty' do
-      set_move_pattern(empty_board)
-      expect(board.there_is_full_column).to eql(false)
-    end
-
-    it 'returns false when no columns are full' do
-      set_move_pattern(partial_columns)
-      expect(board.there_is_full_column).to eql(false)
+      it 'returns true when a diagonal is full' do
+        expect(@checker.winner?(full_diagonal)).to eql(true)
+      end
     end
   end
 
-  describe 'there_is_full_diagonal' do
-    it 'returns true when a diagonal is full' do
-      set_move_pattern(complete_left_diagonal)
-      expect(board.there_is_full_diagonal).to eql(true)
-      set_move_pattern(complete_right_diagonal)
-      expect(board.there_is_full_diagonal).to eql(true)
-    end
+  describe 'draw?' do
+    context 'when given remaining number of turns' do
+      it 'returns true if no turns remain' do
+        expect(@checker.draw?(0)).to eql(true)
+      end
 
-    it 'returns false if board is empty' do
-      set_move_pattern(empty_board)
-      expect(board.there_is_full_diagonal).to eql(false)
-    end
-
-    it 'returns false when no diagonals are full' do
-      set_move_pattern(partial_diagonals)
-      expect(board.there_is_full_diagonal).to eql(false)
+      it 'returns false if there are turns remaining' do
+        expect(@checker.draw?(8)).to eql(false)
+      end
     end
   end
 
-  describe 'is_winner' do
-    it 'returns true when row contains only X' do
-      row = ['X', 'X', 'X']
-      expect(board.is_winner(row)).to eql(true)
-      expect(board.winner).to eql('X')
+  describe 'get_rows' do
+    context 'when given a grid and size' do
+      it 'returns a nested array of rows (slices)' do
+        expect(@checker.get_rows(grid)).to eql(rows)
+      end
     end
+  end
 
-    it 'returns false when row is not full of same token' do
-      row = ['-', 'O', 'X']
-      expect(board.is_winner(row)).to eql(false)
-      expect(board.winner).to eql(nil)
+  describe 'get_columns' do
+    context 'when given rows' do
+      it 'returns a nested array of columns' do
+        expect(@checker.get_columns(rows)).to eql(columns)
+      end
     end
+  end
 
-    it 'returns false when row is empty' do
-      row = ['-', '-', '-']
-      expect(board.is_winner(row)).to eql(false)
-      expect(board.winner).to eql(nil)
+  describe 'get_diagonals' do
+    context 'when given rows' do
+      it 'returns a nested array of diagonals' do
+        expect(@checker.get_diagonals(rows)).to eql(diagonals)
+      end
+    end
+  end
+
+  describe 'get_winner' do
+    context 'when given a nest array of patterns' do
+      it 'returns empty string when there is no winner' do
+        expect(@checker.get_winner(empty_patterns)).to eql('')
+      end
+
+      it 'returns the winning token when there is a winner' do
+        expect(@checker.get_winner(winning_pattern)).to eql('X')
+      end
+    end
+  end
+
+  describe 'set_winner' do
+    context 'when given a token' do
+      it 'sets winner to token' do
+        @checker.set_winner('X')
+        expect(@checker.instance_variable_get(:@winner)).to eql('X')
+      end
     end
   end
 end

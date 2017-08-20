@@ -1,48 +1,32 @@
 require_relative '../lib/game.rb'
+require_relative '../lib/board/board.rb'
+require_relative '../lib/board/board_checker.rb'
+require_relative '../lib/players/player.rb'
+require_relative '../lib/players/ai.rb'
+require_relative '../lib/ui/user_interface.rb'
 
 describe 'Game' do
-  let(:game) { Game.new(3) }
+  let(:board) { Board.new(3, '-') }
+  let(:checker) { BoardChecker.new(3, '-') }
+  let(:user_interface) { UserInterface.new(board, 'X', 'O') }
+  let(:ai1) { AI.new(checker, 'X', 'O') }
+  let(:ai2) { AI.new(checker, 'O', 'X') }
+  let(:player1) { Player.new(ai1, 'X', user_interface) }
+  let(:player2) { Player.new(ai2, 'O', user_interface) }
+  let(:game) { Game.new(board, checker, player1, player2) }
 
-  describe 'prep_turn' do
-    context 'before the turn' do
-      it 'does not update current player if first turn' do
-        game.prep_turn
-        expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player1))
-      end
-
-      it 'updates the current player if not the first turn' do
-        game.instance_variable_get(:@turn_counter).remaining = 8
-        game.prep_turn
-        expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player2))
-        game.instance_variable_get(:@turn_counter).remaining = 7
-        game.prep_turn
-        expect(game.instance_variable_get(:@current_player)).to be(game.instance_variable_get(:@player1))
-      end
-    end
-  end
-
-  describe 'end_game' do
-    it 'announces the end of the game' do
-      expect(STDOUT).to receive(:puts)
-      game.end_game
+  describe 'take_turn' do
+    it 'decrements turns remaining' do
+      allow(player1).to receive(:take_turn)
+      game.take_turn
+      expect(game.instance_variable_get(:@turns_remaining)).to eql(8)
     end
 
-    it 'includes the human winner' do
-      game.instance_variable_get(:@board).winner = 'X'
-      expect(STDOUT).to receive(:puts).with("\nGame over. You win!")
-      game.end_game
-    end
-
-    it 'includes the computer winner' do
-      game.instance_variable_get(:@board).winner = 'O'
-      expect(STDOUT).to receive(:puts).with("\nGame over. The computer wins!")
-      game.end_game
-    end
-
-    it 'notifies of a draw' do
-      game.instance_variable_get(:@board).winner = '-'
-      expect(STDOUT).to receive(:puts).with("\nGame over. It's a draw.")
-      game.end_game
+    it 'updates the current player' do
+      allow(player1).to receive(:take_turn)
+      game.take_turn
+      expect(game.instance_variable_get(:@current_player)).to be(player2)
+      expect(game.instance_variable_get(:@other_player)).to be(player1)
     end
   end
 end

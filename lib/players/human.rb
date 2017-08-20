@@ -1,5 +1,5 @@
-class HumanPlayer
-  attr_accessor :token
+class Human
+  attr_reader :token
 
   def initialize(board, user_interface, token)
     @board = board
@@ -7,12 +7,12 @@ class HumanPlayer
     @token = token
   end
 
-  def get_move
+  def get_move(grid, turns_remaining)
     begin
-      move_string = @user_interface.player_move
+      move_string = @user_interface.human_move
       move = convert_move(move_string)
       check_range(move)
-      check_spot(move)
+      check_spot(grid, move)
     rescue => error
       puts error
       retry
@@ -39,8 +39,8 @@ class HumanPlayer
     end
   end
 
-  def check_spot(move)
-    if (@board.moves[move] != '-')
+  def check_spot(grid, move)
+    if (grid[move] != @board.empty_char)
       raise 'That spot has already been selected. Pick again.'
     else
     end
