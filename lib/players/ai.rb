@@ -1,4 +1,4 @@
-class AIPlayer
+class AI
   attr_accessor :grid, :token
 
   def initialize(checker, token, min_token)
