@@ -1,5 +1,5 @@
 class AI
-  attr_accessor :grid, :token
+  attr_accessor :grid, :token, :checker
 
   def initialize(checker, token, min_token)
     @checker = checker
@@ -13,6 +13,7 @@ class AI
   end
 
   def minimax(grid, depth, alpha, beta, maximizingPlayer)
+    @checker.clear_winner
     bestScore = 0
     bestMove = -1
 

@@ -50,6 +50,36 @@ describe AI do
   let(:infinity) { Float::INFINITY}
   let(:neg_infinity) { -Float::INFINITY}
 
+
+  def get_scores(grid, depth)
+    @scores_above_zero = true
+
+    def create_permutations(grid, depth)
+      for i in 0...9
+        if(grid[i] == '-')
+          grid[i] = 'X'
+          bestScore, bestMove = ai.minimax(grid, depth - 1, neg_infinity, infinity, true)
+          grid[bestMove] = 'O'
+
+          if(depth - 1 > 0)
+            create_permutations(grid, depth - 2)
+          elsif(depth == 0 || checker.game_over?(grid, depth - 1))
+            if (bestScore < 0)
+              @scores_above_zero = false
+            end
+          end
+
+          grid[bestMove] = '-'
+          grid[i] = '-'
+        end
+      end
+    end
+
+    create_permutations(empty_board, depth)
+
+    return @scores_above_zero
+  end
+
   describe 'get_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
@@ -77,6 +107,10 @@ describe AI do
 
     it 'blocks a win from min player' do
       expect(ai.minimax(block_win, 6, neg_infinity, infinity, true)).to eql([0, 7])
+    end
+
+    it 'wins or ties all 3x3 boards' do
+      expect(get_scores(empty_board, 9)).to eql(true)
     end
   end
 
