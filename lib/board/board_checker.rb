@@ -46,4 +46,8 @@ class BoardChecker
   def set_winner(winner)
     @winner = winner
   end
+
+  def clear_winner
+    @winner = ''
+  end
 end
