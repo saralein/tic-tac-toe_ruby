@@ -3,11 +3,11 @@ class IO
     @input, @output = input, output
   end
 
-  def display_user_message(message)
+  def display_message(message)
     @output.print message
   end
 
-  def get_user_input
+  def get_input
     @input.gets.chomp
   end
 end

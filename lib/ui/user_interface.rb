@@ -7,7 +7,7 @@ class UserInterface
   end
 
   def welcome
-    @io.display_user_message("\nWelcome to Tic Tac Toe. :D")
+    @io.display_message("\nWelcome to Tic Tac Toe. :D")
   end
 
   def display_board(grid)
@@ -24,16 +24,16 @@ class UserInterface
       end
     end
 
-    @io.display_user_message(output)
+    @io.display_message(output)
   end
 
   def human_move
-    @io.display_user_message("\nPlease enter a number between 1 - 9: ")
-    @io.get_user_input
+    @io.display_message("\nPlease enter a number between 1 - 9: ")
+    @io.get_input
   end
 
   def ai_move(move)
-    @io.display_user_message("\nThe computer picks spot #{move + 1}.")
+    @io.display_message("\nThe computer picks spot #{move + 1}.")
   end
 
   def end_game(winner)
@@ -45,6 +45,6 @@ class UserInterface
       output += winner == @token1 ? 'You win!' : 'The computer wins!'
     end
 
-    @io.display_user_message(output)
+    @io.display_message(output)
   end
 end

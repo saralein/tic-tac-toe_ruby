@@ -5,7 +5,7 @@ class MockIO
     @input_called = 0
   end
 
-  def display_user_message(message)
+  def display_message(message)
     @message = message
     @message_called += 1
   end
