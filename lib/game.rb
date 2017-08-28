@@ -8,6 +8,10 @@ class Game
   end
 
   def play
+    trap('INT') do
+      exit_game
+    end
+
     until(@is_won)
       take_turn
       @is_won = @checker.game_over?(@turns_remaining)
@@ -20,6 +24,11 @@ class Game
     @current_player.take_turn(@board, @turns_remaining)
     @turns_remaining -= 1
     @current_player, @other_player = @other_player, @current_player
+  end
+
+  def exit_game
+    @current_player.exit_game
+    exit
   end
 
   def end_game

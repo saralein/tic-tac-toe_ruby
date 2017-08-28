@@ -7,5 +7,6 @@ end
 
 desc 'runs game'
 task :play do
+  trap('INT') { exit }
   ruby 'app.rb'
 end
