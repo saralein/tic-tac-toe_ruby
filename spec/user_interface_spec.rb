@@ -10,6 +10,7 @@ describe 'UserInterface' do
   let(:output) { "\n  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  " }
   let(:output_with_moves) { "\nO | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X" }
   let(:ai_move) { "\nThe computer picks spot 1." }
+  let(:bye_bye) { "\nThanks for playing."}
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
   let(:draw) { "\nGame over. It's a draw." }
@@ -44,6 +45,14 @@ describe 'UserInterface' do
 
       user_interface.ai_move(0)
       expect(io.check_message_received).to eql(ai_move)
+      expect(io.check_message_calls).to eql(1)
+    end
+  end
+
+  describe 'exit_game' do
+    it 'displays exit message to user' do
+      user_interface.exit_game
+      expect(io.check_message_received).to eql(bye_bye)
       expect(io.check_message_calls).to eql(1)
     end
   end

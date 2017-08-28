@@ -30,6 +30,10 @@ class Player
     @user_interface.display_board(grid)
   end
 
+  def exit_game
+    @user_interface.exit_game
+  end
+
   def end_game(winner)
     @user_interface.end_game(winner)
   end

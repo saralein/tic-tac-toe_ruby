@@ -1,3 +1,4 @@
+require 'readline'
 require_relative './lib/game.rb'
 require_relative './lib/board/board.rb'
 require_relative './lib/board/board_checker.rb'
@@ -10,7 +11,7 @@ require_relative './lib/ui/io.rb'
 def initializer(size, token1, token2)
   board = Board.new(size, '-')
   checker = BoardChecker.new(3, '-')
-  io = IO.new(STDIN, STDOUT)
+  io = IO.new(Readline, STDOUT)
   user_interface = UserInterface.new(io, board, token1, token2)
   human = Human.new(board, user_interface, token1)
   ai = AI.new(checker, token2, token1)
