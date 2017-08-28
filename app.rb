@@ -5,11 +5,13 @@ require_relative './lib/players/player.rb'
 require_relative './lib/players/ai.rb'
 require_relative './lib/players/human.rb'
 require_relative './lib/ui/user_interface.rb'
+require_relative './lib/ui/io.rb'
 
 def initializer(size, token1, token2)
   board = Board.new(size, '-')
   checker = BoardChecker.new(3, '-')
-  user_interface = UserInterface.new(board, token1, token2)
+  io = IO.new(STDIN, STDOUT)
+  user_interface = UserInterface.new(io, board, token1, token2)
   human = Human.new(board, user_interface, token1)
   ai = AI.new(checker, token2, token1)
   player1 = Player.new(human, token1, user_interface)

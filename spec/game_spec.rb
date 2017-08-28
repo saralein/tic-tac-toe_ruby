@@ -3,12 +3,12 @@ require_relative '../lib/board/board.rb'
 require_relative '../lib/board/board_checker.rb'
 require_relative '../lib/players/player.rb'
 require_relative '../lib/players/ai.rb'
-require_relative '../lib/ui/user_interface.rb'
+require_relative './mocks/mock_user_interface.rb'
 
 describe 'Game' do
   let(:board) { Board.new(3, '-') }
   let(:checker) { BoardChecker.new(3, '-') }
-  let(:user_interface) { UserInterface.new(board, 'X', 'O') }
+  let(:user_interface) { MockUserInterface.new }
   let(:ai1) { AI.new(checker, 'X', 'O') }
   let(:ai2) { AI.new(checker, 'O', 'X') }
   let(:player1) { Player.new(ai1, 'X', user_interface) }
