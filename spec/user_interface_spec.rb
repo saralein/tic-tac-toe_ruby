@@ -1,5 +1,6 @@
 require_relative '../lib/ui/user_interface.rb'
 require_relative '../lib/board/board.rb'
+require_relative './mocks/mock_io.rb'
 
 describe 'UserInterface' do
   let (:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
@@ -12,49 +13,58 @@ describe 'UserInterface' do
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
   let(:draw) { "\nGame over. It's a draw." }
-  let(:user_interface) { UserInterface.new(Board.new(3, '-'), 'X', 'O') }
+  let(:board) { Board.new(3, '-') }
+  let(:io) { MockIO.new }
+  let(:user_interface) { UserInterface.new(io, board, 'X', 'O') }
 
   describe 'welcome' do
     it 'displays welcome message and available moves' do
-      expect(STDOUT).to receive(:puts).with(welcome)
-      expect(STDOUT).to receive(:puts).with(available_moves)
       user_interface.welcome
+      expect(io.check_message_received).to eql(welcome)
+      expect(io.check_message_calls).to eql(1)
     end
   end
 
   describe 'display_board' do
     it 'displays the current sized board in the terminal' do
-      expect(STDOUT).to receive(:puts).with(output)
       user_interface.display_board(empty_board)
+      expect(io.check_message_received).to eql(output)
+      expect(io.check_message_calls).to eql(1)
     end
 
     it 'displays the current size board in the terminal with moves' do
-      expect(STDOUT).to receive(:puts).with(output_with_moves)
       user_interface.display_board(moves_taken)
+      expect(io.check_message_received).to eql(output_with_moves)
+      expect(io.check_message_calls).to eql(1)
     end
   end
 
   describe 'ai_move' do
     it 'displays the correct ai move' do
-      expect(STDOUT).to receive(:puts).with(ai_move)
+
       user_interface.ai_move(0)
+      expect(io.check_message_received).to eql(ai_move)
+      expect(io.check_message_calls).to eql(1)
     end
   end
 
   describe 'end_game' do
     it 'displays correct messages when ai wins' do
-      expect(STDOUT).to receive(:puts).with(ai_win)
       user_interface.end_game('O')
+      expect(io.check_message_received).to eql(ai_win)
+      expect(io.check_message_calls).to eql(1)
     end
 
     it 'displays correct messages when human wins' do
-      expect(STDOUT).to receive(:puts).with(human_win)
       user_interface.end_game('X')
+      expect(io.check_message_received).to eql(human_win)
+      expect(io.check_message_calls).to eql(1)
     end
 
     it "displays correct messages when it's a draw" do
-      expect(STDOUT).to receive(:puts).with(draw)
       user_interface.end_game('')
+      expect(io.check_message_received).to eql(draw)
+      expect(io.check_message_calls).to eql(1)
     end
   end
 end
