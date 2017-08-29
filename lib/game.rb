@@ -5,14 +5,11 @@ class Game
     @current_player, @other_player = player1, player2
     @turns_remaining = @board.size**2
     @is_won = false
+    @stop_playing = false
   end
 
   def play
-    trap('INT') do
-      exit_game
-    end
-
-    until(@is_won)
+    until(@is_won || @stop_playing)
       take_turn
       @is_won = @checker.game_over?(@turns_remaining)
     end
