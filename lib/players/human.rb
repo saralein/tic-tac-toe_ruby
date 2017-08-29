@@ -29,7 +29,7 @@ class Human
     begin
       move = Integer(move_string) - 1
     rescue
-      raise 'Your selection is not an integer.'
+      raise 'Your selection is not a valid spot.'
     end
 
     return move
