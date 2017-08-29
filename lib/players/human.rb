@@ -1,9 +1,8 @@
 class Human
   attr_reader :token
 
-  def initialize(board, user_interface, token)
+  def initialize(board, token)
     @board = board
-    @user_interface = user_interface
     @token = token
   end
 

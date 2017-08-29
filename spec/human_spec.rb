@@ -5,7 +5,7 @@ require_relative './mocks/mock_user_interface.rb'
 describe Human do
   let(:board) { Board.new(3, '-') }
   let(:user_interface) { MockUserInterface.new }
-  let(:human) { Human.new(board, user_interface, 'X')}
+  let(:human) { Human.new(board, 'X')}
   let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
   let(:announce_move_message) { "\nYou picked spot 1." }
   let(:spot_taken) { ['-', '-', 'X'] }
