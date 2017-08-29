@@ -5,12 +5,12 @@ require_relative './mocks/mock_io.rb'
 describe 'UserInterface' do
   let (:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
   let(:moves_taken) { ['O', 'X', '-', '-', 'O', '-', '-', '-', 'X'] }
-  let(:welcome) { "\nWelcome to Tic Tac Toe. :D" }
+  let(:welcome) { "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n" }
   let(:available_moves) { "\n1 | 2 | 3\n- + - + -\n4 | 5 | 6\n- + - + -\n7 | 8 | 9" }
   let(:output) { "\n  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  " }
   let(:output_with_moves) { "\nO | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X" }
   let(:ai_move) { "\nThe computer picks spot 1." }
-  let(:bye_bye) { "\nThanks for playing."}
+  let(:bye_bye) { "\n\nThanks for playing."}
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
   let(:draw) { "\nGame over. It's a draw." }

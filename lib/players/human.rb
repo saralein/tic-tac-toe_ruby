@@ -10,6 +10,8 @@ class Human
   def get_move(grid, turns_remaining)
     begin
       move_string = @user_interface.human_move
+      return :restart if restart?(move_string)
+      return :exit if exit?(move_string)
       move = convert_move(move_string)
       check_range(move)
       check_spot(grid, move)
@@ -18,6 +20,14 @@ class Human
       retry
     end
     return move
+  end
+
+  def restart?(move_string)
+    move_string.to_sym == :restart
+  end
+
+  def exit?(move_string)
+    move_string.to_sym == :exit
   end
 
   def convert_move(move_string)

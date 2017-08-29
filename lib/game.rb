@@ -1,37 +1,31 @@
 class Game
-  def initialize(board, checker, player1, player2)
+  def initialize(state, board, checker, player1, player2)
+    @state = state
     @board = board
     @checker = checker
     @current_player, @other_player = player1, player2
     @turns_remaining = @board.size**2
-    @is_won = false
   end
 
   def play
-    trap('INT') do
-      exit_game
-    end
-
-    until(@is_won)
+    until(@state.is_won || @state.stop_playing || @state.restart)
       take_turn
-      @is_won = @checker.game_over?(@board.grid, @turns_remaining)
+      @state.is_won = @checker.game_over?(@board.grid, @turns_remaining)
     end
 
-    end_game
+    if(@state.is_won)
+      end_game
+    end
   end
 
   def take_turn
-    @current_player.take_turn(@board, @turns_remaining)
+    @current_player.take_turn(@state, @board, @turns_remaining)
     @turns_remaining -= 1
     @current_player, @other_player = @other_player, @current_player
   end
 
-  def exit_game
-    @current_player.exit_game
-    exit
-  end
-
   def end_game
     @current_player.end_game(@checker.winner)
+    @state.is_won = false
   end
 end

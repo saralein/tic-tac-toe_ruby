@@ -1,3 +1,5 @@
+require_relative './app.rb'
+
 task default: %w[test]
 
 desc 'runs tests'
@@ -7,6 +9,8 @@ end
 
 desc 'runs game'
 task :play do
-  trap('INT') { exit }
-  ruby 'app.rb'
+  begin
+    initializer(3, 'X', 'O')
+  rescue SignalException
+  end
 end

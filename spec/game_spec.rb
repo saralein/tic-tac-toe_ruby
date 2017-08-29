@@ -6,6 +6,7 @@ require_relative '../lib/players/ai.rb'
 require_relative './mocks/mock_user_interface.rb'
 
 describe 'Game' do
+  let(:state) { {is_playing: true, stop_playing: false, is_won: false} }
   let(:board) { Board.new(3, '-') }
   let(:checker) { BoardChecker.new(3, '-') }
   let(:user_interface) { MockUserInterface.new }
@@ -13,7 +14,7 @@ describe 'Game' do
   let(:ai2) { AI.new(checker, 'O', 'X') }
   let(:player1) { Player.new(ai1, 'X', user_interface) }
   let(:player2) { Player.new(ai2, 'O', user_interface) }
-  let(:game) { Game.new(board, checker, player1, player2) }
+  let(:game) { Game.new(state, board, checker, player1, player2) }
 
   describe 'take_turn' do
     it 'decrements turns remaining' do

@@ -7,7 +7,8 @@ class UserInterface
   end
 
   def welcome
-    @io.display_message("\nWelcome to Tic Tac Toe. :D")
+    message = "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n"
+    @io.display_message(message)
   end
 
   def display_board(grid)
@@ -28,7 +29,7 @@ class UserInterface
   end
 
   def human_move
-    @io.get_input("\nPlease enter a number between 1 - 9: ", method(:exit_game))
+    @io.get_input("\nPlease enter a number between 1 - 9: ")
   end
 
   def ai_move(move)
@@ -36,7 +37,7 @@ class UserInterface
   end
 
   def exit_game
-    @io.display_message("\nThanks for playing.")
+    @io.display_message("\n\nThanks for playing.")
   end
 
   def end_game(winner)

@@ -5,11 +5,16 @@ class Player
     @user_interface = user_interface
   end
 
-  def take_turn(board, turns_remaining)
+  def take_turn(state, board, turns_remaining)
     grid = board.grid
     move = get_move(grid, turns_remaining)
-    add_move(board, move)
-    display_board(grid)
+    wants_to_restart?(state, move)
+    wants_to_exit?(state, move)
+
+    unless(state.stop_playing || state.restart)
+      add_move(board, move)
+      display_board(grid)
+    end
   end
 
   def get_move(grid, turns_remaining)
@@ -30,8 +35,12 @@ class Player
     @user_interface.display_board(grid)
   end
 
-  def exit_game
-    @user_interface.exit_game
+  def wants_to_restart?(state, move)
+      state.restart = move == :restart
+  end
+
+  def wants_to_exit?(state, move)
+    state.stop_playing = move == :exit
   end
 
   def end_game(winner)

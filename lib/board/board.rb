@@ -14,4 +14,8 @@ class Board
   def add_move(move, player_token)
     @grid[move] = player_token
   end
+
+  def reset_board
+    @grid = create_grid
+  end
 end
