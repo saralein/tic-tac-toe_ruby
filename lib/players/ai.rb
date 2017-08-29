@@ -7,9 +7,16 @@ class AI
     @min_token = min_token
   end
 
-  def get_move(grid, turns_remaining)
+  def get_move(grid, turns_remaining, user_interface)
+    user_interface.display_message("\nThe computer is picking a spot...")
+    user_interface.pause
     move = minimax(grid, turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1]
     return move
+  end
+
+  def announce_move(move, user_interface)
+    user_interface.display_message("\nThe computer picks spot #{move + 1}.")
+    user_interface.pause
   end
 
   def minimax(grid, depth, alpha, beta, maximizingPlayer)

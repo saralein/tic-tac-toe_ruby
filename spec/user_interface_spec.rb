@@ -21,7 +21,7 @@ describe 'UserInterface' do
     it 'displays welcome message and available moves' do
       user_interface.welcome
       expect(io.check_message_received).to eql(welcome)
-      expect(io.check_message_calls).to eql(1)
+      expect(io.check_message_calls).to eql(2)
     end
   end
 
@@ -35,15 +35,6 @@ describe 'UserInterface' do
     it 'displays the current size board in the terminal with moves' do
       user_interface.display_board(moves_taken)
       expect(io.check_message_received).to eql(output_with_moves)
-      expect(io.check_message_calls).to eql(1)
-    end
-  end
-
-  describe 'ai_move' do
-    it 'displays the correct ai move' do
-
-      user_interface.ai_move(0)
-      expect(io.check_message_received).to eql(ai_move)
       expect(io.check_message_calls).to eql(1)
     end
   end

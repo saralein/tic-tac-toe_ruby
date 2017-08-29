@@ -7,7 +7,24 @@ describe Human do
   let(:user_interface) { MockUserInterface.new }
   let(:human) { Human.new(board, user_interface, 'X')}
   let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
+  let(:announce_move_message) { "\nYou picked spot 1." }
   let(:spot_taken) { ['-', '-', 'X'] }
+
+  describe 'get_move' do
+    it 'gets a move from the player, retries until valid, and returns it' do
+      human.get_move(board.grid, 9, user_interface)
+      expect(user_interface.times_displayed).to eql(3)
+
+    end
+  end
+
+  describe 'announce_move' do
+    it "displays player's choice of move" do
+      human.announce_move(0, user_interface)
+      expect(user_interface.check_message).to eql(announce_move_message)
+      expect(user_interface.times_paused).to eql(1)
+    end
+  end
 
   describe 'convert_move' do
     it 'does not raises an error if move can be converted to integer' do

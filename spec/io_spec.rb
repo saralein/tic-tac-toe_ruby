@@ -7,6 +7,12 @@ describe 'IO' do
   let(:output) { MockStdout.new}
   let(:io) { IO.new(input, output) }
 
+  describe 'clear' do
+    it 'clears the display' do
+      expect(io).to receive(:clear)
+      io.clear
+    end
+  end
 
   describe 'display_message' do
     it 'displays a given message in the UI' do

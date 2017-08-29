@@ -7,17 +7,23 @@ class Human
     @token = token
   end
 
-  def get_move(grid, turns_remaining)
+  def get_move(grid, turns_remaining, user_interface)
     begin
-      move_string = @user_interface.human_move
+      user_interface.display_message("\nPlease enter a number between 1 - 9: ")
+      move_string = user_interface.get_input
       move = convert_move(move_string)
       check_range(move)
       check_spot(grid, move)
     rescue => error
-      puts error
+      user_interface.display_message(error)
       retry
     end
     return move
+  end
+
+  def announce_move(move, user_interface)
+    user_interface.display_message("\nYou picked spot #{move + 1}.")
+    user_interface.pause
   end
 
   def convert_move(move_string)
