@@ -32,7 +32,7 @@ describe Human do
     end
 
     it 'raises an error if move can be converted to integer' do
-      expect{ human.convert_move('a') }.to raise_error('Your selection is not an integer.')
+      expect{ human.convert_move('a') }.to raise_error('Your selection is not a valid spot.')
     end
   end
 
