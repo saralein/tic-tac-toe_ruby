@@ -2,7 +2,7 @@ class MockUserInterface
   def initialize
     @paused = 0
     @message = ''
-    @input = 10
+    @input = 11
     @message_called = 0
   end
 

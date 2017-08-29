@@ -7,7 +7,7 @@ class IO
     system('clear')
   end
 
-  def pause(amount = 2)
+  def pause(amount = 1)
     sleep amount
   end
 

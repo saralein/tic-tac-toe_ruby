@@ -87,18 +87,8 @@ describe AI do
   describe 'get_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
-        expect(ai.get_move(empty_board, 9, ui)).to eql(0)
-        expect(ui.check_message).to eql(get_move_message)
-        expect(ui.times_paused).to eql(1)
+        expect(ai.get_move(empty_board, 9)).to eql(0)
       end
-    end
-  end
-
-  describe 'announce_move' do
-    it 'displays move the computer took' do
-      ai.announce_move(0, ui)
-      expect(ui.check_message).to eql(announce_move_message)
-      expect(ui.times_paused).to eql(1)
     end
   end
 

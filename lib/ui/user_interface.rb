@@ -22,7 +22,7 @@ class UserInterface
     @io.display_message(message)
   end
 
-  def pause(amount = 2)
+  def pause(amount = 1)
     @io.pause(amount)
   end
 

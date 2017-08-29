@@ -1,22 +1,18 @@
 class AI
-  attr_accessor :grid, :token, :checker
+  attr_accessor :grid, :token, :checker, :script
 
   def initialize(checker, token, min_token)
     @checker = checker
     @token = token
     @min_token = min_token
+    @script = {
+      get_move: "\nThe computer is picking a spot...",
+      announce_move: "\nThe computer picks spot "
+    }
   end
 
-  def get_move(grid, turns_remaining, user_interface)
-    user_interface.display_message("\nThe computer is picking a spot...")
-    user_interface.pause
-    move = minimax(grid, turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1]
-    return move
-  end
-
-  def announce_move(move, user_interface)
-    user_interface.display_message("\nThe computer picks spot #{move + 1}.")
-    user_interface.pause
+  def get_move(grid, turns_remaining)
+    minimax(grid, turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1]
   end
 
   def minimax(grid, depth, alpha, beta, maximizingPlayer)
@@ -58,7 +54,7 @@ class AI
 
     bestScore = maximizingPlayer ? alpha : beta
 
-    return [bestScore, bestMove]
+    [bestScore, bestMove]
   end
 
   def score(winner, depth)

@@ -1,35 +1,34 @@
 class Human
-  attr_reader :token
+  attr_reader :token, :script
 
-  def initialize(board, token)
+  def initialize(board, user_interface, token)
     @board = board
+    @user_interface = user_interface
     @token = token
+    @script = {
+      get_move: "\nPlease enter a number between 1 - 9: ",
+      announce_move: "\nYou picked spot "
+    }
   end
 
-  def get_move(grid, turns_remaining, user_interface)
+  def get_move(grid, turns_remaining)
     begin
-      user_interface.display_message("\nPlease enter a number between 1 - 9: ")
-      move_string = user_interface.get_input
+      move_string = @user_interface.get_input
       move = convert_move(move_string)
       check_range(move)
       check_spot(grid, move)
     rescue => error
-      user_interface.display_message(error)
+      @user_interface.display_message(error)
       retry
     end
     return move
-  end
-
-  def announce_move(move, user_interface)
-    user_interface.display_message("\nYou picked spot #{move + 1}.")
-    user_interface.pause
   end
 
   def convert_move(move_string)
     begin
       move = Integer(move_string) - 1
     rescue
-      raise 'Your selection is not a valid spot.'
+      raise 'Your selection is not a valid spot. Pick again: '
     end
 
     return move
@@ -40,13 +39,13 @@ class Human
     range = (0...length).to_a
 
     unless(range.include? move)
-      raise 'Your selection is not between 1 and 9.'
+      raise 'Your selection is not between 1 and 9. Pick again: '
     end
   end
 
   def check_spot(grid, move)
     if (grid[move] != @board.empty_char)
-      raise 'That spot has already been selected. Pick again.'
+      raise 'That spot has already been selected. Pick again: '
     else
     end
   end

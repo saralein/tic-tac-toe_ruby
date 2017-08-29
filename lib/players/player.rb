@@ -14,13 +14,16 @@ class Player
   end
 
   def get_move(grid, turns_remaining)
-    move = @behavior.get_move(grid, turns_remaining, @user_interface)
+    @user_interface.display_message(@behavior.script[:get_move])
+    @user_interface.pause
+    move = @behavior.get_move(grid, turns_remaining)
 
     return move
   end
 
   def announce_move(move)
-    @behavior.announce_move(move, @user_interface)
+    @user_interface.display_message("#{@behavior.script[:announce_move]}#{move + 1}.")
+    @user_interface.pause(1.5)
   end
 
   def add_move(board, move)
