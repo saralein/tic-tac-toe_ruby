@@ -18,9 +18,17 @@ def initializer(size, token1, token2)
   player1 = Player.new(human, token1, user_interface)
   player2 = Player.new(ai, token2, user_interface)
   game = Game.new(board, checker, player1, player2)
+  state = {is_playing: true}
 
-  user_interface.welcome
-  game.play
+  trap('INT') do
+    io.display_message("\nThanks for playing.")
+    exit
+  end
+
+  while(:is_playing)
+    user_interface.welcome
+    game.play
+  end
 end
 
 initializer(3, 'X', 'O')
