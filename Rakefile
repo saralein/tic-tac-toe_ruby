@@ -7,6 +7,8 @@ end
 
 desc 'runs game'
 task :play do
-  trap('INT') { exit }
-  ruby 'app.rb'
+  begin
+    ruby 'app.rb'
+  rescue SignalException
+  end
 end
