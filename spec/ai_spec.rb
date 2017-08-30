@@ -51,9 +51,6 @@ describe AI do
   let(:ai) { AI.new(checker, 'O', 'X') }
   let(:infinity) { Float::INFINITY}
   let(:neg_infinity) { -Float::INFINITY}
-  let(:get_move_message) { "\nThe computer is picking a spot..." }
-  let(:announce_move_message) { "\nThe computer picks spot 1." }
-
 
   def get_scores(grid, depth)
     @scores_above_zero = true

@@ -5,10 +5,6 @@ class AI
     @checker = checker
     @token = token
     @min_token = min_token
-    @script = {
-      get_move: "\nThe computer is picking a spot...",
-      announce_move: "\nThe computer picks spot "
-    }
   end
 
   def get_move(grid, turns_remaining)

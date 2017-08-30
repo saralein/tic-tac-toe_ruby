@@ -11,8 +11,8 @@ describe 'Game' do
   let(:user_interface) { MockUserInterface.new }
   let(:ai1) { AI.new(checker, 'X', 'O') }
   let(:ai2) { AI.new(checker, 'O', 'X') }
-  let(:player1) { Player.new(ai1, 'X', user_interface) }
-  let(:player2) { Player.new(ai2, 'O', user_interface) }
+  let(:player1) { Player.new({}, ai1, 'X', user_interface) }
+  let(:player2) { Player.new({}, ai2, 'O', user_interface) }
   let(:game) { Game.new(board, checker, player1, player2) }
 
   describe 'take_turn' do

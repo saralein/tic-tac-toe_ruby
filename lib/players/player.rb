@@ -1,5 +1,6 @@
 class Player
-  def initialize(behavior, token, user_interface)
+  def initialize(script, behavior, token, user_interface)
+    @script = script
     @behavior = behavior
     @token = token
     @user_interface = user_interface
@@ -14,7 +15,7 @@ class Player
   end
 
   def get_move(grid, turns_remaining)
-    @user_interface.display_message(@behavior.script[:get_move])
+    @user_interface.display_message(@script[:get_move])
     @user_interface.pause
     move = @behavior.get_move(grid, turns_remaining)
 
@@ -22,7 +23,7 @@ class Player
   end
 
   def announce_move(move)
-    @user_interface.display_message("#{@behavior.script[:announce_move]}#{move + 1}.")
+    @user_interface.display_message("#{@script[:announce_move]}#{move + 1}.")
     @user_interface.pause(1.5)
   end
 

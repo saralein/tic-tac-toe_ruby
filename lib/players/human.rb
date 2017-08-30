@@ -5,10 +5,6 @@ class Human
     @board = board
     @user_interface = user_interface
     @token = token
-    @script = {
-      get_move: "\nPlease enter a number between 1 - 9: ",
-      announce_move: "\nYou picked spot "
-    }
   end
 
   def get_move(grid, turns_remaining)

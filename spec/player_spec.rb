@@ -8,7 +8,7 @@ describe Player do
   let(:board) { Board.new(3, '-')}
   let(:user_interface) { MockUserInterface.new }
   let(:ai) { AI.new(checker, 'O', 'X') }
-  let(:ai_player) { Player.new(ai, 'O', user_interface) }
+  let(:ai_player) { Player.new({}, ai, 'O', user_interface) }
   let(:ai_move) { "\nThe computer picks spot 1." }
   let(:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
 
