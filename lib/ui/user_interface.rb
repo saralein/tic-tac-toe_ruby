@@ -80,7 +80,7 @@ class UserInterface
   end
 
   def exit_game
-    @io.display_message("\nThanks for playing.")
+    @io.display_message("\n\nThanks for playing.")
   end
 
   def end_game(winner)

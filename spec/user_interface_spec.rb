@@ -11,7 +11,7 @@ describe 'UserInterface' do
   let(:empty_string) { '  |   |  ' }
   let(:full_string) { 'X | X | O' }
   let(:ai_move) { "\nThe computer picks spot 1." }
-  let(:bye_bye) { "\nThanks for playing."}
+  let(:bye_bye) { "\n\nThanks for playing."}
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
   let(:draw) { "\nGame over. It's a draw." }

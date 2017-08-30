@@ -7,12 +7,17 @@ class Player
     @validator = validator
   end
 
-  def take_turn(board, turns_remaining)
-    display_board(board.grid)
+  def take_turn(state, board, turns_remaining)
+    grid = board.grid
+    display_board(grid)
     move = get_move(turns_remaining)
-    add_move(board, move)
-    display_board(board.grid)
-    announce_move(move)
+    exit?(state, move)
+
+    unless(state[:stop_playing])
+      add_move(board, move)
+      display_board(grid)
+      announce_move(move)
+    end
   end
 
   def get_move(turns_remaining)
@@ -42,8 +47,8 @@ class Player
     @user_interface.display_board(grid)
   end
 
-  def exit_game
-    @user_interface.exit_game
+  def exit?(state, move)
+    state[:stop_playing] = move == :exit
   end
 
   def end_game(winner)

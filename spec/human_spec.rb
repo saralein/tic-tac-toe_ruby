@@ -11,4 +11,14 @@ describe Human do
       expect(human.get_move(9)).to eql('11')
     end
   end
+
+  describe 'exit?' do
+    it 'returns false when user does not input "exit"' do
+      expect(human.exit?('1')).to eql(false)
+    end
+
+    it 'returns true when user inputs "exit"' do
+      expect(human.exit?('exit')).to eql(true)
+    end
+  end
 end
