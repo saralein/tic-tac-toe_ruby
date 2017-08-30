@@ -9,6 +9,16 @@ describe Human do
   let(:ask_for_move) { 'Please enter a number between 1 - 9: ' }
   let(:spot_taken) { ['-', '-', 'X'] }
 
+  describe 'exit?' do
+    it 'returns false when user does not input "exit"' do
+      expect(human.exit?('1')).to eql(false)
+    end
+
+    it 'returns true when user inputs "exit"' do
+      expect(human.exit?('exit')).to eql(true)
+    end
+  end
+
   describe 'convert_move' do
     it 'does not raises an error if move can be converted to integer' do
       expect{ human.convert_move('5') }.not_to raise_error

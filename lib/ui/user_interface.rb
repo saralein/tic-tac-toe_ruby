@@ -28,7 +28,7 @@ class UserInterface
   end
 
   def human_move
-    @io.get_input("\nPlease enter a number between 1 - 9: ", method(:exit_game))
+    @io.get_input("\nPlease enter a number between 1 - 9: ")
   end
 
   def ai_move(move)
@@ -36,7 +36,7 @@ class UserInterface
   end
 
   def exit_game
-    @io.display_message("\nThanks for playing.")
+    @io.display_message("\n\nThanks for playing.")
   end
 
   def end_game(winner)

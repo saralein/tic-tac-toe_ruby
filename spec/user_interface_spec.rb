@@ -10,7 +10,7 @@ describe 'UserInterface' do
   let(:output) { "\n  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  " }
   let(:output_with_moves) { "\nO | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X" }
   let(:ai_move) { "\nThe computer picks spot 1." }
-  let(:bye_bye) { "\nThanks for playing."}
+  let(:bye_bye) { "\n\nThanks for playing."}
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
   let(:draw) { "\nGame over. It's a draw." }
