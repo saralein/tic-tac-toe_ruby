@@ -24,11 +24,6 @@ class Game
     @current_player, @other_player = @other_player, @current_player
   end
 
-  def exit_game
-    @current_player.exit_game
-    exit
-  end
-
   def end_game
     @current_player.end_game(@checker.winner)
   end
