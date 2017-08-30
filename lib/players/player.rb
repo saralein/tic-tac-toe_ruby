@@ -16,7 +16,7 @@ class Player
   end
 
   def get_move(turns_remaining)
-    @user_interface.display_message(@script[:get_move])
+    @user_interface.display_message(@script.get_move)
     begin
       move = @behavior.get_move(turns_remaining)
       move = @validator.validate_move(move)
@@ -29,7 +29,7 @@ class Player
   end
 
   def announce_move(move)
-    @user_interface.display_message("#{@script[:announce_move]}#{move + 1}.")
+    @user_interface.display_message("#{@script.announce_move}#{move + 1}.")
     @user_interface.pause(1.5)
   end
 
