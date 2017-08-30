@@ -10,7 +10,7 @@ class Game
   def play
     until(@is_won)
       take_turn
-      @is_won = @checker.game_over?(@board.grid, @turns_remaining)
+      @is_won = @checker.game_over?(@turns_remaining)
     end
 
     end_game

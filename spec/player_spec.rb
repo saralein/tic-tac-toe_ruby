@@ -1,20 +1,21 @@
 require_relative '../lib/players/player.rb'
 require_relative '../lib/players/ai.rb'
 require_relative '../lib/players/human.rb'
+require_relative '../lib/players/validator.rb'
 require_relative '../lib/board/board_checker.rb'
 
 describe Player do
-  let(:checker) { BoardChecker.new(3, '-') }
   let(:board) { Board.new(3, '-')}
+  let(:checker) { BoardChecker.new(board) }
   let(:user_interface) { MockUserInterface.new }
-  let(:ai) { AI.new(checker, 'O', 'X') }
-  let(:ai_player) { Player.new({}, ai, 'O', user_interface) }
-  let(:ai_move) { "\nThe computer picks spot 1." }
-  let(:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
+  let(:validator) { Validator.new(board) }
+  let(:human) { Human.new(user_interface) }
+  let(:player) { Player.new({}, human, 'O', user_interface, validator) }
 
   describe 'get_move' do
-    it 'returns a move for the player' do
-      expect(ai_player.get_move(empty_board, 9)).to eql(0)
+    it 'gets a move from the player, retries until valid, and returns it' do
+      player.get_move(9)
+      expect(user_interface.times_displayed).to eql(3)
     end
   end
 end
