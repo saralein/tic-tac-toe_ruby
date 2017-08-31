@@ -11,7 +11,7 @@ class Player
     grid = board.grid
     display_board(grid)
     move = get_move(turns_remaining)
-    exit?(state, move)
+    wants_to_exit?(state, move)
 
     unless(state[:stop_playing])
       add_move(board, move)
@@ -47,7 +47,7 @@ class Player
     @user_interface.display_board(grid)
   end
 
-  def exit?(state, move)
+  def wants_to_exit?(state, move)
     state[:stop_playing] = move == :exit
   end
 
