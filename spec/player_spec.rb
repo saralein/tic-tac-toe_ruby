@@ -21,12 +21,12 @@ describe Player do
 
   describe 'exit?' do
     it 'sets stop playing to false if move is not exit' do
-      ai_player.exit?(state, '1')
+      ai_player.wants_to_exit?(state, '1')
       expect(state[:stop_playing]).to eql(false)
     end
 
     it 'sets stop plating to true if move is exit' do
-      ai_player.exit?(state, :exit)
+      ai_player.wants_to_exit?(state, :exit)
       expect(state[:stop_playing]).to eql(true)
     end
   end
