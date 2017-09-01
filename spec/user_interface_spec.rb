@@ -6,9 +6,10 @@ describe 'UserInterface' do
   let (:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
   let(:moves_taken) { ['O', 'X', '-', '-', 'O', '-', '-', '-', 'X'] }
   let(:welcome) { "\nWelcome to Tic Tac Toe. :D" }
-  let(:available_moves) { "\n1 | 2 | 3\n- + - + -\n4 | 5 | 6\n- + - + -\n7 | 8 | 9" }
-  let(:output) { "\n  |   |  \n- + - + -\n  |   |  \n- + - + -\n  |   |  " }
-  let(:output_with_moves) { "\nO | X |  \n- + - + -\n  | O |  \n- + - + -\n  |   | X" }
+  let(:output) { "\n  Board          Moves\n\n  |   |        1 | 2 | 3\n- + - + -      - + - + -\n  |   |        4 | 5 | 6\n- + - + -      - + - + -\n  |   |        7 | 8 | 9\n" }
+  let(:output_with_moves) { "\n  Board          Moves\n\nO | X |        1 | 2 | 3\n- + - + -      - + - + -\n  | O |        4 | 5 | 6\n- + - + -      - + - + -\n  |   | X      7 | 8 | 9\n" }
+  let(:empty_string) { '  |   |  ' }
+  let(:full_string) { 'X | X | O' }
   let(:ai_move) { "\nThe computer picks spot 1." }
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
@@ -21,7 +22,7 @@ describe 'UserInterface' do
     it 'displays welcome message and available moves' do
       user_interface.welcome
       expect(io.check_message_received).to eql(welcome)
-      expect(io.check_message_calls).to eql(1)
+      expect(io.check_message_calls).to eql(2)
     end
   end
 
@@ -39,12 +40,54 @@ describe 'UserInterface' do
     end
   end
 
-  describe 'ai_move' do
-    it 'displays the correct ai move' do
 
-      user_interface.ai_move(0)
-      expect(io.check_message_received).to eql(ai_move)
-      expect(io.check_message_calls).to eql(1)
+  describe 'create_header' do
+    it 'creates a header for board and moves' do
+      expect(user_interface.create_header).to eql('  Board          Moves')
+    end
+  end
+
+  describe 'create_row_piece' do
+    it 'takes an empty row and formats to string representation' do
+      expect(user_interface.create_row_piece(['-', '-', '-'])).to eql(empty_string)
+    end
+
+    it 'takes a partial row and formats to string reprentation' do
+      expect(user_interface.create_row_piece(['-', 'X', 'O'])).to eql('  | X | O')
+    end
+
+    it 'takes a full row and formats to string reprentation' do
+      expect(user_interface.create_row_piece(['X', 'X', 'O'])).to eql(full_string)
+    end
+  end
+
+  describe 'combine_row_pieces' do
+    it 'takes two empty row strings and combines them with space between' do
+      expect(user_interface.combine_row_pieces(empty_string, empty_string)).to eql("#{empty_string}      #{empty_string}\n")
+    end
+
+    it 'takes two row strings and combines them with space between' do
+      expect(user_interface.combine_row_pieces(full_string, full_string)).to eql("#{full_string}      #{full_string}\n")
+    end
+  end
+
+  describe 'create_row_divider' do
+    it 'returns a row divider of board size long' do
+      expect(user_interface.create_row_divider).to eql('- + - + -')
+    end
+  end
+
+  describe 'create padding' do
+    it 'returns an empty string given 0' do
+      expect(user_interface.create_padding(0)).to eql('')
+    end
+
+    it 'returns a space given 1' do
+      expect(user_interface.create_padding(1)).to eql(' ')
+    end
+
+    it 'returns series of six spaces given 6' do
+      expect(user_interface.create_padding(6)).to eql('      ')
     end
   end
 

@@ -3,6 +3,14 @@ class IO
     @input, @output = input, output
   end
 
+  def clear
+    system('clear')
+  end
+
+  def pause(amount = 1)
+    sleep amount
+  end
+
   def display_message(message)
     @output.print message
   end
