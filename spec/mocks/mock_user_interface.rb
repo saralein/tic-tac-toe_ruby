@@ -5,6 +5,7 @@ class MockUserInterface
     @display_called = 0
     @input = []
     @index = 0
+    @colors = {'X': :magenta, 'O': :green}
   end
 
   def pause
@@ -31,6 +32,9 @@ class MockUserInterface
   end
 
   def welcome
+  end
+
+  def assign_color(token)
   end
 
   def ai_move(move)

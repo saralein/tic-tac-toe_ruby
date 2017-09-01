@@ -1,6 +1,7 @@
 class PlayerValidator
-  def initialize(board)
+  def initialize(board, script)
     @board = board
+    @script = script
   end
 
   def validate_move(move_string)
@@ -14,7 +15,7 @@ class PlayerValidator
     begin
       move = Integer(move_string) - 1
     rescue
-      raise 'Your selection is not a valid spot. Pick again: '
+      raise @script.errors[:invalid_spot]
     end
 
     return move
@@ -25,13 +26,13 @@ class PlayerValidator
     range = (0...length).to_a
 
     unless(range.include? move)
-      raise 'Your selection is not between 1 and 9. Pick again: '
+      raise @script.errors[:out_of_range]
     end
   end
 
   def check_spot(move)
     if (@board.grid[move] != @board.empty_char)
-      raise 'That spot has already been selected. Pick again: '
+      raise @script.errors[:spot_taken]
     else
     end
   end

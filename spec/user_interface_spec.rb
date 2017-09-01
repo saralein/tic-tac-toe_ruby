@@ -1,16 +1,20 @@
 require_relative '../lib/ui/user_interface.rb'
 require_relative '../lib/board/board.rb'
 require_relative './mocks/mock_io.rb'
+require_relative './mocks/mock_colorizer.rb'
 require_relative '../lib/scripts/game_script.rb'
 
 describe 'UserInterface' do
   let(:welcome) { "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n" }
   let (:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
-  let(:moves_taken) { ['O', 'X', '-', '-', 'O', '-', '-', '-', 'X'] }
-  let(:output) { "\n  Board          Moves\n\n  |   |        1 | 2 | 3\n- + - + -      - + - + -\n  |   |        4 | 5 | 6\n- + - + -      - + - + -\n  |   |        7 | 8 | 9\n" }
-  let(:output_with_moves) { "\n  Board          Moves\n\nO | X |        1 | 2 | 3\n- + - + -      - + - + -\n  | O |        4 | 5 | 6\n- + - + -      - + - + -\n  |   | X      7 | 8 | 9\n" }
-  let(:empty_string) { '  |   |  ' }
-  let(:full_string) { 'X | X | O' }
+  let(:moves_taken) { ['O', 'X', '-', '-', 'O', '-', 'X', 'X', 'O'] }
+  let(:header) {"     Board                Moves"}
+  let(:empty_string) { "    |     |    " }
+  let(:full_string) { " X  |  X  |  O " }
+  let(:normal_move_string) { " 1  |  2  |  3 " }
+  let(:dim_move_string) { " 1  |  2  |  3 " }
+  let(:row_divider) { "--- + --- + ---" }
+  let(:output) { "     Board                Moves\n\n#{empty_string}          1  |  2  |  3 \n#{row_divider}      #{row_divider}"}
   let(:ai_move) { "\nThe computer picks spot 1." }
   let(:bye_bye) { "\n\nThanks for playing.\n"}
   let(:ai_win) { "\n\nGame over. O wins!\n" }
@@ -18,8 +22,14 @@ describe 'UserInterface' do
   let(:draw) { "\n\nGame over. It's a draw.\n" }
   let(:board) { MockBoard.new }
   let(:io) { MockIO.new }
-  let(:script) { GameScript.new}
-  let(:user_interface) { UserInterface.new(io, script, board) }
+  let(:colorizer) { MockColorizer.new }
+  let(:script) { GameScript.new(colorizer) }
+  let(:user_interface) { UserInterface.new(io, script, board, colorizer) }
+
+  before(:each) do
+    user_interface.assign_color('X')
+    user_interface.assign_color('O')
+  end
 
   describe 'welcome' do
     it 'displays welcome message and available moves' do
@@ -33,21 +43,27 @@ describe 'UserInterface' do
     it 'displays the current sized board in the terminal' do
       board.set_grid(empty_board)
       user_interface.display_board
-      expect(io.check_message_received).to eql(output)
+      expect(io.check_message_received).to include(header)
+      expect(io.check_message_received).to include(empty_string)
+      expect(io.check_message_received).to include(normal_move_string)
+      expect(io.check_message_received).to include(row_divider)
       expect(io.check_message_calls).to eql(1)
     end
 
     it 'displays the current size board in the terminal with moves' do
       board.set_grid(moves_taken)
       user_interface.display_board
-      expect(io.check_message_received).to eql(output_with_moves)
+      expect(io.check_message_received).to include(header)
+      expect(io.check_message_received).to include(full_string)
+      expect(io.check_message_received).to include(dim_move_string)
+      expect(io.check_message_received).to include(row_divider)
       expect(io.check_message_calls).to eql(1)
     end
   end
 
   describe 'create_header' do
     it 'creates a header for board and moves' do
-      expect(user_interface.create_header).to eql('  Board          Moves')
+      expect(user_interface.create_header).to eql(header)
     end
   end
 
@@ -57,11 +73,35 @@ describe 'UserInterface' do
     end
 
     it 'takes a partial row and formats to string reprentation' do
-      expect(user_interface.create_row_piece(['-', 'X', 'O'])).to eql('  | X | O')
+      expect(user_interface.create_row_piece(['-', 'X', 'O'])).to eql("    |  X  |  O ")
     end
 
     it 'takes a full row and formats to string reprentation' do
       expect(user_interface.create_row_piece(['X', 'X', 'O'])).to eql(full_string)
+    end
+  end
+
+  describe 'create_move_piece' do
+    it 'returns a formatted string of moves for a row' do
+      expect(user_interface.create_move_piece(['-', '-', '-'], ['1', '2', '3'])).to eql(normal_move_string)
+    end
+
+    it 'returns a formatted string of moves for a row with spots taken' do
+      expect(user_interface.create_move_piece(['O', 'X', '-'], ['1', '2', '3'])).to eql(dim_move_string)
+    end
+  end
+
+  describe 'add_divider' do
+    it 'returns a divider for appropriate cell indices' do
+      expect(user_interface.add_divider(0)).to eql(" | ")
+      expect(user_interface.add_divider(4)).to eql(" | ")
+      expect(user_interface.add_divider(7)).to eql(" | ")
+    end
+
+    it 'returns empty string for other cells' do
+      expect(user_interface.add_divider(2)).to eql("")
+      expect(user_interface.add_divider(5)).to eql("")
+      expect(user_interface.add_divider(8)).to eql("")
     end
   end
 
@@ -77,7 +117,7 @@ describe 'UserInterface' do
 
   describe 'create_row_divider' do
     it 'returns a row divider of board size long' do
-      expect(user_interface.create_row_divider).to eql('- + - + -')
+      expect(user_interface.create_row_divider).to eql(row_divider)
     end
   end
 
@@ -112,15 +152,21 @@ describe 'UserInterface' do
   end
 
   describe 'end_game' do
+    before(:each) do
+      colorizer.reset_calls
+    end
+
     it 'displays correct messages when ai wins' do
       user_interface.end_game('O')
       expect(io.check_message_received).to eql(ai_win)
+      expect(colorizer.get_green_calls).to eql(1)
       expect(io.check_message_calls).to eql(1)
     end
 
     it 'displays correct messages when human wins' do
       user_interface.end_game('X')
       expect(io.check_message_received).to eql(human_win)
+      expect(colorizer.get_magenta_calls).to eql(1)
       expect(io.check_message_calls).to eql(1)
     end
 
