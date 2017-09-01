@@ -15,7 +15,8 @@ class Board
     @grid[move] = player_token
   end
 
-  def reset_board
+  def reset(size)
+    @size = size
     @grid = create_grid
   end
 end

@@ -8,6 +8,7 @@ describe Human do
 
   describe 'get_move' do
     it 'gets a move from the player' do
+      user_interface.set_input(['11'])
       expect(human.get_move('message', 9)).to eql('11')
     end
   end

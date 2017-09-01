@@ -1,17 +1,13 @@
 class UserInterface
-  def initialize(io, board, token1, token2)
+  def initialize(io, script, board)
     @io = io
+    @script = script
     @board = board
-    @token1 = token1
-    @token2 = token2
-    @moves = ('1'.."#{@board.size**2}")
   end
 
   def welcome
     clear
-    display_board(@board.grid)
-    message = "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n"
-    display_message(message)
+    display_message(@script.welcome)
     pause(4)
   end
 
@@ -27,10 +23,12 @@ class UserInterface
     @io.pause(amount)
   end
 
-  def display_board(grid)
+  def display_board
+    grid = @board.grid
     output = "\n#{create_header}\n\n"
     grid_rows = grid.each_slice(@board.size).to_a
-    move_rows = @moves.each_slice(@board.size).to_a
+    moves = ('1'.."#{@board.size**2}")
+    move_rows = moves.each_slice(@board.size).to_a
 
     grid_rows.each_with_index do |row, row_index|
       grid_row = create_row_piece(row)
@@ -42,7 +40,7 @@ class UserInterface
       end
     end
 
-    @io.display_message(output)
+    display_message(output)
   end
 
   def create_header
@@ -81,20 +79,16 @@ class UserInterface
   end
 
   def exit_game
-    @io.display_message("\n\nThanks for playing.")
-  end
-
-  def exit_game
-    @io.display_message("\n\nThanks for playing.")
+    @io.display_message(@script.game_end)
   end
 
   def end_game(winner)
-    output = "\nGame over. "
+    output = @script.game_over
 
     if (winner == '')
-      output += "It's a draw."
+      output += @script.draw
     else
-      output += winner == @token1 ? 'You win!' : 'The computer wins!'
+      output += "#{winner} wins!\n"
     end
 
     display_message(output)

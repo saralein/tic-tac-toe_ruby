@@ -1,4 +1,4 @@
-require_relative './app.rb'
+require_relative 'app.rb'
 
 task default: %w[test]
 
@@ -10,7 +10,7 @@ end
 desc 'runs game'
 task :play do
   begin
-    initializer(3, 'X', 'O')
+    initializer
   rescue SignalException
   end
 end

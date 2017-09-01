@@ -1,9 +1,9 @@
 require_relative './mocks/mock_board.rb'
-require_relative '../lib/players/validator.rb'
+require_relative '../lib/validators/player_validator.rb'
 
-describe Validator do
+describe PlayerValidator do
   let(:board) { MockBoard.new }
-  let(:validator) { Validator.new(board) }
+  let(:validator) { PlayerValidator.new(board) }
   describe 'convert_move' do
     it 'does not raises an error if move can be converted to integer' do
       expect{ validator.convert_move('5') }.not_to raise_error

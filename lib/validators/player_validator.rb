@@ -1,4 +1,4 @@
-class Validator
+class PlayerValidator
   def initialize(board)
     @board = board
   end

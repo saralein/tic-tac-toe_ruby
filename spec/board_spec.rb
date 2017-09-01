@@ -27,4 +27,14 @@ describe Board do
       end
     end
   end
+
+  describe 'reset' do
+    context 'when given a new size' do
+      it 'resets size and grid' do
+        @board.reset(2)
+        expect(@board.instance_variable_get(:@size)).to eql(2)
+        expect(@board.instance_variable_get(:@grid)).to eql(['-', '-', '-', '-'])
+      end
+    end
+  end
 end
