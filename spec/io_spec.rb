@@ -7,13 +7,6 @@ describe 'IO' do
   let(:output) { MockStdout.new}
   let(:io) { IO.new(input, output) }
 
-  describe 'clear' do
-    it 'clears the display' do
-      expect(io).to receive(:clear)
-      io.clear
-    end
-  end
-
   describe 'display_message' do
     it 'displays a given message in the UI' do
       io.display_message('message')
@@ -24,9 +17,14 @@ describe 'IO' do
 
   describe 'get_input' do
     it 'receives input from the user' do
-      io.get_input
+      expect(io.get_input('message')).to eql('input')
+      expect(input.check_message).to eql('message')
       expect(input.times_called).to eql(1)
-      expect(input.gets).to eql('input')
+    end
+
+    it 'exits the game if EOFError passes nil' do
+      input.set_input(nil)
+      expect(io.get_input('message')).to eql(:exit)
     end
   end
 end

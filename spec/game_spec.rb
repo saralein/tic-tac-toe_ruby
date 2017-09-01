@@ -8,6 +8,7 @@ require_relative '../lib/players/validator.rb'
 require_relative './mocks/mock_user_interface.rb'
 
 describe 'Game' do
+  let(:state) { {is_playing: true, stop_playing: false, is_won: false} }
   let(:board) { Board.new(3, '-') }
   let(:checker) { BoardChecker.new(board) }
   let(:user_interface) { MockUserInterface.new }
@@ -17,7 +18,7 @@ describe 'Game' do
   let(:script) { PlayerScript.new('get move', 'announce move')}
   let(:player1) { Player.new(script, ai1, 'X', user_interface, validator) }
   let(:player2) { Player.new(script, ai2, 'O', user_interface, validator) }
-  let(:game) { Game.new(board, checker, player1, player2) }
+  let(:game) { Game.new(state, board, checker, player1, player2) }
 
   describe 'take_turn' do
     it 'decrements turns remaining' do

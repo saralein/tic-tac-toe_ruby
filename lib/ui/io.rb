@@ -15,7 +15,11 @@ class IO
     @output.print message
   end
 
-  def get_input
-    @input.gets.chomp
+  def get_input(message)
+    input = @input.readline(message)
+    unless(input)
+      return :exit
+    end
+    input
   end
 end

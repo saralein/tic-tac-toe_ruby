@@ -3,14 +3,15 @@ require_relative '../lib/board/board.rb'
 require_relative './mocks/mock_io.rb'
 
 describe 'UserInterface' do
+  let(:welcome) { "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n" }
   let (:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
   let(:moves_taken) { ['O', 'X', '-', '-', 'O', '-', '-', '-', 'X'] }
-  let(:welcome) { "\nWelcome to Tic Tac Toe. :D" }
   let(:output) { "\n  Board          Moves\n\n  |   |        1 | 2 | 3\n- + - + -      - + - + -\n  |   |        4 | 5 | 6\n- + - + -      - + - + -\n  |   |        7 | 8 | 9\n" }
   let(:output_with_moves) { "\n  Board          Moves\n\nO | X |        1 | 2 | 3\n- + - + -      - + - + -\n  | O |        4 | 5 | 6\n- + - + -      - + - + -\n  |   | X      7 | 8 | 9\n" }
   let(:empty_string) { '  |   |  ' }
   let(:full_string) { 'X | X | O' }
   let(:ai_move) { "\nThe computer picks spot 1." }
+  let(:bye_bye) { "\n\nThanks for playing."}
   let(:ai_win) { "\nGame over. The computer wins!" }
   let(:human_win) { "\nGame over. You win!" }
   let(:draw) { "\nGame over. It's a draw." }
@@ -88,6 +89,22 @@ describe 'UserInterface' do
 
     it 'returns series of six spaces given 6' do
       expect(user_interface.create_padding(6)).to eql('      ')
+    end
+  end
+
+  describe 'exit_game' do
+    it 'displays exit message to user' do
+      user_interface.exit_game
+      expect(io.check_message_received).to eql(bye_bye)
+      expect(io.check_message_calls).to eql(1)
+    end
+  end
+
+  describe 'exit_game' do
+    it 'displays exit message to user' do
+      user_interface.exit_game
+      expect(io.check_message_received).to eql(bye_bye)
+      expect(io.check_message_calls).to eql(1)
     end
   end
 

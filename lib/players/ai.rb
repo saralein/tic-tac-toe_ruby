@@ -8,7 +8,7 @@ class AI
     @min_token = min_token
   end
 
-  def get_move(turns_remaining)
+  def get_move(message, turns_remaining)
     minimax(turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1] + 1
   end
 

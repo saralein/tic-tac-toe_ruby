@@ -7,5 +7,8 @@ end
 
 desc 'runs game'
 task :play do
-  ruby 'app.rb'
+  begin
+    ruby 'app.rb'
+  rescue SignalException
+  end
 end

@@ -7,18 +7,23 @@ class Player
     @validator = validator
   end
 
-  def take_turn(board, turns_remaining)
-    display_board(board.grid)
+  def take_turn(state, board, turns_remaining)
+    grid = board.grid
+    display_board(grid)
     move = get_move(turns_remaining)
-    add_move(board, move)
-    display_board(board.grid)
-    announce_move(move)
+    wants_to_exit?(state, move)
+
+    unless(state[:stop_playing])
+      add_move(board, move)
+      display_board(grid)
+      announce_move(move)
+    end
   end
 
   def get_move(turns_remaining)
-    @user_interface.display_message(@script.get_move)
     begin
-      move = @behavior.get_move(turns_remaining)
+      move = @behavior.get_move(@script.get_move, turns_remaining)
+      return :exit if move == :exit.to_s
       move = @validator.validate_move(move)
     rescue => error
       @user_interface.display_message(error)
@@ -40,6 +45,10 @@ class Player
   def display_board(grid)
     @user_interface.clear
     @user_interface.display_board(grid)
+  end
+
+  def wants_to_exit?(state, move)
+    state[:stop_playing] = move == :exit
   end
 
   def end_game(winner)

@@ -15,7 +15,7 @@ class MockUserInterface
     @message_called += 1
   end
 
-  def get_input
+  def get_input(message)
     return_value = @input.to_s
     @input -= 1
     return_value
