@@ -76,8 +76,8 @@ class UserInterface
     Array.new(@board.size, '-').join(' + ')
   end
 
-  def get_input
-    @io.get_input
+  def get_input(message)
+    @io.get_input(message)
   end
 
   def exit_game

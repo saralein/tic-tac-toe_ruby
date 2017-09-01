@@ -10,7 +10,7 @@ class Game
   def play
     until(@state[:is_won] || @state[:stop_playing])
       take_turn
-      @state[:is_won] = @checker.game_over?(@board.grid, @turns_remaining)
+      @state[:is_won] = @checker.game_over?(@turns_remaining)
     end
 
     if(@state[:is_won])

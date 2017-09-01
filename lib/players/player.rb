@@ -21,9 +21,9 @@ class Player
   end
 
   def get_move(turns_remaining)
-    @user_interface.display_message(@script.get_move)
     begin
-      move = @behavior.get_move(turns_remaining)
+      move = @behavior.get_move(@script.get_move, turns_remaining)
+      return :exit if move.to_sym == :exit
       move = @validator.validate_move(move)
     rescue => error
       @user_interface.display_message(error)

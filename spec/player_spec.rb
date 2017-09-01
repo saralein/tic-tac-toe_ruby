@@ -18,18 +18,18 @@ describe Player do
   describe 'get_move' do
     it 'gets a move from the player, retries until valid, and returns it' do
       player.get_move(9)
-      expect(user_interface.times_displayed).to eql(3)
+      expect(user_interface.times_displayed).to eql(2)
     end
   end
 
   describe 'exit?' do
     it 'sets stop playing to false if move is not exit' do
-      ai_player.wants_to_exit?(state, '1')
+      player.wants_to_exit?(state, '1')
       expect(state[:stop_playing]).to eql(false)
     end
 
     it 'sets stop plating to true if move is exit' do
-      ai_player.wants_to_exit?(state, :exit)
+      player.wants_to_exit?(state, :exit)
       expect(state[:stop_playing]).to eql(true)
     end
   end

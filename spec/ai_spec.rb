@@ -86,7 +86,7 @@ describe AI do
   describe 'get_move' do
     context "when it is the computer's turn" do
       it 'returns an spot which has not been taken' do
-        expect(ai.get_move(9)).to eql(1)
+        expect(ai.get_move('message', 9)).to eql(1)
       end
     end
   end
