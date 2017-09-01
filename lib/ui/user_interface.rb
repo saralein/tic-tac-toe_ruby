@@ -84,6 +84,10 @@ class UserInterface
     @io.display_message("\n\nThanks for playing.")
   end
 
+  def exit_game
+    @io.display_message("\n\nThanks for playing.")
+  end
+
   def end_game(winner)
     output = "\nGame over. "
 

@@ -12,7 +12,6 @@ require_relative './lib/ui/io.rb'
 
 def initializer(size, token1, token2)
   state = {is_playing: true, stop_playing: false, is_won: false}
-
   board = Board.new(size, '-')
   checker = BoardChecker.new(board)
   io = IO.new(Readline, STDOUT)

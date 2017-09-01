@@ -100,6 +100,14 @@ describe 'UserInterface' do
     end
   end
 
+  describe 'exit_game' do
+    it 'displays exit message to user' do
+      user_interface.exit_game
+      expect(io.check_message_received).to eql(bye_bye)
+      expect(io.check_message_calls).to eql(1)
+    end
+  end
+
   describe 'end_game' do
     it 'displays correct messages when ai wins' do
       user_interface.end_game('O')
