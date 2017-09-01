@@ -12,7 +12,7 @@ class UserInterface
     display_board(@board.grid)
     message = "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n"
     display_message(message)
-    pause
+    pause(4)
   end
 
   def clear
