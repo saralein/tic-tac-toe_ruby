@@ -6,7 +6,7 @@ require_relative '../lib/players/validator.rb'
 require_relative '../lib/board/board_checker.rb'
 
 describe Player do
-  let(:state) { {is_playing: true, stop_playing: false, is_won: false} }
+  state = Struct::State.new(false, false, false)
   let(:board) { Board.new(3, '-')}
   let(:checker) { BoardChecker.new(board) }
   let(:user_interface) { MockUserInterface.new }
@@ -22,15 +22,27 @@ describe Player do
     end
   end
 
-  describe 'exit?' do
+  describe 'wants_to_restart?' do
+    it 'sets stop playing to false if move is not exit' do
+      player.wants_to_restart?(state, '1')
+      expect(state.restart).to eql(false)
+    end
+
+    it 'sets stop plating to true if move is exit' do
+      player.wants_to_restart?(state, :restart)
+      expect(state.restart).to eql(true)
+    end
+  end
+
+  describe 'wants_to_exit?' do
     it 'sets stop playing to false if move is not exit' do
       player.wants_to_exit?(state, '1')
-      expect(state[:stop_playing]).to eql(false)
+      expect(state.stop_playing).to eql(false)
     end
 
     it 'sets stop plating to true if move is exit' do
       player.wants_to_exit?(state, :exit)
-      expect(state[:stop_playing]).to eql(true)
+      expect(state.stop_playing).to eql(true)
     end
   end
 end

@@ -11,9 +11,10 @@ class Player
     grid = board.grid
     display_board(grid)
     move = get_move(turns_remaining)
+    wants_to_restart?(state, move)
     wants_to_exit?(state, move)
 
-    unless(state[:stop_playing])
+    unless(state.stop_playing || state.restart)
       add_move(board, move)
       display_board(grid)
       announce_move(move)
@@ -23,6 +24,7 @@ class Player
   def get_move(turns_remaining)
     begin
       move = @behavior.get_move(@script.get_move, turns_remaining)
+      return :restart if move == :restart.to_s
       return :exit if move == :exit.to_s
       move = @validator.validate_move(move)
     rescue => error
@@ -47,8 +49,12 @@ class Player
     @user_interface.display_board(grid)
   end
 
+  def wants_to_restart?(state, move)
+      state.restart = move == :restart
+  end
+
   def wants_to_exit?(state, move)
-    state[:stop_playing] = move == :exit
+    state.stop_playing = move == :exit
   end
 
   def end_game(winner)
