@@ -8,12 +8,12 @@ class Game
   end
 
   def play
-    until(@state[:is_won] || @state[:stop_playing])
+    until(@state.is_won || @state.stop_playing || @state.restart)
       take_turn
-      @state[:is_won] = @checker.game_over?(@turns_remaining)
+      @state.is_won = @checker.game_over?(@turns_remaining)
     end
 
-    if(@state[:is_won])
+    if(@state.is_won)
       end_game
     end
   end
@@ -26,5 +26,6 @@ class Game
 
   def end_game
     @current_player.end_game(@checker.winner)
+    @state.is_won = false
   end
 end

@@ -11,26 +11,34 @@ require_relative './lib/ui/user_interface.rb'
 require_relative './lib/ui/io.rb'
 
 def initializer(size, token1, token2)
-  state = {is_playing: true, stop_playing: false, is_won: false}
+  Struct.new('State', :stop_playing, :is_won, :restart)
+  state = Struct::State.new(false, false, false)
+
   board = Board.new(size, '-')
   checker = BoardChecker.new(board)
   io = IO.new(Readline, STDOUT)
   user_interface = UserInterface.new(io, board, token1, token2)
   validator = Validator.new(board)
   human = Human.new(user_interface)
-  human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
   ai = AI.new(board, checker, token2, token1)
+  human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
   ai_script = PlayerScript.new("\nThe computer is picking a spot...", "\nThe computer picks spot ")
   player1 = Player.new(human_script, human, token1, user_interface, validator)
   player2 = Player.new(ai_script, ai, token2, user_interface, validator)
-  game = Game.new(state, board, checker, player1, player2)
 
   trap_signals(user_interface)
 
-  while(state[:is_playing])
-    state[:is_playing] = false
+  until(state.stop_playing)
+    board.reset_board
     user_interface.welcome
+    game = Game.new(state, board, checker, player1, player2)
     game.play
+
+    unless(state.restart || state.stop_playing)
+      replay?(state, io)
+    end
+
+    state.restart = false
   end
 
   stop_playing(user_interface)
@@ -51,4 +59,9 @@ def stop_playing(user_interface)
   exit
 end
 
-initializer(3, 'X', 'O')
+def replay?(state, io)
+  replay = io.get_input("\n\nWould you like to replay [y/n]? ").downcase
+  unless(replay.to_sym == :yes || replay.to_sym == :y)
+    state.stop_playing = true
+  end
+end
