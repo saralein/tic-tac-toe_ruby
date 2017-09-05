@@ -42,24 +42,6 @@ def initializer(size, token1, token2)
   end
 
   stop_playing(user_interface)
-#   validator = Validator.new(board)
-#   human = Human.new(user_interface)
-#   human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
-#   ai_script = PlayerScript.new("\nThe computer is picking a spot...", "\nThe computer picks spot ")
-#   player1 = Player.new(human_script, human, token1, user_interface, validator)
-#   player2 = Player.new(ai_script, ai, token2, user_interface, validator)
-#   game = Game.new(state, board, checker, player1, player2)
-
-#   trap_signals(user_interface)
-
-#   while(state[:is_playing])
-#     state[:is_playing] = false
-#     user_interface.welcome
-#     game.play
-#   end
-
-#   stop_playing(user_interface)
-# end
 end
 
 def trap_signals(user_interface)
