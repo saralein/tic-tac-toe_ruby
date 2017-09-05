@@ -6,6 +6,14 @@ class MockIO
     @input = 'YES'
   end
 
+  def clear
+    return
+  end
+
+  def pause(amount = 2)
+    return
+  end
+
   def display_message(message)
     @message = message
     @message_called += 1

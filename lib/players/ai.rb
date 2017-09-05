@@ -1,31 +1,31 @@
 class AI
-  attr_accessor :grid, :token, :checker
+  attr_accessor :grid, :token, :checker, :script
 
-  def initialize(checker, token, min_token)
+  def initialize(board, checker, token, min_token)
+    @board = board
     @checker = checker
     @token = token
     @min_token = min_token
   end
 
-  def get_move(grid, turns_remaining)
-    move = minimax(grid, turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1]
-    return move
+  def get_move(message, turns_remaining)
+    minimax(turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1] + 1
   end
 
-  def minimax(grid, depth, alpha, beta, maximizingPlayer)
+  def minimax(depth, alpha, beta, maximizingPlayer)
     @checker.clear_winner
     bestScore = 0
     bestMove = -1
 
-    if(depth == 0 || @checker.game_over?(grid,depth))
+    if(depth == 0 || @checker.game_over?(depth))
       bestScore = score(@checker.winner, depth)
       return [bestScore, bestMove]
     end
 
-    for i in 0...grid.length
-      if (grid[i] == @checker.empty_char)
-        grid[i] = maximizingPlayer ? @token : @min_token
-        bestScore, move = minimax(grid, depth - 1, alpha, beta, !maximizingPlayer)
+    for i in 0...@board.size**2
+      if (@board.grid[i] == @board.empty_char)
+        @board.grid[i] = maximizingPlayer ? @token : @min_token
+        bestScore, move = minimax(depth - 1, alpha, beta, !maximizingPlayer)
 
         if(maximizingPlayer)
           if(alpha < bestScore)
@@ -41,7 +41,7 @@ class AI
           end
         end
 
-        grid[i] = '-'
+        @board.grid[i] = '-'
 
         if (alpha >= beta)
           break
@@ -51,7 +51,7 @@ class AI
 
     bestScore = maximizingPlayer ? alpha : beta
 
-    return [bestScore, bestMove]
+    [bestScore, bestMove]
   end
 
   def score(winner, depth)

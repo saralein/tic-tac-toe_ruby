@@ -5,6 +5,8 @@ require_relative './lib/board/board_checker.rb'
 require_relative './lib/players/player.rb'
 require_relative './lib/players/ai.rb'
 require_relative './lib/players/human.rb'
+require_relative './lib/players/player_script.rb'
+require_relative './lib/players/validator.rb'
 require_relative './lib/ui/user_interface.rb'
 require_relative './lib/ui/io.rb'
 
@@ -13,13 +15,16 @@ def initializer(size, token1, token2)
   state = Struct::State.new(false, false, false)
 
   board = Board.new(size, '-')
-  checker = BoardChecker.new(3, '-')
+  checker = BoardChecker.new(board)
   io = IO.new(Readline, STDOUT)
   user_interface = UserInterface.new(io, board, token1, token2)
-  human = Human.new(board, user_interface, token1)
-  ai = AI.new(checker, token2, token1)
-  player1 = Player.new(human, token1, user_interface)
-  player2 = Player.new(ai, token2, user_interface)
+  validator = Validator.new(board)
+  human = Human.new(user_interface)
+  ai = AI.new(board, checker, token2, token1)
+  human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
+  ai_script = PlayerScript.new("\nThe computer is picking a spot...", "\nThe computer picks spot ")
+  player1 = Player.new(human_script, human, token1, user_interface, validator)
+  player2 = Player.new(ai_script, ai, token2, user_interface, validator)
 
   trap_signals(user_interface)
 
@@ -37,6 +42,24 @@ def initializer(size, token1, token2)
   end
 
   stop_playing(user_interface)
+#   validator = Validator.new(board)
+#   human = Human.new(user_interface)
+#   human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
+#   ai_script = PlayerScript.new("\nThe computer is picking a spot...", "\nThe computer picks spot ")
+#   player1 = Player.new(human_script, human, token1, user_interface, validator)
+#   player2 = Player.new(ai_script, ai, token2, user_interface, validator)
+#   game = Game.new(state, board, checker, player1, player2)
+
+#   trap_signals(user_interface)
+
+#   while(state[:is_playing])
+#     state[:is_playing] = false
+#     user_interface.welcome
+#     game.play
+#   end
+
+#   stop_playing(user_interface)
+# end
 end
 
 def trap_signals(user_interface)

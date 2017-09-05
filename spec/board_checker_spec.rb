@@ -1,6 +1,8 @@
 require_relative '../lib/board/board_checker.rb'
+require_relative './mocks/mock_board.rb'
 
 describe BoardChecker do
+  let(:board) { MockBoard.new}
   let(:grid) { [1, 2, 3, 4, 5, 6, 7, 8, 9] }
   let(:rows) { [[1, 2, 3], [4, 5, 6], [7, 8, 9]] }
   let(:columns) { [[1, 4, 7], [2, 5, 8], [3, 6, 9]] }
@@ -13,25 +15,27 @@ describe BoardChecker do
   let(:winning_pattern) { [['-', '-', '-'], ['X', 'X', 'X']] }
 
   before(:each) do
-    @checker = BoardChecker.new(3, '-')
+    @checker = BoardChecker.new(board)
   end
 
   describe 'game_over?' do
     context 'when checking if the game is over' do
       it 'returns true if there is a draw' do
-        expect(@checker.game_over?(grid, 0)).to eql(true)
+        expect(@checker.game_over?(0)).to eql(true)
       end
 
       it 'returns false if there is not a draw' do
-        expect(@checker.game_over?(grid, 5)).to eql(false)
+        expect(@checker.game_over?(5)).to eql(false)
       end
 
       it 'returns false when game is not won or a draw' do
-        expect(@checker.game_over?(turns_taken, 3)).to eql(false)
+        board.set_grid(turns_taken)
+        expect(@checker.game_over?(3)).to eql(false)
       end
 
       it 'returns true when game is won' do
-        expect(@checker.game_over?(full_row, 2)).to eql(true)
+        board.set_grid(full_row)
+        expect(@checker.game_over?(2)).to eql(true)
       end
     end
   end
@@ -39,19 +43,22 @@ describe BoardChecker do
   describe 'winner?' do
     context 'when given a grid' do
       it 'returns false if there is no winner' do
-        expect(@checker.winner?(grid)).to eql(false)
+        expect(@checker.winner?).to eql(false)
       end
 
       it 'returns true when a row is full' do
-        expect(@checker.winner?(full_row)).to eql(true)
+        board.set_grid(full_row)
+        expect(@checker.winner?).to eql(true)
       end
 
       it 'returns true when a column is full' do
-        expect(@checker.winner?(full_column)).to eql(true)
+        board.set_grid(full_column)
+        expect(@checker.winner?).to eql(true)
       end
 
       it 'returns true when a diagonal is full' do
-        expect(@checker.winner?(full_diagonal)).to eql(true)
+        board.set_grid(full_diagonal)
+        expect(@checker.winner?).to eql(true)
       end
     end
   end
@@ -71,7 +78,8 @@ describe BoardChecker do
   describe 'get_rows' do
     context 'when given a grid and size' do
       it 'returns a nested array of rows (slices)' do
-        expect(@checker.get_rows(grid)).to eql(rows)
+        board.set_grid(grid)
+        expect(@checker.get_rows).to eql(rows)
       end
     end
   end
