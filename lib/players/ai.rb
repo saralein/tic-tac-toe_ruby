@@ -9,7 +9,8 @@ class AI
   end
 
   def get_move(message, turns_remaining)
-    minimax(turns_remaining, -Float::INFINITY, Float::INFINITY, true)[1] + 1
+    depth = [turns_remaining, 9].min
+    minimax(depth, -Float::INFINITY, Float::INFINITY, true)[1] + 1
   end
 
   def minimax(depth, alpha, beta, maximizingPlayer)
