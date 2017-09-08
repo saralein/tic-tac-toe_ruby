@@ -30,9 +30,11 @@ class Player
       return :exit if move == :exit.to_s
       move = @validator.validate_move(move)
     rescue => error
+      display_board
       @user_interface.display_message(error)
       retry
     end
+    display_board
     @user_interface.pause
     move
   end
@@ -47,7 +49,6 @@ class Player
   end
 
   def display_board
-    @user_interface.clear
     @user_interface.display_board
   end
 

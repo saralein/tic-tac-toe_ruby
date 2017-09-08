@@ -11,6 +11,7 @@ class UserInterface
     clear
     display_message(@script.welcome)
     pause(4)
+    clear
   end
 
   def clear
@@ -54,6 +55,7 @@ class UserInterface
       end
     end
 
+    clear
     display_message(output)
   end
 
@@ -114,7 +116,9 @@ class UserInterface
   end
 
   def get_input(message)
-    @io.get_input(message)
+    input = @io.get_input(message)
+    clear
+    input
   end
 
   def exit_game
