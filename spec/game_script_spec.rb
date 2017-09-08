@@ -1,7 +1,8 @@
 require_relative '../lib/scripts/game_script.rb'
 
 describe GameScript do
-  let(:script) { GameScript.new }
+  let(:colorizer) { MockColorizer.new }
+  let(:script) { GameScript.new(colorizer) }
   let(:token_prompt) { "\nPlease select a token for Player 1: " }
   let(:move_prompt) { ""}
 

@@ -15,11 +15,12 @@ class GameSetup
     game_progress = GameProgress.new
     board = Board.new(@size, '-')
     io = IO.new(Readline, STDOUT)
-    game_script = GameScript.new
-    user_interface = UserInterface.new(io, game_script, board)
+    colorizer = Colorizer.new
+    game_script = GameScript.new(colorizer)
+    user_interface = UserInterface.new(io, game_script, board, colorizer)
     checker = BoardChecker.new(board)
     setup_validator = SetupValidator.new(game_script)
-    player_validator = PlayerValidator.new(board)
+    player_validator = PlayerValidator.new(board, game_script)
     config = GameConfiguration.new(game_progress, board, checker, game_script, user_interface, player_validator)
 
     user_interface.welcome

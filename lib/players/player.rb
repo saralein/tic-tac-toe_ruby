@@ -6,6 +6,7 @@ class Player
     @token = token
     @user_interface = user_interface
     @validator = validator
+    @user_interface.assign_color(@token)
   end
 
   def take_turn(state, board, turns_remaining)
