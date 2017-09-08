@@ -4,7 +4,8 @@ require_relative './mocks/mock_config.rb'
 require_relative '../lib/validators/setup_validator.rb'
 
 describe GameSetup do
-  let(:game_script) { GameScript.new }
+  let(:colorizer) { MockColorizer.new }
+  let(:game_script) { GameScript.new(colorizer) }
   let(:user_interface) { MockUserInterface.new }
   let(:config) { MockConfig.new(user_interface, game_script) }
   let(:setup_validator) { SetupValidator.new(game_script) }

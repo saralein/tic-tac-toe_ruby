@@ -1,6 +1,7 @@
 require_relative '../lib/players/player.rb'
 require_relative '../lib/players/ai.rb'
 require_relative '../lib/players/human.rb'
+require_relative '../lib/scripts/game_script.rb'
 require_relative '../lib/scripts/player_script.rb'
 require_relative '../lib/validators/player_validator.rb'
 require_relative '../lib/board/board_checker.rb'
@@ -10,7 +11,9 @@ describe Player do
   let(:board) { Board.new(3, '-')}
   let(:checker) { BoardChecker.new(board) }
   let(:user_interface) { MockUserInterface.new }
-  let(:validator) { PlayerValidator.new(board) }
+  let(:colorizer) { MockColorizer.new }
+  let(:game_script) { GameScript.new(colorizer) }
+  let(:validator) { PlayerValidator.new(board, game_script) }
   let(:human) { Human.new(user_interface) }
   let(:script) { PlayerScript.new('get move', 'announce move')}
   let(:player) { Player.new(script, human, 'O', user_interface, validator) }
