@@ -1,4 +1,6 @@
 class Game
+  attr_reader :state
+
   def initialize(state, board, checker, player1, player2)
     @state = state
     @board = board

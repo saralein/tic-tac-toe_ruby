@@ -2,8 +2,9 @@ class MockUserInterface
   def initialize
     @paused = 0
     @message = ''
-    @input = 11
-    @message_called = 0
+    @display_called = 0
+    @input = []
+    @index = 0
   end
 
   def pause
@@ -12,12 +13,12 @@ class MockUserInterface
 
   def display_message(message)
     @message = message
-    @message_called += 1
+    @display_called += 1
   end
 
   def get_input(message)
-    return_value = @input.to_s
-    @input -= 1
+    return_value = @input[@index]
+    @index += 1
     return_value
   end
 
@@ -29,7 +30,32 @@ class MockUserInterface
     @message
   end
 
-  def times_displayed
-    @message_called
+  def welcome
+  end
+
+  def ai_move(move)
+  end
+
+  def display_message(message)
+    @display_called += 1
+  end
+
+  def set_input(input)
+    @index = 0
+    @input = input
+  end
+
+  def get_display_calls
+    @display_called
+  end
+
+  def get_input_calls
+    @index
+  end
+
+  def clear
+  end
+
+  def display_board
   end
 end

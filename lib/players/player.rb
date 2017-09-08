@@ -1,4 +1,5 @@
 class Player
+  attr_reader :token
   def initialize(script, behavior, token, user_interface, validator)
     @script = script
     @behavior = behavior
@@ -9,14 +10,14 @@ class Player
 
   def take_turn(state, board, turns_remaining)
     grid = board.grid
-    display_board(grid)
+    display_board
     move = get_move(turns_remaining)
     wants_to_restart?(state, move)
     wants_to_exit?(state, move)
 
     unless(state.stop_playing || state.restart)
       add_move(board, move)
-      display_board(grid)
+      display_board
       announce_move(move)
     end
   end
@@ -44,9 +45,9 @@ class Player
     board.add_move(move, @token)
   end
 
-  def display_board(grid)
+  def display_board
     @user_interface.clear
-    @user_interface.display_board(grid)
+    @user_interface.display_board
   end
 
   def wants_to_restart?(state, move)

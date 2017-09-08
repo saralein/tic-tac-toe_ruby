@@ -1,6 +1,7 @@
 require_relative '../lib/ui/user_interface.rb'
 require_relative '../lib/board/board.rb'
 require_relative './mocks/mock_io.rb'
+require_relative '../lib/scripts/game_script.rb'
 
 describe 'UserInterface' do
   let(:welcome) { "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n" }
@@ -11,36 +12,38 @@ describe 'UserInterface' do
   let(:empty_string) { '  |   |  ' }
   let(:full_string) { 'X | X | O' }
   let(:ai_move) { "\nThe computer picks spot 1." }
-  let(:bye_bye) { "\n\nThanks for playing."}
-  let(:ai_win) { "\nGame over. The computer wins!" }
-  let(:human_win) { "\nGame over. You win!" }
-  let(:draw) { "\nGame over. It's a draw." }
-  let(:board) { Board.new(3, '-') }
+  let(:bye_bye) { "\n\nThanks for playing.\n"}
+  let(:ai_win) { "\n\nGame over. O wins!\n" }
+  let(:human_win) { "\n\nGame over. X wins!\n" }
+  let(:draw) { "\n\nGame over. It's a draw.\n" }
+  let(:board) { MockBoard.new }
   let(:io) { MockIO.new }
-  let(:user_interface) { UserInterface.new(io, board, 'X', 'O') }
+  let(:script) { GameScript.new}
+  let(:user_interface) { UserInterface.new(io, script, board) }
 
   describe 'welcome' do
     it 'displays welcome message and available moves' do
       user_interface.welcome
       expect(io.check_message_received).to eql(welcome)
-      expect(io.check_message_calls).to eql(2)
+      expect(io.check_message_calls).to eql(1)
     end
   end
 
   describe 'display_board' do
     it 'displays the current sized board in the terminal' do
-      user_interface.display_board(empty_board)
+      board.set_grid(empty_board)
+      user_interface.display_board
       expect(io.check_message_received).to eql(output)
       expect(io.check_message_calls).to eql(1)
     end
 
     it 'displays the current size board in the terminal with moves' do
-      user_interface.display_board(moves_taken)
+      board.set_grid(moves_taken)
+      user_interface.display_board
       expect(io.check_message_received).to eql(output_with_moves)
       expect(io.check_message_calls).to eql(1)
     end
   end
-
 
   describe 'create_header' do
     it 'creates a header for board and moves' do
