@@ -7,7 +7,9 @@ describe GameSetup do
   let(:colorizer) { MockColorizer.new }
   let(:game_script) { GameScript.new(colorizer) }
   let(:user_interface) { MockUserInterface.new }
-  let(:config) { MockConfig.new(user_interface, game_script) }
+  let(:board) { MockBoard.new }
+  let(:player_validator) { PlayerValidator.new(board, game_script) }
+  let(:config) { MockConfig.new(user_interface, game_script, player_validator) }
   let(:setup_validator) { SetupValidator.new(game_script) }
   let(:game_setup) { GameSetup.new }
 
@@ -93,6 +95,15 @@ describe GameSetup do
     it 'flips player order if player 2 is first' do
       game_setup.instance_variable_set(:@order, :player2)
       expect(game_setup.set_order('a', 'b')).to eql(['b', 'a'])
+    end
+  end
+
+  describe 'sets up player script correctly' do
+    it 'sends the correct get move script to user interface for 3x3 boards' do
+      player1, player2 = game_setup.humanVShuman(config)
+      user_interface.set_input(['1'])
+      player1.get_move(9)
+      expect(user_interface.check_message).to eql("\nPlease enter a number between 1 - 9: ")
     end
   end
 end
