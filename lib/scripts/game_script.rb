@@ -16,7 +16,7 @@ class GameScript
     @errors = {
       mode: colorizer.magenta("\nNot a valid selection. Pick again.\n"),
       order: colorizer.magenta("\nNot a valid selection. Pick again.\n"),
-      token: colorizer.magenta("\nPlease enter a single letter which hasn't already been selected.\n"),
+      token: colorizer.magenta("\nPlease select a valid token from the list below.\n"),
       board: colorizer.magenta("\nNot a valid selection. Pick again.\n"),
       invalid_spot: colorizer.magenta("\nYour selection is not a valid spot. Pick again.\n"),
       out_of_range: colorizer.magenta("\nYour selection is not between 1 and 9. Pick again.\n"),
@@ -24,8 +24,28 @@ class GameScript
     }
   end
 
-  def create_token_prompt(player)
-    "#{@token_selection}#{player}: "
+  def create_token_prompt(emojis, player)
+    output = "#{@token_selection}#{player}.\n\n     "
+
+    emoji_strings = create_emoji_strings(emojis)
+    emoji_rows = make_emoji_rows(emoji_strings)
+    full_emoji_string = join_emoji_rows(emoji_rows)
+
+    output += full_emoji_string
+
+    output += " .\n\n Choice: "
+  end
+
+  def create_emoji_strings(emojis)
+    emojis.each_with_index.map { |code, code_index| "#{colorizer.green("[#{code_index + 1}]".ljust(5, ' '))} #{code}"}
+  end
+
+  def make_emoji_rows(emoji_strings)
+    emoji_strings.each_slice(10).to_a.map{ |row| row.join(' , ') }
+  end
+
+  def join_emoji_rows(emoji_rows)
+    emoji_rows.join(" ,\n     ")
   end
 
   private
