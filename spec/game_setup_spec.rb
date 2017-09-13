@@ -41,20 +41,29 @@ describe GameSetup do
   end
 
   describe 'get_token' do
-    it 'returns a letter token' do
-      user_interface.set_input(['a'])
-      expect(game_setup.get_token(config, setup_validator, 'Player 1')).to eql('a')
+    it 'returns an emoji token' do
+      user_interface.set_input(['150'])
+      expect(game_setup.get_token(config, setup_validator, 'Player 1')).to eql("\u{1f4a9}")
     end
 
     it 'tries again if token is not valid' do
-      user_interface.set_input(['1', 'a'])
-      expect(game_setup.get_token(config, setup_validator, 'Player 1')).to eql('a')
+      user_interface.set_input(['a', '150'])
+      expect(game_setup.get_token(config, setup_validator, 'Player 1')).to eql("\u{1f4a9}")
     end
+  end
 
-    it 'tries again if token is taken' do
-      user_interface.set_input(['a', 'b'])
-      game_setup.instance_variable_set(:@token1, 'a')
-      expect(game_setup.get_token(config, setup_validator, 'Player 1')).to eql('b')
+  describe 'create_emoji_list' do
+    it 'returns a list of unicode characters' do
+      expect(game_setup.create_emoji_list).to include("🙇", "🙈", "🙉", "🙊", "🙋")
+    end
+  end
+
+  describe 'remove_emoji' do
+    it 'removes player 1 token from emoji list' do
+      user_interface.set_input(['1', '1', '17', '17', '2'])
+      game_setup.get_game_options(config, setup_validator)
+      emojis = game_setup.create_emoji_list
+      expect(game_setup.remove_emoji(emojis)).not_to include("🙈")
     end
   end
 
@@ -91,7 +100,8 @@ describe GameSetup do
     end
 
     it 'flips player order if player 2 is first' do
-      game_setup.instance_variable_set(:@order, :player2)
+      user_interface.set_input(['1', '1', '1', '2', '2'])
+      game_setup.get_game_options(config, setup_validator)
       expect(game_setup.set_order('a', 'b')).to eql(['b', 'a'])
     end
   end

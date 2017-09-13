@@ -52,14 +52,31 @@ class GameSetup
   end
 
   def get_token(config, setup_validator, player)
-    letters = [*('a'..'z'), *('A'..'Z')]
+    emojis = create_emoji_list
+    emojis = remove_emoji(emojis)
 
-    if(letters.include?(@token1))
-      letters.delete(@token1)
-    end
+    selections = ("1".."#{emojis.length}").to_a
 
-    prompt = config.game_script.create_token_prompt(player)
-    get_input(config.user_interface, prompt, setup_validator, letters, :token)
+    prompt = config.game_script.create_token_prompt(emojis, player)
+    emoji_key = get_input(config.user_interface, prompt, setup_validator, selections, :token)
+
+    emojis[Integer(emoji_key) - 1]
+  end
+
+  def create_emoji_list
+    emojiRanges = [
+      *(128568..128590),
+      *(128640..128676),
+      *(127789..127877),
+      128169
+    ]
+
+    emojiRanges.map{ |dec| [dec].pack('U*') }
+  end
+
+  def remove_emoji(emojis)
+    emojis.delete(@token1) if (emojis.include?(@token1))
+    emojis
   end
 
   def get_order(config, setup_validator)
