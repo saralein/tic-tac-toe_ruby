@@ -104,7 +104,7 @@ class GameSetup
   end
 
   def humanVShuman(config)
-    human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
+    human_script = PlayerScript.new("\nPlease enter a number between 1 - #{@size**2}: ", "\nYou picked spot ")
     behavior1 = Human.new(config.user_interface)
     player1 = Player.new(human_script, behavior1, @token1, config.user_interface, config.player_validator)
     player2 = Player.new(human_script, behavior1, @token2, config.user_interface, config.player_validator)
@@ -112,7 +112,7 @@ class GameSetup
   end
 
   def humanVScomputer(config)
-    human_script = PlayerScript.new("\nPlease enter a number between 1 - 9: ", "\nYou picked spot ")
+    human_script = PlayerScript.new("\nPlease enter a number between 1 - #{@size**2}: ", "\nYou picked spot ")
     ai_script = PlayerScript.new("\nThe computer is picking a spot...", "\nThe computer picks spot ")
     behavior1 = Human.new(config.user_interface)
     behavior2 = AI.new(config.board, config.checker, @token2, @token1)

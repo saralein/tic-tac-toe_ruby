@@ -19,6 +19,7 @@ class MockUserInterface
 
   def get_input(message)
     return_value = @input[@index]
+    @message = message
     @index += 1
     return_value
   end
