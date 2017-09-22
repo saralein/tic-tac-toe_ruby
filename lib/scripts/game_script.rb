@@ -3,7 +3,7 @@ class GameScript
 
   def initialize(colorizer)
     @colorizer = colorizer
-    @welcome = "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n"
+    @welcome = "\nWelcome to Tic Tac Toe.\n\nTo play, pick a spot to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n"
     @board_size = "\nPlease select a board size:\n\n     #{colorizer.green('[1]')} 3x3, or\n     #{colorizer.green('[2]')} 4x4.\n\nChoice: "
     @mode_selection = "\nPlease select a game mode:\n\n     #{colorizer.green('[1]')} human vs. human,\n     #{colorizer.green('[2]')} human vs. computer,\n     #{colorizer.green('[3]')} computer vs. computer.\n\nChoice: "
     @token_selection = "\nPlease select a token for "
