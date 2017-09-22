@@ -5,7 +5,7 @@ require_relative './mocks/mock_colorizer.rb'
 require_relative '../lib/scripts/game_script.rb'
 
 describe 'UserInterface' do
-  let(:welcome) { "\nWelcome to Tic Tac Toe.\n\nTo play, pick a number between 1 - 9 to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n" }
+  let(:welcome) { "\nWelcome to Tic Tac Toe.\n\nTo play, pick a spot to place a token on the board.\nThe first player with three in a row wins.\n\nIf you'd like to stop playing, you can enter 'exit' to stop.\n" }
   let (:empty_board) { ['-', '-', '-', '-', '-', '-', '-', '-', '-'] }
   let(:moves_taken) { ['O', 'X', '-', '-', 'O', '-', 'X', 'X', 'O'] }
   let(:header) {"     Board                Moves"}
